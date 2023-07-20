@@ -1,0 +1,8 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %}Starter Page{% endblock title %}
+{% block content %}
+						{% block page_title %}
+							{% include 'partials/page-title.html' with pageview="Utility" title="Starter Page" %}
+                        {% endblock page_title %}
+{% endblock content %}

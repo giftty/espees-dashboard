@@ -1,0 +1,20 @@
+{% extends "partials/base.html" %}
+{% load static %}
+
+{% block title %}Remix Icons{% endblock title %}
+{% block content %}
+						{% block page_title %}
+							{% include 'partials/page-title.html' with pageview="Icons" title="Remix Icons" %}
+                        {% endblock page_title %}
+                        <div class="row">
+                            
+                            <div class="col-12" id="icons"></div> <!-- end col-->
+
+                        </div><!-- end row -->
+{% endblock content %}
+{% block extra_javascript %}
+
+        <!-- Remix icon js-->
+        <script src="{% static 'js/pages/remix-icons-list.js' %}"></script>
+
+{% endblock extra_javascript %}                        
