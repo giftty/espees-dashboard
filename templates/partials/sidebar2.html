@@ -1,0 +1,53 @@
+{% load static %}
+{% block sidebar %}
+		<!-- ========== Left Sidebar Start ========== -->
+		<div class="vertical-menu">
+			<div data-simplebar class="h-100">
+				<!--- Sidemenu -->
+				<div id="sidebar-menu">
+					<!-- Left Menu Start -->
+					<ul class="metismenu list-unstyled" id="side-menu">
+						<li class="menu-title">Menu</li>
+						<li>
+							<a href="{% url 'dashboard' %}" class="waves-effect"> <i class="ri-dashboard-line"></i>
+								<!-- <span class="badge rounded-pill bg-success float-end">3</span> -->
+								<span>Dashboard</span>
+							</a>
+						</li>
+                          {% if user.admin_type != "Main Adminstrator"%}
+                         <li>
+                           <a href="javascript:void()" onclick="tabs('#u_p')" class="waves-effect" >
+							<i class="ri-user-line " ></i>
+							 User profile 
+						  </a> 
+                         </li>
+                         <li>
+                            <a href="javascript:void()" class="waves-effect"  >
+							<i class="ri-briefcase-4-line" ></i>
+							Recent Activities
+						    </a>
+                         </li>
+                         <li>
+                           <a href="javascript:void()" class="waves-effect"  >
+							<i class=" ri-door-lock-line "></i>
+							Change Account Pin
+						    </a>
+                          </li>
+                          
+                          
+                         {% endif %}
+						
+						 <li>
+                           <a href="{% url 'account_logout' %}" class="waves-effect"  >
+							<i class=" ri-door-lock-line "></i>
+							 Log Out
+						    </a>
+                          </li>
+							
+					</ul>
+				</div>
+				<!-- Sidebar -->
+			</div>
+		</div>
+		<!-- Left Sidebar End -->
+{% endblock sidebar %}

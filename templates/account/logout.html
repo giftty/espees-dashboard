@@ -1,0 +1,37 @@
+{% extends 'account/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Sign Out" %}{% endblock title %}
+
+{% block header %}
+    <h4 class="font-size-18 mt-4">{% trans "Sign Out" %}</h4>
+    <p class="text-muted">{% trans 'Are you sure you want to sign out?' %}</p>
+{% endblock header %}
+
+{% block content %}
+    <form novalidate method="post" action="{% url 'account_logout' %}" >
+        {% csrf_token %}
+        {% for message in messages %}
+        <div class="alert {{ message.tags }} mb-4" role="alert">
+            <strong>{{ message }}</strong>
+        </div>
+        {% endfor %}
+        {% if form.errors %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>{{form.non_field_errors}}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+        
+        <div class="mb-3 row mt-2">
+            <div class="text-center">
+                <button class="btn btn-primary w-md waves-effect waves-light"
+                    type="submit">{% trans 'Sign Out' %}</button>
+            </div>
+        </div>
+    </form>
+{% endblock content %}
+{% block extra_content %}
+<p>Back to the homepage? <a href="{% url 'dashboard'%}" class="text-primary"> Home </a>
+</p>
+{% endblock extra_content %}
