@@ -76,7 +76,38 @@
     {% block extra_javascript %} {% endblock extra_javascript %}
 	<!-- App js -->
 	<script src="{% static 'js/app.js' %}"></script>
-	
+	<script>
+		
+       
+        var options = {
+          series:  [56 , 26, 8, 2],
+		   colors: ['#0275d8', '#5cb85c','#5bc0de', '#f0ad4e'],
+          chart: {
+          width: 300,
+          type: 'donut',
+        },
+        dataLabels: {
+          enabled: false
+        },
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              show: false
+            }
+          }
+        }],
+        legend: {
+          show:false
+        }
+        }
+
+        var chart = new ApexCharts(document.querySelector("#new_donut-chart"), options);
+        chart.render();
+	</script>
 	{% endblock javascript %}
 </body>
 

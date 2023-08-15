@@ -62,7 +62,7 @@ Nazox Installation in Django Python
 ->pip install django-password-validators
 ->pip install django-js-routes
 ->pip install django-crispy-forms
-
+->pip install crispy_bootstrap4
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.#databaseservername#',

@@ -2,24 +2,60 @@
 {% block content %}
 					<div class="row">
 						<div class="col-xl-8">
-							<div class="row justify-content-center">
-								
-								
-								<div class="col-md-8">
+							<div class="row">
+								<div class="col-md-4">
 									<div class="card">
 										<div class="card-body">
 											<div class="d-flex">
 												<div class="flex-1 overflow-hidden">
-													<p class="text-truncate font-size-14 mb-2">Total Downloads</p>
-													<h4 class="mb-0">154,000 Downloads </h4>
+													<p class="text-truncate font-size-14 mb-2">Number of Users</p>
+													<h4 class="mb-0">1452</h4>
 												</div>
-												<div class="text-primary ms-auto"> <i class="ri-briefcase-4-line font-size-24"></i>
+												<div class="text-primary ms-auto"> <i class="ri-user-3-line font-size-24"></i>
 												</div>
 											</div>
 										</div>
 										<div class="card-body border-top py-3">
 											<div class="text-truncate"> <span class="badge badge-soft-success font-size-11"><i class="mdi mdi-menu-up"> </i> 2.4% </span>
-												<!-- <span class="text-muted ms-2">From previous period</span> -->
+												<span class="text-muted ms-2">From previous period</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="card">
+										<div class="card-body">
+											<div class="d-flex">
+												<div class="flex-1 overflow-hidden">
+													<p class="text-truncate font-size-14 mb-2">Total Number of Merchant accounts</p>
+													<h4 class="mb-0"> 38452</h4>
+												</div>
+												<div class="text-primary ms-auto"> <i class="ri-store-2-line font-size-24"></i>
+												</div>
+											</div>
+										</div>
+										<div class="card-body border-top py-3">
+											<div class="text-truncate"> <span class="badge badge-soft-success font-size-11"><i class="mdi mdi-menu-up"> </i> 2.4% </span>
+												<span class="text-muted ms-2">From previous period</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="card">
+										<div class="card-body">
+											<div class="d-flex">
+												<div class="flex-1 overflow-hidden">
+													<p class="text-truncate font-size-14 mb-2">Toal Agent accounts</p>
+													<h4 class="mb-0">154</h4>
+												</div>
+												<div class="text-primary ms-auto"> <i class="ri-briefcase-2-fill  font-size-24"></i>
+												</div>
+											</div>
+										</div>
+										<div class="card-body border-top py-3">
+											<div class="text-truncate"> <span class="badge badge-soft-success font-size-11"><i class="mdi mdi-menu-up"> </i> 2.4% </span>
+												<span class="text-muted ms-2">From previous period</span>
 											</div>
 										</div>
 									</div>
@@ -35,7 +71,7 @@
 											<button type="button" class="btn btn-sm btn-light">Monthly</button>
 										</div>
 									</div>
-									<h4 class="card-title mb-4">Revenue Analytics</h4>
+									<h4 class="card-title mb-4">Total Espees Usage</h4>
 									<div>
 										<div id="line-column-chart" class="apex-charts" dir="ltr"></div>
 									</div>
@@ -81,25 +117,31 @@
 											<option value="3">Jan</option>
 										</select>
 									</div>
-									<h4 class="card-title mb-4">Sales Analytics</h4>
-									<div id="donut-chart" class="apex-charts"></div>
+									<h4 class="card-title mb-4">Merchant Account Volumns</h4>
+									<div id="new_donut-chart" class="apex-charts"></div>
 									<div class="row">
 										<div class="col-4">
 											<div class="text-center mt-4">
-												<p class="mb-2 text-truncate"><i class="mdi mdi-circle text-primary font-size-10 me-1"></i> Product A</p>
-												<h5>42 %</h5>
+												<p class="mb-2 text-truncate"><i class="mdi mdi-circle text-primary font-size-10 me-1"></i>kbos</p>
+												<h5> 56%</h5>
 											</div>
 										</div>
 										<div class="col-4">
 											<div class="text-center mt-4">
-												<p class="mb-2 text-truncate"><i class="mdi mdi-circle text-success font-size-10 me-1"></i> Product B</p>
+												<p class="mb-2 text-truncate"><i class="mdi mdi-circle text-success font-size-10 me-1"></i>mika</p>
 												<h5>26 %</h5>
 											</div>
 										</div>
 										<div class="col-4">
 											<div class="text-center mt-4">
-												<p class="mb-2 text-truncate"><i class="mdi mdi-circle text-warning font-size-10 me-1"></i> Product C</p>
-												<h5>42 %</h5>
+												<p class="mb-2 text-truncate"><i class="mdi mdi-circle text-info font-size-10 me-1"></i>Zone</p>
+												<h5>8 %</h5>
+											</div>
+										</div>
+                                        <div class="col-4">
+											<div class="text-center mt-4">
+												<p class="mb-2 text-truncate"><i class="mdi mdi-circle text-warning font-size-10 me-1"></i>Others...</p>
+												<h5>2 %</h5>
 											</div>
 										</div>
 									</div>
