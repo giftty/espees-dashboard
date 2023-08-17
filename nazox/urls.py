@@ -27,6 +27,8 @@ urlpatterns = [
     path('',views.DashboardView.as_view(),name='dashboard'),# Dashboard
     path('superpage/',views.Superpageview.as_view()),
     path('mainpage/',views.Mainpageview.as_view()),
+    path('merchants/',views.Merchants.as_view(),name='merchants'),
+    path('agents/',views.Agents.as_view(),name='agents'),
     path('menu/calendar',views.CalendarView.as_view(),name='calendar'),# Calender
     path('menu/chat',views.ChatView.as_view(),name='chat'),# Chat
     path('menu/app-kanban-board',views.KanbanBoardView.as_view(),name='app-kanban-board'),# Kanban Board

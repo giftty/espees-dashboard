@@ -14,7 +14,7 @@
 								<span>Dashboard</span>
 							</a>
 						</li>
-                          {% if user.admin_type != "Main Adminstrator"%}
+                          {% if user.admin_type != "Main Adminstrator" %}
                          <li>
                            <a href="javascript:void()" onclick="tabs('#u_p')" class="waves-effect" >
 							<i class="ri-user-line " ></i>
@@ -36,7 +36,20 @@
                           
                           
                          {% endif %}
-						
+						 {%if user.admin_type == "Main Adminstrator" %}
+                          <li>
+                           <a href="/merchants" class="waves-effect"  >
+							<i class="ri-bubble-chart-fill"></i>
+							Merchants
+						    </a>
+                          </li>
+                           <li>
+                           <a href="/agents" class="waves-effect"  >
+							<i class="ri-creative-commons-by-line"></i>
+							Agents
+						    </a>
+                          </li>
+                          {% endif %}
 						 <li>
                            <a href="{% url 'account_logout' %}" class="waves-effect"  >
 							<i class=" ri-door-lock-line "></i>

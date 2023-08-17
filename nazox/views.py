@@ -17,6 +17,23 @@ def createUser(request):
        if(creatu): return HttpResponse(f'{request.POST["admintype"]} Admin created')
        else :  
         return HttpResponse('An error occurred')
+class Agents(View) :
+      def get(self, request):
+        user = request.user 
+        if(user.admin_type == "Main Adminstrator"):
+          return render(request,'menu/agents.html')
+        else:
+          redirect('/')
+class Merchants(View) : 
+        def get(self, request): 
+          greeting = {}
+          greeting['title'] = "Dashboard"
+          greeting['pageview'] = "Espees"
+          user = request.user 
+          if(user.admin_type == "Main Adminstrator"):
+            return render(request,'menu/merchants.html',greeting)
+          else:
+            redirect('/')
 class Superpageview(View):
  def get(self, request):
         greeting = {}
