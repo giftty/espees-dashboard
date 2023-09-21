@@ -17,6 +17,9 @@ def createUser(request):
        if(creatu): return HttpResponse(f'{request.POST["admintype"]} Admin created')
        else :  
         return HttpResponse('An error occurred')
+def viewUsers(request):
+      user=request.user
+      print(User.objects.all)       
 class Agents(View) :
       def get(self, request):
         user = request.user 
