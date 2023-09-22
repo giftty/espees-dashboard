@@ -120,22 +120,23 @@ DATABASES = {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     # }
-     "default": {
-        "ENGINE": "django.db.backends.mysql",
-         "NAME":"espees_admin_data",
-          "USER": "root",
-          "PASSWORD": "",
-          "HOST": "localhost"    
-    }
-    # "default": {
+    #  "default": {
     #     "ENGINE": "django.db.backends.mysql",
     #      "NAME":"espees_admin_data",
-    #       "USER": "espees-admin",
-    #       "PASSWORD": "espees",
-    #       "HOST": "localhost",
+    #       "USER": "root",
+    #       "PASSWORD": "",
+    #       "HOST": "localhost"    
+    # }
+
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+         "NAME":"espees_admin_data",
+          "USER": "espees-admin",
+          "PASSWORD": "espees",
+          "HOST": "localhost",
 
        
-    # }
+    }
 }
 
 
