@@ -221,27 +221,31 @@ valid=true;pass.eq(1).attr("class","").addClass('form-control')
 
 if(valid){
  $(this).find("button[type='submit']").html("Processing...")
-var formdt=new FormData(e.target)
+ var dat
+ var formdt=new FormData(e.target)
   $.ajax({
      url:'createadmin/',
      type:'POST',
       data:formdt,
-      beforeSend:function(){
-        
+      beforeSend:function(){     
       $(that).find("button[type='submit']").html("Sent...")
       },
       processData:false,
       contentType: false,
      success:function(data){  
-       console.log(data)
+        dat=data
       // data=JSON.parse(data)
        $(that).removeClass('was-validated')
        $(that).find('input,select').val('')
       $(that).find("button[type='submit']").html(data.toString())
      },
     complete:function(){
-     setTimeout(function(){ $(that).find("button[type='submit']").html("Create admin")},10000)
-     setTimeout(function(){window.location.reload()})
+     console.log(dat)
+    // setTimeout(function(){ $(that).find("button[type='submit']").html("Create admin")},10000)
+    if(dat.toString().indexOf('created')!=-1)
+     setTimeout(function(){window.location.reload()},5000)
+     else
+     $(that).find("button[type='submit']").html(dat.toString())
     }
    })
 
@@ -279,8 +283,10 @@ cancelButtonClass:"btn btn-danger ms-2 mt-2",buttonsStyling:!1}).then(function(t
     success:function(data){
      console.log(data)
     },
-    complete:function(){
-    Swal.fire({title:"Deleted!",text:"Your file has been deleted.",icon:"success"})}
+    complete:async function() {
+     await Swal.fire({title:"Deleted!",text:"Your file has been deleted.",icon:"success"})
+     window.location.reload()
+    }
  })
   }else if(t.dismiss===Swal.DismissReason.cancel){
     Swal.fire({title:"Operation Cancelled",text:"",icon:"error"})

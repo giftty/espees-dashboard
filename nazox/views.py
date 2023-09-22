@@ -5,6 +5,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from allauth.account.views import PasswordChangeView, PasswordSetView
 from django_otp.plugins.otp_totp.models import TOTPDevice
 from django.urls import reverse_lazy
+from asgiref.sync import sync_to_async
+import requests
 
 from users.models import User
 
@@ -68,24 +70,25 @@ class Mainpageview(View):
         return render(request,'menu/index.html',greeting)
 # Dashboard
 class DashboardView(LoginRequiredMixin,View):
-    def get(self, request):
+       def get(self, request):
         
-        greeting = {}
-        greeting['title'] = "Dashboard"
-        greeting['pageview'] = "Espees" 
+        dashboard_data = {}
+        dashboard_data['title'] = "Dashboard"
+        dashboard_data['pageview'] = "Espees" 
         user = request.user
         if(user.is_superuser == True):
           alladmins= list((User.objects.values()))
-          greeting['admins'] = alladmins
-          #print(greeting['admins']) 
-          return  render(request, 'menu/superpage.html',greeting) 
+          dashboard_data['admins'] = alladmins
+          return  render(request, 'menu/superpage.html',dashboard_data) 
         else:     
          if(user.admin_type == "Sub Admin"):
            # print(user.admin_type)
-            return  render(request, 'menu/sub_dashboard.html',greeting) 
+            return  render(request, 'menu/sub_dashboard.html',dashboard_data) 
          else :
-          if(user.admin_type == "Main Admin"):     
-             return render(request, 'menu/main_dashboard.html',greeting)
+          if(user.admin_type == "Main Admin"): 
+             totalobjects=  requests.get('https://api.espees.org/backoffice/dashboard/')  
+             dashboard_data['totals']= totalobjects.json()
+             return render(request, 'menu/main_dashboard.html',dashboard_data)
 
 # Calender
 class CalendarView(LoginRequiredMixin,View):
