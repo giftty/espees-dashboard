@@ -27,8 +27,9 @@ def deleteUser(request):
       user=request.user
       deldata=request.POST['email']
       if(user.is_superuser == True):
-         data = User.objects.get(pk=2)
-         print(data)
+         ad = User.objects.filter(email=deldata)
+         print(ad)
+         ad.delete()
          return HttpResponse("Delete successful")
       
 class Agents(View) :

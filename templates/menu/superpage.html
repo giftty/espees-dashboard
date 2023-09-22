@@ -11,6 +11,9 @@
 	<link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
 	<!-- Responsive datatable examples -->
 	<link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+
+            <!-- Sweet Alert-->
+        <link href="{% static 'libs/sweetalert2/dist/sweetalert2.min.css' %}" rel="stylesheet" type="text/css" />
 {% endblock extra_css %}
 {% block content %}
 						{% block page_title %}
@@ -123,7 +126,7 @@
                             
                            <div class="card">
                                     <div class="card-body">
-                                      
+                                                
                                         <h4 class="card-title mb-4">All Admins </h4>
                                      
                                         <div class="table-responsive">
@@ -166,6 +169,7 @@
                                         </div>
                                     </div>
                                 </div>
+
 {% endblock content %}
 {% block extra_javascript %}
   
@@ -177,11 +181,26 @@
     <script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
     <script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
     
+     <!-- Sweet Alerts js -->
+        <script src="{% static 'libs/sweetalert2/dist/sweetalert2.min.js' %}"></script>
+
     <!-- Responsive examples -->
     <script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
     <script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
      <script src="{% static 'js/pages/form-validation.init.js' %}"></script>
-   
+     
+       <script>
+       $(document).ready(function(){
+         setTimeout(function(){
+         $(".datatable").
+       DataTable({lengthMenu:[5,10,25,50],pageLength:5,
+       language:{paginate:{previous:"<i class='mdi mdi-chevron-left'>",
+       next:"<i class='mdi mdi-chevron-right'>"}},
+       drawCallback:function(){$(".dataTables_paginate > .pagination").addClass("pagination-rounded")}}),
+       $(".dataTables_length select").addClass("form-select form-select-sm")
+         },500)
+       })
+       </script>
  
 <script>
  $("form").on('submit',function(e){
@@ -220,7 +239,10 @@ var formdt=new FormData(e.target)
        $(that).find('input,select').val('')
       $(that).find("button[type='submit']").html(data.toString())
      },
-    complete:setTimeout(function(){ $(that).find("button[type='submit']").html("Create admin")},10000)
+    complete:function(){
+     setTimeout(function(){ $(that).find("button[type='submit']").html("Create admin")},10000)
+     setTimeout(function(){window.location.reload()})
+    }
    })
 
 }
@@ -244,15 +266,27 @@ function getCookie(name) {
 
 const csrftoken = getCookie('csrftoken');
 function del(str){
- $.ajax({
+Swal.fire({title:"Are you sure?",text:"You won't be able to revert this!",icon:"warning",
+showCancelButton:!0,confirmButtonText:"Yes, delete it!",
+cancelButtonText:"No, cancel!",confirmButtonClass:"btn btn-success mt-2",
+cancelButtonClass:"btn btn-danger ms-2 mt-2",buttonsStyling:!1}).then(function(t){
+  if(t.value){
+    $.ajax({
     url:'delete/',
     type:'POST',
     headers: {'X-CSRFToken':csrftoken},
     data :{email:str},
     success:function(data){
      console.log(data)
-    }
+    },
+    complete:function(){
+    Swal.fire({title:"Deleted!",text:"Your file has been deleted.",icon:"success"})}
  })
+  }else if(t.dismiss===Swal.DismissReason.cancel){
+    Swal.fire({title:"Operation Cancelled",text:"",icon:"error"})
+  }
+})
+ 
 }
 </script>
 
