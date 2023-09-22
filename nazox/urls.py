@@ -34,7 +34,7 @@ urlpatterns = [
     path('menu/app-kanban-board',views.KanbanBoardView.as_view(),name='app-kanban-board'),# Kanban Board
     path('menu/settings',views.SettingsView.as_view(),name='settings'),# Settings
     path('createadmin/',views.createUser,name='createadmin'),
-    
+    path('delete/',views.deleteUser,name='delete-admin'),
     # Apps 
     path('ecommerce/',include('ecommerce.urls')),# Ecommerce
     path('email/',include('mail.urls')),# Email

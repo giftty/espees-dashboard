@@ -9,7 +9,8 @@ from django.urls import reverse_lazy
 from users.models import User
 
 def createUser(request):
-       user=request.user
+      user=request.user
+      try:
        if(user.is_superuser==True):
          creatu= User.objects.create_user(email=request.POST['email'],password=request.POST['password'],
          username=request.POST['username'],first_name=request.POST['firstname'],last_name=request.POST['lastname'],
@@ -17,13 +18,23 @@ def createUser(request):
        if(creatu): return HttpResponse(f'{request.POST["admintype"]} Admin created')
        else :  
         return HttpResponse('An error occurred')
+      except: return HttpResponse('An error occurred')
 def viewUsers(request):
       user=request.user
-      print(User.objects.all)       
+      print(User.objects.all)  
+
+def deleteUser(request):
+      user=request.user
+      deldata=request.POST['email']
+      if(user.is_superuser == True):
+         data = User.objects.get(pk=2)
+         print(data)
+         return HttpResponse("Delete successful")
+      
 class Agents(View) :
       def get(self, request):
         user = request.user 
-        if(user.admin_type == "Main Adminstrator"):
+        if(user.admin_type == "Main Admin"):
           return render(request,'menu/agents.html')
         else:
           redirect('/')
@@ -33,7 +44,7 @@ class Merchants(View) :
           greeting['title'] = "Dashboard"
           greeting['pageview'] = "Espees"
           user = request.user 
-          if(user.admin_type == "Main Adminstrator"):
+          if(user.admin_type == "Main Admin"):
             return render(request,'menu/merchants.html',greeting)
           else:
             redirect('/')
@@ -57,17 +68,23 @@ class Mainpageview(View):
 # Dashboard
 class DashboardView(LoginRequiredMixin,View):
     def get(self, request):
+        
         greeting = {}
         greeting['title'] = "Dashboard"
         greeting['pageview'] = "Espees" 
         user = request.user
         if(user.is_superuser == True):
+          alladmins= list((User.objects.values()))
+          greeting['admins'] = alladmins
+          #print(greeting['admins']) 
           return  render(request, 'menu/superpage.html',greeting) 
         else:     
-         if(user.admin_type != "Main Adminstrator"):
-          return  render(request, 'menu/sub_dashboard.html',greeting) 
-         else:     
-          return render(request, 'menu/main_dashboard.html',greeting)
+         if(user.admin_type == "Sub Admin"):
+           # print(user.admin_type)
+            return  render(request, 'menu/sub_dashboard.html',greeting) 
+         else :
+          if(user.admin_type == "Main Admin"):     
+             return render(request, 'menu/main_dashboard.html',greeting)
 
 # Calender
 class CalendarView(LoginRequiredMixin,View):

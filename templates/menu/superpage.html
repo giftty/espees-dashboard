@@ -120,6 +120,52 @@
                                         </form>
                          </div>
                        </div>
+                            
+                           <div class="card">
+                                    <div class="card-body">
+                                      
+                                        <h4 class="card-title mb-4">All Admins </h4>
+                                     
+                                        <div class="table-responsive">
+                                            <table class="table table-centered datatable dt-responsive nowrap" data-bs-page-length="5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Email</th>
+                                                        <th>Username</th>
+                                                        <th>First Name</th>
+                                                        <th>Last Name</th>
+                                                        <th>Admin Type</th>
+                                                        <th>Phone</th>
+                                                        <th>Gender</th>
+                                                        
+                                                        <th style="width: 120px;">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for admin in admins %}
+                                                     <tr>
+                                                        
+                                                        <td>{{admin.id}}</td>
+                                                         <td>{{admin.username}}</td>
+                                                        <td>{{admin.email}}</td>
+                                                        <td>{{admin.first_name}}</td>
+                                                        <td>{{admin.last_name}}</td>
+                                                         <td>{{admin.admin_type}}</td>
+                                                        <td>{{admin.phone}}</td>
+                                                        <td>{{admin.gender}}</td>
+                                                         <td id="tooltip-container1">
+                                                            <a href="javascript:void(0);" class="me-3 text-primary" data-bs-container="#tooltip-container1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="mdi mdi-pencil font-size-18"></i></a>
+                                                            <a href="javascript:void(0);" onclick="del('{{admin.email}}')" class="text-danger" data-bs-container="#tooltip-container1" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="mdi mdi-trash-can font-size-18"></i></a>
+                                                        </td>
+                                                     </tr>
+                                                 {% endfor %}
+                                                   
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
 {% endblock content %}
 {% block extra_javascript %}
   
@@ -127,20 +173,31 @@
     <script src="{% static 'libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js' %}"></script>
     <script src="{% static 'libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-us-merc-en.js' %}"></script>
      <script src="{% static 'libs/parsleyjs/dist/parsley.min.js' %}"></script>
-
+      <!-- Required datatable js -->
+    <script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+    
+    <!-- Responsive examples -->
+    <script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
      <script src="{% static 'js/pages/form-validation.init.js' %}"></script>
    
-    <script src="{% static 'js/pages/dashboard.init.js' %}"></script>
-
+ 
 <script>
  $("form").on('submit',function(e){
+ 
 e.preventDefault()
 that=this
 valid=false
+
 if( $(this).find("input[type='Password']").length>0){
 var pass =$(this).find("input[type='Password']")
-if( pass.eq(0).val()==pass.eq(1).val()){valid=true;pass.eq(1).attr("class","").addClass('form-control')
-}else{ pass.eq(1).attr("class","").addClass('form-control is-invalid');pass.eq(1).next('div').attr("class","").addClass("invalid-feedback")}
+if( pass.eq(0).val()==pass.eq(1).val()
+&& pass.eq(0).val().length>3){
+valid=true;pass.eq(1).attr("class","").addClass('form-control')
+ }else{ 
+  pass.eq(1).attr("class","").addClass('form-control is-invalid');
+  pass.eq(1).next('div').attr("class","").addClass("invalid-feedback")}
 }
 
 if(valid){
@@ -169,6 +226,34 @@ var formdt=new FormData(e.target)
 }
 })
 
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+const csrftoken = getCookie('csrftoken');
+function del(str){
+ $.ajax({
+    url:'delete/',
+    type:'POST',
+    headers: {'X-CSRFToken':csrftoken},
+    data :{email:str},
+    success:function(data){
+     console.log(data)
+    }
+ })
+}
 </script>
 
 {% endblock extra_javascript %}
