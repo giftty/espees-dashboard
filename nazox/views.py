@@ -1,4 +1,5 @@
 
+import json
 from django.shortcuts import redirect, render,HttpResponse
 from django.views import View   
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -7,8 +8,56 @@ from django_otp.plugins.otp_totp.models import TOTPDevice
 from django.urls import reverse_lazy
 from asgiref.sync import sync_to_async
 import requests
+from django.views.decorators.csrf import csrf_exempt
 
 from users.models import User
+
+@csrf_exempt
+def checkbalance(request,innercall=False) :
+   url = "https://api.espees.org/user/espeebalance"
+   payload = json.dumps({
+      "username":request.POST['value']
+    })
+   headers = {
+      'Content-Type': 'application/json'
+    }
+   response = requests.request("POST", url, headers=headers, data=payload)
+   if innercall :
+      print(response.text)
+      return  response.text
+   else :  
+     return HttpResponse(content=response.text) 
+   
+@csrf_exempt   
+def gettransactons(request) :
+  url = "https://api.espees.org/transfer/transactions"
+
+  payload = json.dumps({
+    "wallet_address": request.POST['value']
+  })
+  headers = {
+    'Content-Type': 'application/json'
+  }
+  response = requests.request("POST", url, headers=headers, data=payload)
+  return HttpResponse(content=response.text)
+ 
+
+@csrf_exempt
+def getwalletaddress(request) :
+    url = "https://api.espees.org/user/address"
+    payload = json.dumps({
+      "username": request.POST['value']
+    })
+    headers = {
+      'Content-Type': 'application/json'
+    }
+    response = requests.request("POST", url, headers=headers, data=payload)
+    
+    data=  json.loads(checkbalance(request,True))
+    res= json.loads(response.text)
+    res['balance']=data['balance']
+    print(res)
+    return HttpResponse(content=str(res))
 
 def createUser(request):
       user=request.user
@@ -23,7 +72,7 @@ def createUser(request):
       except: return HttpResponse('An error occurred')
 def viewUsers(request):
       user=request.user
-      print(User.objects.all)  
+     # print(User.objects.all)  
 
 def deleteUser(request):
       user=request.user
@@ -82,7 +131,7 @@ class DashboardView(LoginRequiredMixin,View):
           return  render(request, 'menu/superpage.html',dashboard_data) 
         else:     
          if(user.admin_type == "Sub Admin"):
-           # print(user.admin_type)
+            dashboard_data['userprofile']={}
             return  render(request, 'menu/sub_dashboard.html',dashboard_data) 
          else :
           if(user.admin_type == "Main Admin"): 

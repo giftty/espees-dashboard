@@ -42,7 +42,9 @@ urlpatterns = [
     path('pages/',include('utility.urls')),# Utility
     path('components/',include('components.urls')),# Components
     path('admin/', admin.site.urls),# Admin
-    
+    path('check-bal',views.checkbalance),
+    path('getdetails',views.getwalletaddress),
+    path('gettransactions',views.gettransactons),
     path(
         "accounts/password/change/",
         login_required(MyPasswordChangeView.as_view()),
