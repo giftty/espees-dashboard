@@ -176,7 +176,7 @@ $('#search-btn').click(function(e){
      clas='<div class="badge badge-soft-success font-size-12">'+item['event']+'</div>'
      else
      clas='<div class="badge badge-soft-danger font-size-12">'+item['event']+'</div>'
-     table.first('tbody').append('<tr><td><div class="form-check"><input type="checkbox" class="form-check-input" id="ordercheck10"><label class="form-check-label mb-0" for="ordercheck10">&nbsp;</label></div></td><td>'+clas+' </td><td>'+item['amount']+' Espees </td><td>'+item['narrative']+'</td><td>'+item['remark']+'</td><td>'+item['from']+'</td><td >'+item['to']+'</td><td>'+item['time']+'</td></tr>')
+     table.first('tbody').append('<tr><td><div class="form-check"><input type="checkbox" class="form-check-input" id="ordercheck10"><label class="form-check-label mb-0" for="ordercheck10">&nbsp;</label></div></td><td>'+clas+' </td><td>'+item['amount']+' Espees </td><td>'+item['narrative']+'</td><td>'+item['remark']+'</td><td>From : '+item['from']+'</td><td >To : '+item['to']+'</td><td>'+item['time']+'</td></tr>')
      })
     
     }).then(function(){
