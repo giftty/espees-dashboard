@@ -39,8 +39,8 @@
                            <button class="btn bg-secondary col-5 text-white mx-1 mb-1" type="button"  >
                              <a href="/cardprocess"> <span class="text-white">Card Processing</span></a>
                         </button> 
-                        <button class="btn bg-primary col-11 text-white mx-2 mb-1" type="button"  >
-                            Check payment
+                        <button onclick="tabs('#c_pass')" class="btn bg-primary col-11 text-white mx-2 mb-1" type="button"  >
+                            Change Account Password
                         </button> 
                          <button class="btn bg-info col-11 text-white mx-2 mb-1" type="button" id="balchk" >
                             Check balance
@@ -101,13 +101,30 @@
                             <div class="card-body "  >
                                                <!-- ==================== change password======================= -->
                                     <div >
-                                    <form method="POST" class="form changepassform col-8 mx-auto">
+                                    <form method="POST" class="form changepinform col-8 mx-auto">
                                     {% csrf_token %}
                                     <input type="text" placeholder="Enter username" name="username" class="form-control " >
                                     <br/>
                                     <input type="text" placeholder="Enter New Pin" name="newpin" class="form-control " >
                                     <br/>
                                     <input type="text" placeholder="Repeat Pin" name="oldpin" class="form-control " >
+                                    <br/>
+                                    <button type="submit" class="btn btn-primary w-100"> Send</button>
+                                    </form>
+                                    </div>
+                            </div>
+                           </div>
+                           <div class="card tabs" id="c_pass">
+                            <div class="card-body "  >
+                                               <!-- ==================== change password======================= -->
+                                    <div >
+                                    <form method="POST" class="form changepasswordform col-8 mx-auto">
+                                    {% csrf_token %}
+                                    <input type="text" placeholder="Enter email" name="email" class="form-control " >
+                                    <br/>
+                                    <input type="text" placeholder="Enter New Password" name="password" class="form-control " >
+                                    <br/>
+                                    <input type="text" placeholder="Repeat Password" name="confirm_password" class="form-control " >
                                     <br/>
                                     <button type="submit" class="btn btn-primary w-100"> Send</button>
                                     </form>
@@ -132,8 +149,8 @@
                             <button class="btn bg-secondary col-5 text-white mx-1 mb-1" type="button"  >
                             <a href="/cardprocess"> <span class="text-white">Card Processing</span></a>
                           </button>
-                        <button class="btn bg-primary col-11 text-white mx-2 mb-1" type="button"  >
-                            Check payment
+                        <button onclick="tabs('#c_pass')" class="btn bg-primary col-11 text-white mx-2 mb-1" type="button"  >
+                           Change Account Password
                         </button> 
                          <button class="btn bg-info col-11 text-white mx-2 mb-1" type="button" id="balchk" >
                             Check balance

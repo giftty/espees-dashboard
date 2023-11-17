@@ -120,7 +120,28 @@
   $(".tabs").hide()
   $(eleid).show()
 }
-$(".changepassform").on('submit',function(e){
+
+$(".changepasswordform").on('submit',function(e){
+ e.preventDefault()
+var formdt=new FormData(e.target)
+  $.ajax({
+     url:'/changeemailpassword',
+     type:'POST',
+      data:formdt,
+      beforeSend:function(){
+        $("button[type='submit']").html("Processing")
+      },
+      processData:false,
+      contentType: false,
+     success:function(data){
+       console.log(data)
+       data=JSON.parse(data)
+     $("button[type='submit']").html(data["message"])
+     }
+   })
+})
+
+$(".changepinform").on('submit',function(e){
 e.preventDefault()
 
 var formdt=new FormData(e.target)

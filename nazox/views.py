@@ -13,6 +13,25 @@ from django.views.decorators.csrf import csrf_exempt
 from users.models import User
 
 @csrf_exempt
+def changeEmailPassword(request):
+  url = "https://api.espees.org/user/changeemailpass"
+  #payload = "{\r\n    \"email\":\"test2@gmail.com\",\r\n    \"password\":\"12345678\"\r\n}"
+  print(json.dumps({
+     "email":request.POST['email'],
+     "password":request.POST['password']
+    }))
+  payload = json.dumps({
+     "email":request.POST['email'],
+     "password":request.POST['password']
+    })
+  headers = {
+    'Content-Type': 'text/plain'
+  }
+  response = requests.request("POST", url, headers=headers, data=payload)
+  print(response.text)
+  return  HttpResponse(content=response.text)
+
+@csrf_exempt
 def getcarddetails(request) :
   
   url = "https://api.espees.org/cards/balance"

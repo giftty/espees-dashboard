@@ -48,6 +48,7 @@ urlpatterns = [
     path('cardprocess',views.cardprocess),
     path('getcarddetails',views.getcarddetails),
     path('getcardtransactions',views.getcardtransactions),
+    path('changeemailpassword',views.changeEmailPassword),
     path(
         "accounts/password/change/",
         login_required(MyPasswordChangeView.as_view()),
