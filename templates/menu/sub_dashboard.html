@@ -146,7 +146,7 @@ e.preventDefault()
 
 var formdt=new FormData(e.target)
   $.ajax({
-     url:'chanpass/',
+     url:'changepin',
      type:'POST',
       data:formdt,
       beforeSend:function(){
@@ -157,7 +157,8 @@ var formdt=new FormData(e.target)
      success:function(data){
        console.log(data)
        data=JSON.parse(data)
-     $("button[type='submit']").html(data)
+       data=data['body']
+     $("button[type='submit']").html(data['message'])
      }
    })
 })

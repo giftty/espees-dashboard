@@ -49,6 +49,7 @@ urlpatterns = [
     path('getcarddetails',views.getcarddetails),
     path('getcardtransactions',views.getcardtransactions),
     path('changeemailpassword',views.changeEmailPassword),
+    path('changepin',views.changePin),
     path(
         "accounts/password/change/",
         login_required(MyPasswordChangeView.as_view()),

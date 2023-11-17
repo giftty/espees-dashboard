@@ -32,6 +32,21 @@ def changeEmailPassword(request):
   return  HttpResponse(content=response.text)
 
 @csrf_exempt
+def changePin(request):
+  url = "https://api.espees.org/resetpin"
+  #payload = "{\"username\":\"firstflightboss\",\"newpin\":\"1234\"}"
+  payload = json.dumps({
+    "username":request.POST['username'],
+    "newpin":request.POST['newpin']
+  })
+  headers = {
+    'Content-Type': 'text/plain'
+  }
+  response = requests.request("POST", url, headers=headers, data=payload)
+  print(response.text)
+  return  HttpResponse(content=response.text)
+
+@csrf_exempt
 def getcarddetails(request) :
   
   url = "https://api.espees.org/cards/balance"
