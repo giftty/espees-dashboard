@@ -45,6 +45,9 @@ urlpatterns = [
     path('check-bal',views.checkbalance),
     path('getdetails',views.getwalletaddress),
     path('gettransactions',views.gettransactons),
+    path('cardprocess',views.cardprocess),
+    path('getcarddetails',views.getcarddetails),
+    path('getcardtransactions',views.getcardtransactions),
     path(
         "accounts/password/change/",
         login_required(MyPasswordChangeView.as_view()),

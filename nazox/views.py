@@ -13,6 +13,36 @@ from django.views.decorators.csrf import csrf_exempt
 from users.models import User
 
 @csrf_exempt
+def getcarddetails(request) :
+  
+  url = "https://api.espees.org/cards/balance"
+  #payload = "{\r\n  \"card_id\": \"0887344709917455\"\r\n}"
+  payload = json.dumps({
+     "card_id":request.POST['value']
+    })
+  headers = {
+    'Content-Type': 'text/plain'
+  }
+  response = requests.request("POST", url, headers=headers, data=payload)
+  print(response.text)
+  return  HttpResponse(content=response.text)
+
+@csrf_exempt
+def getcardtransactions(request):
+  url = "https://api.espees.org/cards/transactions"
+  #payload = "{\r\n    \"card_id\":\"0887344709917455\"\r\n}"
+  payload = json.dumps({
+     "card_id":request.POST['value']
+    })
+  headers = {
+    'Content-Type': 'text/plain'
+  }
+
+  response = requests.request("POST", url, headers=headers, data=payload)
+  print(response.text)
+  return  HttpResponse(content=response.text)
+
+@csrf_exempt
 def checkbalance(request,innercall=False) :
    url = "https://api.espees.org/user/espeebalance"
    payload = json.dumps({
@@ -111,6 +141,9 @@ class Superpageview(View):
         else:
           redirect('/')
  
+def cardprocess(request) :
+   return  render(request, 'menu/cardspage.html',{}) 
+
 class Mainpageview(View):
  def get(self, request):
         greeting = {}

@@ -1,0 +1,194 @@
+{% extends 'partials/base2.html' %}
+{% load static %}
+{% block title %}Dashboard{% endblock title %}
+{% block extra_css %}
+	<!-- jquery.vectormap css -->
+	<link href="{% static 'libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css' %}" rel="stylesheet" type="text/css" />
+	<!-- DataTables -->
+	<link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+	<!-- Responsive datatable examples -->
+	<link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+<style>
+.loader {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  border: 10px solid;
+  box-sizing: border-box;
+  animation: animloader 1s linear infinite alternate;
+}
+@keyframes animloader {
+  0% {
+    border-color: rgb(15, 6, 179) rgba(255, 255, 255, 0) rgba(255, 255, 255, 0) rgba(255, 255, 255, 0);
+  }
+  33% {
+    border-color: rgb(15, 6, 179) white rgba(15, 6, 179,0) rgba(255, 255, 255, 0);
+  }
+  66% {
+    border-color: blue blue blue rgba(255, 255, 255, 0);
+  }
+  100% {
+    border-color: blue blue blue blue;
+  }
+} 
+
+.pulsate{
+  background: linear-gradient(-45deg, #DDDDDD, #F0F0F0, #DDDDDD, #F0F0F0);
+	background-size: 400% 400%;
+	-webkit-animation: Gradient 2.25s ease infinite;
+	-moz-animation: Gradient 2.25s ease infinite;
+	animation: Gradient 2.25s ease infinite;
+}
+@-webkit-keyframes Gradient {
+	0% {
+		background-position: 0% 50%
+	}
+	50% {
+		background-position: 100% 50%
+	}
+	100% {
+		background-position: 0% 50%
+	}
+}
+
+@-moz-keyframes Gradient {
+	0% {
+		background-position: 0% 50%
+	}
+	50% {
+		background-position: 100% 50%
+	}
+	100% {
+		background-position: 0% 50%
+	}
+}
+
+@keyframes Gradient {
+	0% {
+		background-position: 0% 50%
+	}
+	50% {
+		background-position: 100% 50%
+	}
+	100% {
+		background-position: 0% 50%
+	}
+}
+</style>
+{% endblock extra_css %}
+{% block content %}
+						{% block page_title %}
+							{% include 'partials/page-title.html' with pageview="Espees" title="Dashboard" %}
+						{% endblock page_title %}
+                        {% include "partials/cardtransactions.html" %}
+{% endblock content %}
+{% block extra_javascript %}
+   <!-- apexcharts -->
+    <script src="{% static 'libs/apexcharts/dist/apexcharts.min.js' %}"></script>
+    
+
+    <!-- jquery.vectormap map -->
+    <script src="{% static 'libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js' %}"></script>
+    <script src="{% static 'libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-us-merc-en.js' %}"></script>
+
+    <!-- Required datatable js -->
+    
+    <script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'libs/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'libs/jszip/dist/jszip.min.js' %}"></script>
+        <script src="{% static 'libs/pdfmake/build/pdfmake.min.js' %}"></script>
+        <script src="{% static 'libs/pdfmake/build/vfs_fonts.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-buttons/js/buttons.colVis.min.js' %}"></script>
+
+        <script src="{% static 'libs/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-select/js/dataTables.select.min.js' %}"></script>
+    <!-- Responsive examples -->
+    <script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
+
+    <script src="{% static 'js/pages/dashboard.init.js' %}"></script>
+   
+   <script type="text/javascript">
+ tabs('#u_p')
+ function tabs(eleid){
+  $(".tabs").hide()
+  $(eleid).show()
+}
+$(".changepassform").on('submit',function(e){
+e.preventDefault()
+
+var formdt=new FormData(e.target)
+  $.ajax({
+     url:'chanpass/',
+     type:'POST',
+      data:formdt,
+      beforeSend:function(){
+        $("button[type='submit']").html("Processing")
+      },
+      processData:false,
+      contentType: false,
+     success:function(data){
+       console.log(data)
+       data=JSON.parse(data)
+     $("button[type='submit']").html(data)
+     }
+   })
+})
+
+$('#balchk').click(function(){
+ $('.bs-example-modal-center').modal('show')
+ if($('#search-input').val().length<3)
+  $('.modal .modal-body').html("<div class='p-3 text-center'> Enter kingschat username for user </div>")
+  else
+  $.post('/check-bal',{value:$('#search-input').val()},function(data){console.log(data)
+  data=JSON.parse(data)
+   $('.modal .modal-body').html("<div class='p-3 text-center h3'>Balance : "+data['balance']+" </div>")
+  })
+})
+
+$('#search-btn').click(function(e){
+  $('.user-display').replaceWith('<div class="text-center user-display"><div class="row"><div class="col-md-6"><div class="user-thumb text-center mb-5"><div class=" img-thumbnail avatar-md pulsate mx-auto" alt="thumbnail"></div><h5 class="font-size-15 mt-3 pulsate mx-auto" id="fullname" style="width:120px;height:20px"> </h5></div></div><div class="col-md-6"><div class="mt-5 mt-sm-0"><p class="text-light text-truncate mb-2 pulsate" id="username">Username : @abezes</p> <p class="text-light pulsate mb-2">Wallet Address : <span id="walletaddress"></span></p><p class="text-light text-truncate mb-2 pulsate">Account balance </p><h5 class="mb-0 pulsate text-light" id="walletballance">500 Espees</h5></div></div></div></div>')
+
+  $('#trasaction-table .dataTables_empty').html('<span class="loader"></span>')
+  $('.dataTables_filter').first().parent().remove()
+  $.post('/getcarddetails',{value:$('#search-input').val()},function(data){
+  
+    data= data.replace(/'/ig,'"');
+     console.log(data)
+    data=JSON.parse(data)
+    data=data['body']
+    $('.user-display').replaceWith('<div class="user-display"><div class="row justify-content-center"><div class="col-12 "><div class="ps-5 ms-3 mt-5 mt-sm-0"><p class="text-muted text-truncate mb-2" id="username">Card Number:'+$('#search-input').val()+'</p> <p class="text-muted  mb-2 col-12">Wallet Address : <span id="walletaddress">'+data['wallet_address']+'</span></p><p class="text-muted text-truncate mb-2 ">Card balance </p><h5 class="mb-0 " id="walletballance">'+data['balance']+' Espees</h5></div></div></div></div>')
+    
+    var table
+    $.post('/getcardtransactions',{value:$('#search-input').val()},function(data){
+     // $('#trasaction-table').first('tbody').empty()
+      table=$('<table id="datatable-buttons" class="table table-striped table-bordered dt-responsive" style="border-collapse: collapse; border-spacing: 0; width: 100%;"> <thead class="table-light"><tr><th style="width: 20px;"><div class="form-check"><input type="checkbox" class="form-check-input" id="ordercheck"><label class="form-check-label mb-0" for="ordercheck">&nbsp;</label></div></th><th>Type</th><th>Amount</th><th>Description</th><th>Time</th></tr></thead><tbody></tbody></table>')
+     data=JSON.parse(data)
+     console.log(data['body'])
+     data['body'].forEach(function(item){
+     var clas
+     if(item['event']=='credit')
+     clas='<div class="badge badge-soft-success font-size-12">'+item['event']+'</div>'
+     else
+     clas='<div class="badge badge-soft-danger font-size-12">'+item['event']+'</div>'
+     table.first('tbody').append('<tr><td><div class="form-check"><input type="checkbox" class="form-check-input" id="ordercheck10"><label class="form-check-label mb-0" for="ordercheck10">&nbsp;</label></div></td><td>'+clas+' </td><td>'+item['amount']+' Espees </td><td>'+item['narrative']+'</td><td>'+item['time']+'</td></tr>')
+     })
+    
+    }).then(function(){
+       $('#trasaction-table').replaceWith(table)
+      
+       $(document).ready(function(){$("#datatable").DataTable({language:{paginate:{previous:"<i class='mdi mdi-chevron-left'>",next:"<i class='mdi mdi-chevron-right'>"}},drawCallback:function(){$(".dataTables_paginate > .pagination").addClass("pagination-rounded")}});var a=$("#datatable-buttons").DataTable({lengthChange:!1,language:{paginate:{previous:"<i class='mdi mdi-chevron-left'>",next:"<i class='mdi mdi-chevron-right'>"}},drawCallback:function(){$(".dataTables_paginate > .pagination").addClass("pagination-rounded")},buttons:["copy","excel","pdf"]});a.buttons().container().appendTo("#datatable-buttons_wrapper .col-md-6:eq(0)"),$(".dataTables_length select").addClass("form-select form-select-sm"),$("#selection-datatable").DataTable({select:{style:"multi"},language:{paginate:{previous:"<i class='mdi mdi-chevron-left'>",next:"<i class='mdi mdi-chevron-right'>"}},drawCallback:function(){$(".dataTables_paginate > .pagination").addClass("pagination-rounded")}}),$("#key-datatable").DataTable({keys:!0,language:{paginate:{previous:"<i class='mdi mdi-chevron-left'>",next:"<i class='mdi mdi-chevron-right'>"}},drawCallback:function(){$(".dataTables_paginate > .pagination").addClass("pagination-rounded")}}),a.buttons().container().appendTo("#datatable-buttons_wrapper .col-md-6:eq(0)"),$(".dataTables_length select").addClass("form-select form-select-sm"),$("#alternative-page-datatable").DataTable({pagingType:"full_numbers",drawCallback:function(){$(".dataTables_paginate > .pagination").addClass("pagination-rounded"),$(".dataTables_length select").addClass("form-select form-select-sm")}}),$("#scroll-vertical-datatable").DataTable({scrollY:"350px",scrollCollapse:!0,paging:!1,language:{paginate:{previous:"<i class='mdi mdi-chevron-left'>",next:"<i class='mdi mdi-chevron-right'>"}},drawCallback:function(){$(".dataTables_paginate > .pagination").addClass("pagination-rounded")}}),$("#complex-header-datatable").DataTable({language:{paginate:{previous:"<i class='mdi mdi-chevron-left'>",next:"<i class='mdi mdi-chevron-right'>"}},drawCallback:function(){$(".dataTables_paginate > .pagination").addClass("pagination-rounded"),$(".dataTables_length select").addClass("form-select form-select-sm")},columnDefs:[{visible:!1,targets:-1}]}),$("#state-saving-datatable").DataTable({stateSave:!0,language:{paginate:{previous:"<i class='mdi mdi-chevron-left'>",next:"<i class='mdi mdi-chevron-right'>"}},drawCallback:function(){$(".dataTables_paginate > .pagination").addClass("pagination-rounded"),$(".dataTables_length select").addClass("form-select form-select-sm")}})});
+    })
+  })
+})
+
+</script>
+		
+
+{% endblock extra_javascript %}
