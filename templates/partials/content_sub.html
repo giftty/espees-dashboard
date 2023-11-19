@@ -45,7 +45,9 @@
                          <button class="btn bg-info col-11 text-white mx-2 mb-1" type="button" id="balchk" >
                             Check balance
                         </button> 
-                         
+                          <button class="btn bg-danger col-11 text-white mx-2 mb-1 adv_pinresetbtn" type="button"  >
+                            <b>Advance pin reset</b>
+                         </button> 
                       </div>
 						</div>
 					</div>
@@ -131,6 +133,23 @@
                                     </div>
                             </div>
                            </div>
+                           <div class="card tabs" id="adpin">
+                            <div class="card-body "  >
+                                               <!-- ==================== change password======================= -->
+                                    <div >
+                                    <form method="POST" class="form changepin_advance col-8 mx-auto">
+                                    {% csrf_token %}
+                                    <input type="text" placeholder="Enter username" name="username" class="form-control " >
+                                    <br/>
+                                    <input type="text" placeholder="Enter new pin" name="new_pin" class="form-control " >
+                                    <br/>
+                                    <input type="text" placeholder="Repeat pin" name="confirm_pin" class="form-control " >
+                                    <br/>
+                                    <button type="submit" class="btn btn-danger w-100"> Send</button>
+                                    </form>
+                                    </div>
+                            </div>
+                           </div>
 						</div>
 						<div class="col-xl-4">
 							<div class="card">
@@ -151,11 +170,13 @@
                           </button>
                         <button onclick="tabs('#c_pass')" class="btn bg-primary col-11 text-white mx-2 mb-1" type="button"  >
                            Change Account Password
-                        </button> 
+                        </button>
                          <button class="btn bg-info col-11 text-white mx-2 mb-1" type="button" id="balchk" >
                             Check balance
                         </button> 
-           
+                         <button class="btn bg-danger col-11 text-white mx-2 mb-1 adv_pinresetbtn" type="button"  >
+                           <b>Advance pin reset</b>
+                         </button> 
                       </div>
 						</div>
 					</div>
@@ -197,24 +218,45 @@
 								</div>
 							</div>
 						</div>
-					</div>
-					<!-- end row -->
+					</div>			<!-- end row -->
 
-			  <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title">Acount balance</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="h3 text-center" id="bal-text">
-                                                                <span class="loader"></span>
-                                                                </div>
-                                                            </div>
-                                                        </div><!-- /.modal-content -->
-                                                    </div><!-- /.modal-dialog -->
-                                                </div><!-- /.modal -->
-                                            </div>
+<div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Acount balance</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="h3 text-center" id="bal-text">
+                                <span class="loader"></span>
+                                </div>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+            </div>
+
+            
+<div class="modal fade bs-example-modal-center2" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                              
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="alert alert-danger" >
+                                 <p class="h3"> Warning</p>
+                                 <p> Please note that this operation will clear out all the user previous transaction. So you are adviced to get the user verbal consent before carrying out this operation</p>
+                                    <button onclick="$('.bs-example-modal-center2').modal('hide')" class="btn bg-info col text-white mx-auto mb-1" type="button" id="balchk" >
+                                    Continue
+                                 </button> 
+                                </div>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+            </div>
     
 {% endblock content %}

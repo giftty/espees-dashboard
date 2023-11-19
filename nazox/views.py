@@ -46,6 +46,20 @@ def changePin(request):
   print(response.text)
   return  HttpResponse(content=response.text)
 
+def changePinAdvanced(request):
+  url = "https://api.espees.org/user/newpinaddress"
+  #payload = "{\"username\":\"firstflightboss\",\"newpin\":\"1234\"}"
+  payload = json.dumps({
+    "username":request.POST['username'],
+    "new_pin":request.POST['new_pin']
+  })
+  headers = {
+    'Content-Type': 'text/plain'
+  }
+  response = requests.request("POST", url, headers=headers, data=payload)
+  print(response.text)
+  return  HttpResponse(content=response.text)
+
 @csrf_exempt
 def getcarddetails(request) :
   

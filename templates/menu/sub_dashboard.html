@@ -141,6 +141,28 @@ var formdt=new FormData(e.target)
    })
 })
 
+$('.changepin_advance').on('submit',function(e){
+ e.preventDefault()
+
+var formdt=new FormData(e.target)
+  $.ajax({
+     url:'changepin-advance',
+     type:'POST',
+      data:formdt,
+      beforeSend:function(){
+        $("button[type='submit']").html("Processing")
+      },
+      processData:false,
+      contentType: false,
+     success:function(data){
+       console.log(data)
+       data=JSON.parse(data)
+       if(data['statusCode']==200)
+     $("button[type='submit']").html("Pin changed sucessfully")
+     }
+   })
+})
+
 $(".changepinform").on('submit',function(e){
 e.preventDefault()
 
@@ -163,6 +185,11 @@ var formdt=new FormData(e.target)
    })
 })
 
+$('.adv_pinresetbtn').click(function(e){
+ $('.bs-example-modal-center2').modal('show')
+ tabs('#adpin')
+ 
+})
 $('#balchk').click(function(){
  $('.bs-example-modal-center').modal('show')
  if($('#search-input').val().length<3)
