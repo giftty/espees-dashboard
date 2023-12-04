@@ -188,6 +188,8 @@ class Superpageview(View):
           return render(request,'menu/superpage.html',greeting)
         else:
           redirect('/')
+
+
  
 def cardprocess(request) :
    return  render(request, 'menu/cardspage.html',{}) 
@@ -219,6 +221,15 @@ class DashboardView(LoginRequiredMixin,View):
              totalobjects=  requests.get('https://api.espees.org/backoffice/dashboard/')  
              dashboard_data['totals']= totalobjects.json()
              return render(request, 'menu/main_dashboard.html',dashboard_data)
+          else :
+            if(user.admin_type == "Supervisory"): 
+              headers = {
+                  'API-TOKEN': 'BCKOFFICE-IFHFIH973GHE35'
+                }
+              objects=  requests.post('http://web.espees.org/api/backoffice/outbound/parallex',headers=headers,params={})
+              trn=objects.json()
+              dashboard_data['transactions']= trn['data']
+              return render(request, 'menu/supervisory_dashboard.html',dashboard_data)  
 
 # Calender
 class CalendarView(LoginRequiredMixin,View):

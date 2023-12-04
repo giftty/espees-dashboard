@@ -1,0 +1,299 @@
+{% extends 'partials/base2.html' %}
+{% load static %}
+{% load i18n %}
+{% load account socialaccount %}
+{% load crispy_forms_tags %}
+{% block title %}Dashboard{% endblock title %}
+{% block extra_css %}
+	<!-- jquery.vectormap css -->
+	<link href="{% static 'libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css' %}" rel="stylesheet" type="text/css" />
+	<!-- DataTables -->
+	<link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+	<!-- Responsive datatable examples -->
+	<link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+
+            <!-- Sweet Alert-->
+        <link href="{% static 'libs/sweetalert2/dist/sweetalert2.min.css' %}" rel="stylesheet" type="text/css" />
+{% endblock extra_css %}
+{% block content %}
+						{% block page_title %}
+							{% include 'partials/page-title.html' with pageview="Espees" title="Dashboard" %}
+						{% endblock page_title %}
+                        <!-- <div class="card col-md-7 ">
+                         <div class="card-body">
+                             <form class="needs-validation" novalidate>
+                                   {% csrf_token %}
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label for="validationCustom01" class="form-label">First name</label>
+                                                        <input type="text" name="firstname" class="form-control" id="validationCustom01"
+                                                            placeholder="First name"  required>
+                                                        <div class="valid-feedback">
+                                                            Looks good!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label for="validationCustom02" class="form-label">Last name</label>
+                                                        <input type="text" name="lastname" class="form-control" id="validationCustom02"
+                                                            placeholder="Last name"  required>
+                                                        <div class="valid-feedback">
+                                                            Looks good!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                   <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label for="validationCustom02" class="form-label">Email</label>
+                                                        <input type="text" name="email" class="form-control" id="validationCustom02"
+                                                            placeholder="Email"  required>
+                                                        <div class="valid-feedback">
+                                                            Looks good!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                  <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label for="validationCustom03" class="form-label">Admin Type</label>
+                                                        <select class="form-select" name="admintype" id="validationCustom03" required>
+                                                            <option selected disabled value="">Choose admin type</option>
+                                                            <option>Main Admin</option>
+                                                             <option>Sub Admin</option>
+                                                        </select>
+                                                        <div class="invalid-feedback">
+                                                            Please select a valid admin type.
+                                                        </div>
+        
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label for="validationCustom03" class="form-label">Gender</label>
+                                                        <select class="form-select" name="gender" id="validationCustom03" required>
+                                                            <option>Male</option>
+                                                             <option>Female</option>
+                                                        </select>
+                                                        <div class="invalid-feedback">
+                                                            Please select a valid gender.
+                                                        </div>
+        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label for="validationCustom04" class="form-label">Username</label>
+                                                        <input type="text" name="username" class="form-control" id="validationCustom04"
+                                                            placeholder="Username" required>
+                                                        <div class="invalid-feedback">
+                                                            Please provide a valid username.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label for="validationCustom05" class="form-label">Password</label>
+                                                        <input type="password" name="password" class="form-control" id="validationCustom05"
+                                                            placeholder="Password" required>
+                                                        <div class="invalid-feedback">
+                                                            Please provide a valid Password.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label for="validationCustom05" class="form-label">Confirm Password</label>
+                                                        <input type="password" class="form-control" id="validationCustom05"
+                                                            placeholder="confirm Password" aria-describedby="validationServer05Feedback" required>
+                                                        <div id="validationServer05Feedback" class="invalid-feedback">
+                                                            Password did not march.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div>
+                                                <button class="btn btn-primary" type="submit">Create admin</button>
+                                            </div>
+                                        </form>
+                         </div>
+                       </div> -->
+                            
+                           <div class="card">
+                                    <div class="card-body">
+                                                
+                                        <h4 class="card-title mb-4">All Admins </h4>
+                                     
+                                        <div class="table-responsive">
+                                            <table class="table table-centered datatable dt-responsive nowrap" data-bs-page-length="5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Amount</th>
+                                                        <th>Bank Code</th>
+                                                        <th>Account Number</th>
+                                                        <th>Merchant Name</th>
+                                                        <th>Channel</th>
+                                                        <th>Created At</th>
+                                                        <th>Updated At</th>
+                                                        
+                                                        <th style="width: 120px;">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for transaction in transactions %}
+                                                     <tr>
+                                                        
+                                                        <td>{{transaction.id}}</td>
+                                                         <td>{{transaction.amount}}</td>
+                                                        <td>{{transaction.bankCode}}</td>
+                                                        <td>{{transaction.accountNumber}}</td>
+                                                        <td>{{transaction.accountName}}</td>
+                                                         <td>{{transaction.channel}}</td>
+                                                        <td>{{transaction.created_at}}</td>
+                                                        <td>{{transaction.updated_at}}</td>
+                                                         <td id="tooltip-container1">
+                                                            <!-- <a href="javascript:void(0);" class="me-3 text-primary" data-bs-container="#tooltip-container1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="mdi mdi-pencil font-size-18"></i></a>
+                                                            <a href="javascript:void(0);" onclick="del('{{admin.email}}')" class="text-danger" data-bs-container="#tooltip-container1" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="mdi mdi-trash-can font-size-18"></i></a> -->
+                                                        </td>
+                                                     </tr>
+                                                 {% endfor %}
+                                                   
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+{% endblock content %}
+{% block extra_javascript %}
+  
+    <!-- jquery.vectormap map -->
+    <script src="{% static 'libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js' %}"></script>
+    <script src="{% static 'libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-us-merc-en.js' %}"></script>
+     <script src="{% static 'libs/parsleyjs/dist/parsley.min.js' %}"></script>
+      <!-- Required datatable js -->
+    <script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+    
+     <!-- Sweet Alerts js -->
+        <script src="{% static 'libs/sweetalert2/dist/sweetalert2.min.js' %}"></script>
+
+    <!-- Responsive examples -->
+    <script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
+     <script src="{% static 'js/pages/form-validation.init.js' %}"></script>
+     
+       <script>
+       $(document).ready(function(){
+         setTimeout(function(){
+         $(".datatable").
+       DataTable({lengthMenu:[5,10,25,50],pageLength:5,
+       language:{paginate:{previous:"<i class='mdi mdi-chevron-left'>",
+       next:"<i class='mdi mdi-chevron-right'>"}},
+       drawCallback:function(){$(".dataTables_paginate > .pagination").addClass("pagination-rounded")}}),
+       $(".dataTables_length select").addClass("form-select form-select-sm")
+         },500)
+       })
+       </script>
+ 
+<script>
+ $("form").on('submit',function(e){
+ 
+e.preventDefault()
+that=this
+valid=false
+
+if( $(this).find("input[type='Password']").length>0){
+var pass =$(this).find("input[type='Password']")
+if( pass.eq(0).val()==pass.eq(1).val()
+&& pass.eq(0).val().length>3){
+valid=true;pass.eq(1).attr("class","").addClass('form-control')
+ }else{ 
+  pass.eq(1).attr("class","").addClass('form-control is-invalid');
+  pass.eq(1).next('div').attr("class","").addClass("invalid-feedback")}
+}
+
+if(valid){
+ $(this).find("button[type='submit']").html("Processing...")
+ var dat
+ var formdt=new FormData(e.target)
+  $.ajax({
+     url:'createadmin/',
+     type:'POST',
+      data:formdt,
+      beforeSend:function(){     
+      $(that).find("button[type='submit']").html("Sent...")
+      },
+      processData:false,
+      contentType: false,
+     success:function(data){  
+        dat=data
+      // data=JSON.parse(data)
+       $(that).removeClass('was-validated')
+       $(that).find('input,select').val('')
+      $(that).find("button[type='submit']").html(data.toString())
+     },
+    complete:function(){
+     console.log(dat)
+    // setTimeout(function(){ $(that).find("button[type='submit']").html("Create admin")},10000)
+    if(dat.toString().indexOf('created')!=-1)
+     setTimeout(function(){window.location.reload()},5000)
+     else
+     $(that).find("button[type='submit']").html(dat.toString())
+    }
+   })
+
+}
+})
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+const csrftoken = getCookie('csrftoken');
+function del(str){
+Swal.fire({title:"Are you sure?",text:"You won't be able to revert this!",icon:"warning",
+showCancelButton:!0,confirmButtonText:"Yes, delete it!",
+cancelButtonText:"No, cancel!",confirmButtonClass:"btn btn-success mt-2",
+cancelButtonClass:"btn btn-danger ms-2 mt-2",buttonsStyling:!1}).then(function(t){
+  if(t.value){
+    $.ajax({
+    url:'delete/',
+    type:'POST',
+    headers: {'X-CSRFToken':csrftoken},
+    data :{email:str},
+    success:function(data){
+     console.log(data)
+    },
+    complete:async function() {
+     await Swal.fire({title:"Deleted!",text:"Your file has been deleted.",icon:"success"})
+     window.location.reload()
+    }
+ })
+  }else if(t.dismiss===Swal.DismissReason.cancel){
+    Swal.fire({title:"Operation Cancelled",text:"",icon:"error"})
+  }
+})
+ 
+}
+</script>
+
+{% endblock extra_javascript %}

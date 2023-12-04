@@ -35,6 +35,7 @@ urlpatterns = [
     path('menu/settings',views.SettingsView.as_view(),name='settings'),# Settings
     path('createadmin/',views.createUser,name='createadmin'),
     path('delete/',views.deleteUser,name='delete-admin'),
+    # path('supervisory',view.supervisory)
     # Apps 
     path('ecommerce/',include('ecommerce.urls')),# Ecommerce
     path('email/',include('mail.urls')),# Email
