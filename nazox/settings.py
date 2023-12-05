@@ -116,10 +116,10 @@ WSGI_APPLICATION = 'nazox.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # }
     #  "default": {
     #     "ENGINE": "django.db.backends.mysql",
     #      "NAME":"espees_admin_data",
@@ -128,15 +128,15 @@ DATABASES = {
     #       "HOST": "localhost"    
     # }
 
-    # "default": {
-    #     "ENGINE": "django.db.backends.mysql",
-    #      "NAME":"espees_admin_data",
-    #       "USER": "espees-admin",
-    #       "PASSWORD": "espees",
-    #       "HOST": "localhost",
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+         "NAME":"espees_admin_data",
+          "USER": "espees-admin",
+          "PASSWORD": "espees",
+          "HOST": "localhost",
 
        
-    # }
+    }
 }
 
 
