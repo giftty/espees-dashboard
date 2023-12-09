@@ -180,7 +180,17 @@
       <!-- Required datatable js -->
     <script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
     <script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
-    
+    <script src="{% static 'libs/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'libs/jszip/dist/jszip.min.js' %}"></script>
+        <script src="{% static 'libs/pdfmake/build/pdfmake.min.js' %}"></script>
+        <script src="{% static 'libs/pdfmake/build/vfs_fonts.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-buttons/js/buttons.colVis.min.js' %}"></script>
+
+        <script src="{% static 'libs/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-select/js/dataTables.select.min.js' %}"></script>
      <!-- Sweet Alerts js -->
         <script src="{% static 'libs/sweetalert2/dist/sweetalert2.min.js' %}"></script>
 
@@ -193,9 +203,15 @@
        $(document).ready(function(){
          setTimeout(function(){
          $(".datatable").
-       DataTable({lengthMenu:[5,10,25,50],pageLength:5,
+        DataTable({
+       lengthMenu:[5,10,25,50],pageLength: 50,
        language:{paginate:{previous:"<i class='mdi mdi-chevron-left'>",
-       next:"<i class='mdi mdi-chevron-right'>"}},
+       next:"<i class='mdi mdi-chevron-right'>"},
+       },
+       dom: 'Bfrtip',
+       buttons: [
+        'copy', 'excel', 'pdf'
+        ],
        drawCallback:function(){$(".dataTables_paginate > .pagination").addClass("pagination-rounded")}}),
        $(".dataTables_length select").addClass("form-select form-select-sm")
          },500)
