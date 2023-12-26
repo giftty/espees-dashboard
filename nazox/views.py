@@ -11,9 +11,11 @@ from django.urls import reverse_lazy
 from asgiref.sync import sync_to_async
 import requests
 from django.views.decorators.csrf import csrf_exempt
+from nazox.settings import BASE_DIR
 
 from users.models import User
 
+csvfolderDir= os.path.join(BASE_DIR,'/static/csvfiles/' )
 
 def transferUploadPage(request):
     return render(request,'menu/transtion_file_upload.html')
@@ -54,8 +56,8 @@ def deleteFiles(request) :
 @csrf_exempt
 def getUploadedFiles(request) :
    try :
-    print(os.getcwd())
-    dir_list = os.listdir("static/csvfiles")
+    print(csvfolderDir)
+    dir_list = os.listdir("./../static/csvfiles")
     return HttpResponse(content=str(dir_list))
    except Exception as err : 
     print(err)        
