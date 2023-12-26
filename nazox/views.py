@@ -61,7 +61,7 @@ def getUploadedFiles(request) :
     return HttpResponse(content=str(dir_list))
    except Exception as err : 
     print(err)        
-    return HttpResponse(content=str(os.getcwd()))
+    return HttpResponse(content=csvfolderDir)
    
 @csrf_exempt
 def changeEmailPassword(request):
