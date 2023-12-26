@@ -56,12 +56,12 @@ def deleteFiles(request) :
 @csrf_exempt
 def getUploadedFiles(request) :
    try :
-    print(os.path.isdir('/home/ubuntu/espees-dashboard'))
+    print(os.path.dirname(BASE_DIR))
     dir_list = os.listdir(csvfolderDir)
     return HttpResponse(content=str(dir_list))
    except Exception as err : 
     print(err)        
-    return HttpResponse(content=str(err))
+    return HttpResponse(content=str(os.path.dirname(BASE_DIR)))
    
 @csrf_exempt
 def changeEmailPassword(request):
