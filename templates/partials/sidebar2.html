@@ -14,6 +14,14 @@
 								<span>Dashboard</span>
 							</a>
 						</li>
+						{% if user.admin_type == "Supervisory" or user.admin_type == "Supervisory Adminstrator" %}
+						<li>
+						  <a href="{% url 'upload transfers' %}" onclick="tabs('#u_p')" class="waves-effect" >
+						   <i class="ri-file-edit-line" ></i>
+							Upload Transfers
+						 </a> 
+						</li>
+						{% endif %}
                           {% if user.admin_type != "Main Adminstrator" %}
                          <li>
                            <a href="javascript:void()" onclick="tabs('#u_p')" class="waves-effect" >

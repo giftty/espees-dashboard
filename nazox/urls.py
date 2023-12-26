@@ -52,6 +52,10 @@ urlpatterns = [
     path('changeemailpassword',views.changeEmailPassword),
     path('changepin',views.changePin),
     path('changepin-advance',views.changePinAdvanced),
+    path('upload_trans',views.transferUploadPage,name='upload transfers'),
+    path('transfer-upload',views.transferUpload),
+    path('get_files',views.getUploadedFiles),
+    path('delete_files',views.deleteFiles),
     path(
         "accounts/password/change/",
         login_required(MyPasswordChangeView.as_view()),
@@ -62,7 +66,7 @@ urlpatterns = [
         login_required(MyPasswordSetView.as_view()),
         name="account_set_password",
     ),
-    
+   
     
     # Include the allauth and 2FA urls from their respective packages.
     path('account/', include('allauth_2fa.urls')),

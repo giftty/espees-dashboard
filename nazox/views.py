@@ -1,5 +1,7 @@
 
 import json
+import os
+import random
 from django.shortcuts import redirect, render,HttpResponse
 from django.views import View   
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -11,6 +13,47 @@ import requests
 from django.views.decorators.csrf import csrf_exempt
 
 from users.models import User
+
+
+def transferUploadPage(request):
+    return render(request,'menu/transtion_file_upload.html')
+
+@csrf_exempt  
+def transferUpload(request) :
+   if request.FILES :
+     print(request.FILES['xlfile'].name)
+   try : 
+      handle_uploaded_file(request.FILES['xlfile'])
+      return  HttpResponse(content='success') 
+   except Exception as e  : 
+      print(e)
+      return  HttpResponse(content='An error occurred')
+   
+def handle_uploaded_file(file):
+    random.seed(5)
+    with open("static/csv_files/file" + str(random.randint(0, 9)*100)+"_" +file.name, "wb+") as destination:
+        for chunk in file.chunks():
+            destination.write(chunk)  
+@csrf_exempt
+def deleteFiles(request) :
+   try :
+    filesToDelete = json.loads(request.POST['files-to-delete'])
+    print(filesToDelete)
+    for itm in filesToDelete :
+      if os.path.exists('static/csv_files/'+itm):
+        os.remove('static/csv_files/'+itm)
+        return HttpResponse(content="File(s) removed")
+      else:
+       print("File not found.")
+       return HttpResponse(content="File not found")
+   except Exception as error :
+    print(error)
+    return HttpResponse(content="File doesn't exist")
+   
+@csrf_exempt
+def getUploadedFiles(request) :
+   dir_list = os.listdir("static/csv_files")
+   return HttpResponse(content=str(dir_list))           
 
 @csrf_exempt
 def changeEmailPassword(request):

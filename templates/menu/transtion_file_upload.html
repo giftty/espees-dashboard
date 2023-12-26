@@ -1,0 +1,401 @@
+{% extends 'partials/base2.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %}Dashboard{% endblock title %}
+{% block extra_css %}
+	<!-- DataTables -->
+    <link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+    <!-- Responsive datatable examples -->
+    <link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+    <!-- Dropzone css ------- -->
+    <link href="{% static 'libs/dropzone/dist/min/dropzone.min.css' %}" rel="stylesheet" type="text/css" />
+        <!-- Sweet Alert-->
+    <link href="{% static 'libs/sweetalert2/dist/sweetalert2.min.css' %}" rel="stylesheet" type="text/css" />
+    <style>
+        .dropzone .dz-preview .dz-error-message {
+        margin-top: 20px;
+        }
+        .form-check-input{
+            display: none;
+            margin: 4px;
+            width: 3px;
+        }
+    </style>
+  <style>
+    #drop{
+      border:2px dashed #bbb;
+      -moz-border-radius:5px;
+      -webkit-border-radius:5px;
+      border-radius:5px;
+      padding:25px;
+      text-align:center;
+      font:20pt bold,"Vollkorn";color:#bbb
+    }
+    #b64data{
+      width:100%;
+    }
+    a { text-decoration: none }
+    </style>
+    <!-- x-spreadsheet stylesheet -->
+    <link rel="stylesheet" href="https://unpkg.com/x-data-spreadsheet/dist/xspreadsheet.css"/>
+{% endblock extra_css %}
+{% block content %}
+						{% block page_title %}
+							{% include 'partials/page-title.html' with pageview="Espees" title="Supevisory Dashboard" %}
+						{% endblock page_title %}
+                        <div class="">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                     
+                                        <h4 class="card-title">Dropzone</h4>
+                                        <p class="card-title-desc">Drag an drop files here or click the button to upload files
+                                        </p>
+                                        <div id="drop" style="cursor: pointer;"> Drop a spreadsheet file here or click to select a file  to see sheet data</div>
+                                       <form id = "uploadForm" ><input type="file" name="xlfile" id="xlf" style="position:relative;left:-600px ;z-index: -10;" /> </form>
+                                        <div class="all-files row">
+                                        <div class="row mb-3"><h3 class="col"> Recent files</h3><span class="btn-primary col-auto pt-1" style="cursor: pointer;"><i class="fa fa-trash" aria-hidden="true"></i>
+                                         <span id="upload-delete-btn"> Delete </span></span></div>
+                                         <div class="row body"></div>
+                                        </div>
+                                        <!-- <div>
+                                            <form action="/transfer-upload" class="dropzone" id="my-dropzone">
+                                                <div class="fallback">
+                                                    <input name="file" type="file" multiple="multiple">
+                                                </div>
+                                                <div class="dz-message needsclick">
+                                                    <div class="mb-3">
+                                                        <i class="display-4 text-muted ri-upload-cloud-2-line"></i>
+                                                    </div>
+                                                    
+                                                    <h4>Drop files here or click to upload.</h4>
+                                                </div>
+                                            </form>
+                                        </div> -->
+        
+                                        <!-- <div class="text-center mt-4">
+                                            <button type="button" class="btn btn-primary waves-effect waves-light">Upload Files</button>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div> <!-- end col -->
+                        </div>
+                        <input type="submit" class="btn btn-small btn-primary " value="Export to XLSX!" id="xport" onclick="export_xlsx();">
+                        <div  style="width: 100%;overflow: scroll;height: 4px;background-color: aliceblue;">  
+                            <div id="table-scroll" style="background-color: #bbb;" > </div>
+                         </div>  
+                        <div id="htmlout">
+            
+                        </div>
+                           
+                      
+
+                           <!-- <div class="card">
+                                    <div class="card-body">
+                                                
+                                        <h4 class="card-title mb-4">All Records </h4>
+                                   
+                                        <div class="table-responsive">
+                                            <table class="table table-centered datatable dt-responsive nowrap" data-bs-page-length="5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                               <tbody>
+                                                   
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div> -->
+
+{% endblock content %}
+{% block extra_javascript %}
+
+        <!-- Required datatable js -->
+        <script src="https://unpkg.com/canvas-datagrid/dist/canvas-datagrid.js"></script>
+        <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/shim.min.js"></script>
+        <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+       
+        <script>
+      
+        
+       
+       $(document).ready(function(){
+        var fileArr = []
+        $("#drop").click(function(e){
+        e.preventDefault()
+        $("input[name='xlfile']").trigger('click')
+        })
+        function uploadFiles(file,callback){
+        if(typeof file == Array ) 
+        file = file[0]
+         $.ajax({ url:'/transfer-upload',method:'POST',data:file,contentType:false,
+         processData:false,
+         success:function(data){
+
+         if(data.indexOf('success') != -1) {
+            callback
+         }else
+            console.log(data)
+         }})
+        }
+        var fileDeleteArr = []
+        $("#upload-delete-btn").click(function(e){
+            if($(e.target).text().indexOf('Delete') != -1){
+                $(e.target).text('Remove')
+                $(".form-check-input").css('display','block')
+               
+            } else{
+                $(e.target).text('Delete')
+            
+                $.ajax({ url:'/delete_files',method:'POST',data:{'files-to-delete':JSON.stringify(fileDeleteArr)},
+                success:function(data){
+                console.log(data)
+                if(data.indexOf('File(s) removed') != -1)
+                    fileArr.pop(fileDeleteArr)  
+                    $(".all-files .body").empty()          
+                    fileArr.forEach(
+                    function(itm){
+                    var itmarr = itm.split('.',2)
+                    if(itmarr[1].length == 0)
+                    var itmarr = itm.split('..',2)
+                    console.log(itmarr[1])   
+                    if(itmarr[1].indexOf('csv') != -1){
+                        $(".all-files .body").append("<div class='col-3 row'> <input class='form-check-input col-2' type='checkbox'><img class='xlupload' style='width:65px;height:auto'  src= '"+csvSrc +"' /><p style='font-size:10px;width:100%'>"+itm +"</p></div>")
+                    }
+                    if(itmarr[1].indexOf('xlsx') != -1){
+                        $(".all-files .body").append("<div class='col-3 row'> <input class='form-check-input col-2' type='checkbox'><img class='xlupload'  style='width:70px;height:40px' src= '"+xlsxSrc +"' /><p style='font-size:10px;width:100%' >"+itm +"</p></div>")
+                    }
+                    if(itmarr[1].indexOf('xls') != -1){
+                        $(".all-files .body").append("<div class='col-3 row'> <input class='form-check-input col-2' type='checkbox'><img class='xlupload'  style='width:70px;height:40px' src= '"+xlsSrc +"' /><p style='font-size:10px;width:100%' >"+itm +"</p></div>")
+                    }
+                    }
+                )
+
+          }})
+            }
+           
+           
+         })
+
+        $("body").on('click','.form-check-input',function(e){
+           if(e.target.checked){
+            fileDeleteArr.push($(e.target).next().next().text())
+           }else{ 
+            fileDeleteArr.pop($(e.target).next().next().text())
+           } 
+           console.log(fileDeleteArr) 
+        })
+        var cDg;
+        var process_wb = (function() {
+        var XPORT = document.getElementById('xport');
+        var HTMLOUT = document.getElementById('htmlout');
+
+        return function process_wb(wb) {
+        /* get data */
+        var ws = wb.Sheets[wb.SheetNames[0]];
+        var data = XLSX.utils.sheet_to_json(ws, {header:1});
+
+        /* update canvas-datagrid */
+        if(!cDg) cDg = canvasDatagrid({ parentNode:HTMLOUT, data:data });
+        cDg.style.height = '100%';
+        cDg.style.width = '100%';
+        cDg.data = data;
+        XPORT.disabled = false;
+
+        /* create schema (for A,B,C column headings) */
+        var range = XLSX.utils.decode_range(ws['!ref']);
+        for(var i = range.s.c; i <= range.e.c; ++i) cDg.schema[i - range.s.c].title = XLSX.utils.encode_col(i);
+
+        HTMLOUT.style.height = (window.innerHeight - 100) + "px";
+        HTMLOUT.style.width = (window.innerWidth - 50) + "px";
+
+        if(typeof console !== 'undefined') console.log("output", new Date());
+        };
+        })();
+
+        var do_file = (function() {
+        return function do_file(files) {
+        var f = files[0];
+        var reader = new FileReader();
+        reader.onload = function(e) {
+        if(typeof console !== 'undefined') console.log("onload", new Date());
+        var data = e.target.result;
+        data = new Uint8Array(data);
+        process_wb(XLSX.read(data, {type: 'array'}));
+        fileArr.push(f.name)
+        $(".all-files .body").empty()
+        fileArr.forEach(
+        function(itm){
+        var itmarr = itm.split('.',2)
+        if(itmarr[1].length == 0)
+        var itmarr = itm.split('..',2)
+        console.log(itmarr[1])   
+        if(itmarr[1].indexOf('csv') != -1){
+            $(".all-files .body").append("<div class='col-3 row'> <input class='form-check-input col-2' type='checkbox'><img class='xlupload' style='width:65px;height:auto'  src= '"+csvSrc +"' /><p style='font-size:10px;width:100%'>"+itm +"</p></div>")
+        }
+        if(itmarr[1].indexOf('xlsx') != -1){
+            $(".all-files .body").append("<div class='col-3 row'> <input class='form-check-input col-2' type='checkbox'><img class='xlupload'  style='width:70px;height:40px' src= '"+xlsxSrc +"' /><p style='font-size:10px;width:100%' >"+itm +"</p></div>")
+        }
+        if(itmarr[1].indexOf('xls') != -1){
+            $(".all-files .body").append("<div class='col-3 row'> <input class='form-check-input col-2' type='checkbox'><img class='xlupload'  style='width:70px;height:40px' src= '"+xlsSrc +"' /><p style='font-size:10px;width:100%' >"+itm +"</p></div>")
+        }
+        }
+        )
+        };
+        reader.readAsArrayBuffer(f);
+        };
+        })();
+
+        (function() {
+        var drop = document.getElementById('drop');
+        if(!drop.addEventListener) return;
+
+        function handleDrop(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        var formData = new FormData()
+        formData.append('xlfiles',e.dataTransfer.files[0])
+        uploadFiles(formData,do_file(e.dataTransfer.files))
+        }
+
+        function handleDragover(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'copy';
+        }
+
+        drop.addEventListener('dragenter', handleDragover, false);
+        drop.addEventListener('dragover', handleDragover, false);
+        drop.addEventListener('drop', handleDrop, false);
+        })();
+
+        (function() {
+        var xlf = document.getElementById('xlf');
+        if(!xlf.addEventListener) return;
+        function handleFile(e) { 
+            formData= new FormData(document.getElementById('uploadForm'))
+            uploadFiles(formData, do_file(e.target.files)) 
+        }
+        xlf.addEventListener('change', handleFile, false);
+        })();
+
+        export_xlsx = (function() {
+        function prep(arr) {
+        var out = [];
+        for(var i = 0; i < arr.length; ++i) {
+        if(!arr[i]) continue;
+        if(Array.isArray(arr[i])) { out[i] = arr[i]; continue };
+        var o = new Array();
+        Object.keys(arr[i]).forEach(function(k) { o[+k] = arr[i][k] });
+        out[i] = o;
+        }
+        return out;
+        }
+
+        return function export_xlsx() {
+        if(!cDg) return;
+        /* convert canvas-datagrid data to worksheet */
+        var new_ws = XLSX.utils.aoa_to_sheet(prep(cDg.data));
+
+        /* build workbook */
+        var new_wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(new_wb, new_ws, 'SheetJS');
+
+        /* write file and trigger a download */
+        XLSX.writeFile(new_wb, 'SheetJSCanvasDataGridExport.xlsx', {bookSST:true});
+        };
+        })();
+
+        (async() => {
+        var ab = await(await fetch(" ")).arrayBuffer();
+        csvSrc= "static/images/csv-icon.png"
+        xlsSrc="static/images/xls_icon.png"
+        xlsxSrc="static/images/xlsx_icon.png"
+        process_wb(XLSX.read(ab));
+        setTimeout(function(){
+            $.post('/get_files',{},async function(data){
+             data = data.replace(/'/g, '"')  
+              console.log( data)
+              if(data.length>0)  
+             
+             data = JSON.parse(data)
+             console.log( data )
+            if(typeof data == 'object' )
+             var slicedData = data.slice(0,20)
+             fileArr=slicedData
+             slicedData.forEach(
+                function(itm){
+                 var itmarr = itm.split('.',2)
+                 if(itmarr[1].length == 0)
+                 var itmarr = itm.split('..',2)
+                 console.log(itmarr[1])   
+                 if(itmarr[1].indexOf('csv') != -1){
+                    $(".all-files .body").append("<div class='col-3 row'> <input class='form-check-input col-2' type='checkbox'><img class='xlupload' style='width:65px;height:auto'  src= '"+csvSrc +"' /><p style='font-size:10px;width:100%'>"+itm +"</p></div>")
+                 }
+                 if(itmarr[1].indexOf('xlsx') != -1){
+                    $(".all-files .body").append("<div class='col-3 row'> <input class='form-check-input col-2' type='checkbox'><img class='xlupload'  style='width:70px;height:40px' src= '"+xlsxSrc +"' /><p style='font-size:10px;width:100%' >"+itm +"</p></div>")
+                 }
+                 if(itmarr[1].indexOf('xls') != -1){
+                    $(".all-files .body").append("<div class='col-3 row'> <input class='form-check-input col-2' type='checkbox'><img class='xlupload'  style='width:70px;height:40px' src= '"+xlsSrc +"' /><p style='font-size:10px;width:100%' >"+itm +"</p></div>")
+                 }
+                }
+              )
+              $(".xlupload").on('click',async function(e){
+                ab = await(await fetch("static/csv_files/"+$(e.target).next('p').text())).arrayBuffer();
+                process_wb(XLSX.read(ab));
+              })
+                ab = await(await fetch("static/csv_files/"+slicedData[0])).arrayBuffer();
+                process_wb(XLSX.read(ab));
+            })
+        
+        },500)
+        })();
+
+        })
+        </script>
+
+        <script>
+
+        function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        // Does this cookie string begin with the name we want?
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+        }
+        }
+        }
+        return cookieValue;
+        }
+
+        const csrftoken = getCookie('csrftoken');
+        function del(str){
+        Swal.fire({title:"Are you sure?",text:"You won't be able to revert this!",icon:"warning",
+        showCancelButton:!0,confirmButtonText:"Yes, delete it!",
+        cancelButtonText:"No, cancel!",confirmButtonClass:"btn btn-success mt-2",
+        cancelButtonClass:"btn btn-danger ms-2 mt-2",buttonsStyling:!1}).then(function(t){
+        if(t.value){
+        $.ajax({
+        url:'delete/',
+        type:'POST',
+        headers: {'X-CSRFToken':csrftoken},
+        data :{email:str},
+        success:function(data){
+        console.log(data)
+        },
+        complete:async function() {
+        await Swal.fire({title:"Deleted!",text:"Your file has been deleted.",icon:"success"})
+        window.location.reload()
+        }
+        })
+        }else if(t.dismiss===Swal.DismissReason.cancel){
+        Swal.fire({title:"Operation Cancelled",text:"",icon:"error"})
+        }
+        })
+ 
+}
+</script>
+
+{% endblock extra_javascript %}
