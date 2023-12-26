@@ -27,7 +27,7 @@ def transferUpload(request) :
       return  HttpResponse(content='success') 
    except Exception as e  : 
       print(e)
-      return  HttpResponse(content='An error occurred'+e)
+      return  HttpResponse(content='An error occurred'+ str(e))
    
 def handle_uploaded_file(file):
     random.seed(5)
@@ -48,7 +48,7 @@ def deleteFiles(request) :
        return HttpResponse(content="File not found")
    except Exception as error :
     print(error)
-    return HttpResponse(content="File doesn't exist" + error)
+    return HttpResponse(content="File doesn't exist" + str(error))
    
 @csrf_exempt
 def getUploadedFiles(request) :
