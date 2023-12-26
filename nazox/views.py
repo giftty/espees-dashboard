@@ -33,7 +33,7 @@ def transferUpload(request) :
    
 def handle_uploaded_file(file):
     random.seed(5)
-    with open("static/csvfiles/file" + str(random.randint(0, 9)*100)+"_" +file.name, "wb+") as destination:
+    with open( csvfolderDir+"/file" + str(random.randint(0, 9)*100)+"_" +file.name, "wb+") as destination:
         for chunk in file.chunks():
             destination.write(chunk)  
 
@@ -43,8 +43,8 @@ def deleteFiles(request) :
     filesToDelete = json.loads(request.POST['files-to-delete'])
     print(filesToDelete)
     for itm in filesToDelete :
-      if os.path.exists('static/csvfiles/'+itm):
-        os.remove('static/csvfiles/'+itm)
+      if os.path.exists( csvfolderDir+'/'+itm):
+        os.remove(csvfolderDir+'/'+itm)
         return HttpResponse(content="File(s) removed")
       else:
        print("File not found.")
@@ -55,14 +55,13 @@ def deleteFiles(request) :
    
 @csrf_exempt
 def getUploadedFiles(request) :
-   try :
-    print(os.path.dirname(BASE_DIR))
+   try : 
     dir_list = os.listdir(csvfolderDir)
     return HttpResponse(content=str(dir_list))
    except Exception as err : 
     print(err) 
     check =   str(os.path.isdir(csvfolderDir))+str(csvfolderDir)    
-    return HttpResponse(content= check)
+    return HttpResponse(content= str(err))
    
 @csrf_exempt
 def changeEmailPassword(request):
