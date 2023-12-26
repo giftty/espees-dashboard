@@ -57,7 +57,7 @@ def deleteFiles(request) :
 def getUploadedFiles(request) :
    try :
     print(csvfolderDir)
-    dir_list = os.listdir("./../static/csvfiles")
+    dir_list = os.listdir(csvfolderDir)
     return HttpResponse(content=str(dir_list))
    except Exception as err : 
     print(err)        
