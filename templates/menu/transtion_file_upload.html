@@ -84,8 +84,10 @@
                         <div  style="width: 100%;overflow: scroll;height: 4px;background-color: aliceblue;">  
                             <div id="table-scroll" style="background-color: #bbb;" > </div>
                          </div>  
-                        <div id="htmlout">
-            
+                        <div id="htmlout" style="position: relative;">
+                          <div id="htmloutLoader" style="position: absolute; width:100%;height: 100%;padding-top: 40%;padding-left:40%;">
+                            <div>Loading please wait .....</div>
+                          </div>
                         </div>
                            
                       
@@ -116,13 +118,12 @@
         <script>
       
         
-       
+       document.getElementById('htmloutLoader').style.display = 'none'
        $(document).ready(function(){
         var fileArr = []
         csvSrc= "static/images/csv-icon.png"
         xlsSrc="static/images/xls_icon.png"
         xlsxSrc="static/images/xlsx_icon.png"
-
         $("#drop").click(function(e){
         e.preventDefault()
         $("input[name='xlfile']").trigger('click')
@@ -191,7 +192,6 @@
         var process_wb = (function() {
         var XPORT = document.getElementById('xport');
         var HTMLOUT = document.getElementById('htmlout');
-
         return function process_wb(wb) {
         /* get data */
         var ws = wb.Sheets[wb.SheetNames[0]];
@@ -206,12 +206,16 @@
 
         /* create schema (for A,B,C column headings) */
         var range = XLSX.utils.decode_range(ws['!ref']);
-        for(var i = range.s.c; i <= range.e.c; ++i) cDg.schema[i - range.s.c].title = XLSX.utils.encode_col(i);
+        for(var i = range.s.c; i <= range.e.c; ++i) cDg.schema[i - range.s.c].title =  XLSX.utils.encode_col(i);
 
         HTMLOUT.style.height = (window.innerHeight - 100) + "px";
         HTMLOUT.style.width = (window.innerWidth - 50) + "px";
 
-        if(typeof console !== 'undefined') console.log("output", new Date());
+        if(typeof console !== 'undefined'){
+            console.log("output", new Date());
+            
+        } 
+      
         };
         })();
 
@@ -221,6 +225,7 @@
         var reader = new FileReader();
         reader.onload = function(e) {
         if(typeof console !== 'undefined') console.log("onload", new Date());
+        document.getElementById('htmloutLoader').style.display='block'
         var data = e.target.result;
         data = new Uint8Array(data);
         process_wb(XLSX.read(data, {type: 'array'}));
@@ -311,6 +316,7 @@
         (async() => {
         var ab = await(await fetch(" ")).arrayBuffer();
         process_wb(XLSX.read(ab));
+        document.getElementById('htmloutLoader').style.display = 'block'
         setTimeout(function(){
             $.post('/get_files',{},async function(data){
              console.log( data)  
@@ -341,11 +347,14 @@
                 }
               )
               $(".xlupload").on('click',async function(e){
+                document.getElementById('htmloutLoader').style.display = 'block'
                 ab = await(await fetch("static/csvfiles/"+$(e.target).next('p').text())).arrayBuffer();
                 process_wb(XLSX.read(ab));
+                document.getElementById('htmloutLoader').style.display = 'none'
               })
                 ab = await(await fetch("static/csvfiles/"+slicedData[0])).arrayBuffer();
                 process_wb(XLSX.read(ab));
+                document.getElementById('htmloutLoader').style.display = 'none'
             })
         
         },500)
