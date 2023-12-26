@@ -54,9 +54,10 @@ def deleteFiles(request) :
 @csrf_exempt
 def getUploadedFiles(request) :
    try :
-    dir_list = os.listdir("static/csvfiles")
+    dir_list = os.listdir("/static/csvfiles")
     return HttpResponse(content=str(dir_list))
-   except Exception as err :         
+   except Exception as err : 
+    print(err)        
     return HttpResponse(content=str(err))
    
 @csrf_exempt
