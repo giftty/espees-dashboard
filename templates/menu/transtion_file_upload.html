@@ -313,6 +313,7 @@
         process_wb(XLSX.read(ab));
         setTimeout(function(){
             $.post('/get_files',{},async function(data){
+             console.log( data)  
              data = data.replace(/'/g, '"')  
               console.log( data)
               if(data.length>0)  
