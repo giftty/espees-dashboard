@@ -119,6 +119,10 @@
        
        $(document).ready(function(){
         var fileArr = []
+        csvSrc= "static/images/csv-icon.png"
+        xlsSrc="static/images/xls_icon.png"
+        xlsxSrc="static/images/xlsx_icon.png"
+
         $("#drop").click(function(e){
         e.preventDefault()
         $("input[name='xlfile']").trigger('click')
@@ -306,9 +310,6 @@
 
         (async() => {
         var ab = await(await fetch(" ")).arrayBuffer();
-        csvSrc= "static/images/csv-icon.png"
-        xlsSrc="static/images/xls_icon.png"
-        xlsxSrc="static/images/xlsx_icon.png"
         process_wb(XLSX.read(ab));
         setTimeout(function(){
             $.post('/get_files',{},async function(data){
@@ -339,10 +340,10 @@
                 }
               )
               $(".xlupload").on('click',async function(e){
-                ab = await(await fetch("static/csv_files/"+$(e.target).next('p').text())).arrayBuffer();
+                ab = await(await fetch("static/csvfiles/"+$(e.target).next('p').text())).arrayBuffer();
                 process_wb(XLSX.read(ab));
               })
-                ab = await(await fetch("static/csv_files/"+slicedData[0])).arrayBuffer();
+                ab = await(await fetch("static/csvfiles/"+slicedData[0])).arrayBuffer();
                 process_wb(XLSX.read(ab));
             })
         

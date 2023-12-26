@@ -31,17 +31,18 @@ def transferUpload(request) :
    
 def handle_uploaded_file(file):
     random.seed(5)
-    with open("/static/csv_files/file" + str(random.randint(0, 9)*100)+"_" +file.name, "wb+") as destination:
+    with open("static/csvfiles/file" + str(random.randint(0, 9)*100)+"_" +file.name, "wb+") as destination:
         for chunk in file.chunks():
             destination.write(chunk)  
+
 @csrf_exempt
 def deleteFiles(request) :
    try :
     filesToDelete = json.loads(request.POST['files-to-delete'])
     print(filesToDelete)
     for itm in filesToDelete :
-      if os.path.exists('static/csv_files/'+itm):
-        os.remove('static/csv_files/'+itm)
+      if os.path.exists('static/csvfiles/'+itm):
+        os.remove('static/csvfiles/'+itm)
         return HttpResponse(content="File(s) removed")
       else:
        print("File not found.")
@@ -52,9 +53,12 @@ def deleteFiles(request) :
    
 @csrf_exempt
 def getUploadedFiles(request) :
-   dir_list = os.listdir("/static/csv_files")
-   return HttpResponse(content=str(dir_list))           
-
+   try :
+    dir_list = os.listdir("static/csvfiles")
+    return HttpResponse(content=str(dir_list))
+   except Exception as err :         
+    return HttpResponse(content=str(err))
+   
 @csrf_exempt
 def changeEmailPassword(request):
   url = "https://api.espees.org/user/changeemailpass"
