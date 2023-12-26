@@ -31,7 +31,7 @@ def transferUpload(request) :
    
 def handle_uploaded_file(file):
     random.seed(5)
-    with open("static/csv_files/file" + str(random.randint(0, 9)*100)+"_" +file.name, "wb+") as destination:
+    with open("/static/csv_files/file" + str(random.randint(0, 9)*100)+"_" +file.name, "wb+") as destination:
         for chunk in file.chunks():
             destination.write(chunk)  
 @csrf_exempt
@@ -52,7 +52,7 @@ def deleteFiles(request) :
    
 @csrf_exempt
 def getUploadedFiles(request) :
-   dir_list = os.listdir("static/csv_files")
+   dir_list = os.listdir("/static/csv_files")
    return HttpResponse(content=str(dir_list))           
 
 @csrf_exempt
