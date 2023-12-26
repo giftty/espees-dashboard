@@ -15,7 +15,7 @@ from nazox.settings import BASE_DIR
 
 from users.models import User
 
-csvfolderDir= os.path.join(BASE_DIR,'/static/csvfiles/' )
+csvfolderDir= os.path.join(BASE_DIR,'home/ubuntu/espees-dashboard/static/csvfiles' )
 
 def transferUploadPage(request):
     return render(request,'menu/transtion_file_upload.html')
