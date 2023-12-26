@@ -15,7 +15,7 @@ from nazox.settings import BASE_DIR
 
 from users.models import User
 
-csvfolderDir= os.path.join(BASE_DIR,'/espees-dashboard/static/csvfiles' )
+csvfolderDir= os.path.join(BASE_DIR,'espees-dashboard/static/csvfiles' )
 
 def transferUploadPage(request):
     return render(request,'menu/transtion_file_upload.html')
@@ -61,7 +61,7 @@ def getUploadedFiles(request) :
     return HttpResponse(content=str(dir_list))
    except Exception as err : 
     print(err)        
-    return HttpResponse(content=str(os.path.dirname(BASE_DIR)))
+    return HttpResponse(content=str(os.path.isdir(csvfolderDir)))
    
 @csrf_exempt
 def changeEmailPassword(request):
