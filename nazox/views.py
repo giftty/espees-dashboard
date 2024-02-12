@@ -191,7 +191,7 @@ def getwalletaddress(request) :
 @csrf_exempt
 def createUser(request):
       user=request.user
-      print(request.POST['admintype'])
+      print(request.POST)
       try:
         if(user.is_superuser==True):
          creatu= User.objects.create_user(email=request.POST['email'],password=request.POST['password'],
