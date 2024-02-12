@@ -191,13 +191,14 @@ def getwalletaddress(request) :
 def createUser(request):
       user=request.user
       try:
-       if(user.is_superuser==True):
+      #  if(user.is_superuser==True):
          creatu= User.objects.create_user(email=request.POST['email'],password=request.POST['password'],
          username=request.POST['username'],first_name=request.POST['firstname'],last_name=request.POST['lastname'],
          phone="no phone",gender=request.POST['gender'],admin_type=request.POST['admintype'])
-       if(creatu): return HttpResponse(f'{request.POST["admintype"]} Admin created')
-       else :  
-        return HttpResponse('An error occurred')
+         return HttpResponse(f'{request.POST["admintype"]} Admin created')
+      #  if(creatu): return HttpResponse(f'{request.POST["admintype"]} Admin created')
+      #  else :  
+        # return HttpResponse('An error occurred')
       except: return HttpResponse('An error occurred')
 def viewUsers(request):
       user=request.user
