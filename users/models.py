@@ -42,10 +42,10 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=254, unique=True)
-    username = models.CharField(max_length=30, unique=True)
+    username = models.CharField(max_length=100, unique=True)
     password = models.CharField( max_length=1000)
-    first_name = models.CharField( max_length=20)
-    last_name = models.CharField(max_length=20)
+    first_name = models.CharField( max_length=200)
+    last_name = models.CharField(max_length=200)
     phone = models.CharField(max_length=20,unique=False)
     gender=models.CharField(max_length=20)
     admin_type=models.CharField(max_length=100)
