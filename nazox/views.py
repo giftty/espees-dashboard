@@ -273,13 +273,49 @@ class DashboardView(LoginRequiredMixin,View):
              dashboard_data['totals']= totalobjects.json()
              return render(request, 'menu/main_dashboard.html',dashboard_data)
           else :
+            banks = { "none": "Select Bank",
+             "000014": "Access Bank",
+             "000005": "Access (Diamond) Bank Plc",
+             "100026": "Carbon",
+             "000009": "Citi Bank",
+             "000010": "Ecobank Nigeria",
+             "000007": "Fidelity Bank Plc",
+             "000016": "First Bank of Nigeria Plc",
+             "000003": "First City Monument Bank(FCMB)",
+             "000013": "Guaranty Trust Bank Plc",
+             "000020": "Heritage Banking Company Ltd",
+             "000006": "Jaiz Bank",
+             "000002": "Keystone Bank Ltd",
+             "090267": "Kuda Microfinance Bank",
+             "090171": "Mainstreet Bank Plc",
+             "090405": "Moniepoint",
+             "100004": "Opay Digital Services Limited",
+             "100033": "Palmpay",
+             "000030": "Parallex Bank",
+             "000023": "Providus Bank",
+             "070011": "Refuge Montgage bank",
+             "090436": "Spectrum Microfinance Bank",
+             "000012": "Stanbic IBTC Plc",
+             "000001": "Sterling Bank Plc",
+             "000018": "Union Bank Nigeria Plc",
+             "000004": "United Bank for Africa Plc",
+             "000011": "Unity Bank Plc",
+             "000017": "WEMA Bank Plc",
+             "000015": "Zenith Bank International" 
+             }
+            
+            for key, value in banks.items() :
+               print(key)
             if(user.admin_type == "Supervisory"): 
               headers = {
                   'API-TOKEN': 'BCKOFFICE-IFHFIH973GHE35'
                 }
               objects=  requests.post('http://web.espees.org/api/backoffice/outbound/parallex',headers=headers,params={})
               trn=objects.json()
+              # print(trn['data'])
               dashboard_data['transactions']= trn['data']
+              
+                 
               return render(request, 'menu/supervisory_dashboard.html',dashboard_data)  
 
 # Calender
