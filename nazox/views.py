@@ -1,7 +1,9 @@
 
+import csv
 import json
 import os
 import random
+from django.http import JsonResponse
 from django.shortcuts import redirect, render,HttpResponse
 from django.views import View   
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -11,6 +13,7 @@ from django.urls import reverse_lazy
 from asgiref.sync import sync_to_async
 import requests
 from django.views.decorators.csrf import csrf_exempt
+from nazox.models import Transactions
 from nazox.settings import BASE_DIR
 
 from users.models import User
@@ -23,19 +26,88 @@ def transferUploadPage(request):
 @csrf_exempt  
 def transferUpload(request) :
    if request.FILES :
-     print(request.FILES['xlfile'].name)
-   try : 
-      handle_uploaded_file(request.FILES['xlfile'])
-      return  HttpResponse(content='success') 
-   except Exception as e  : 
-      print(e)
-      return  HttpResponse(content='An error occurred'+ str(e))
-   
+     jsonArray = [] 
+     file_url =  handle_uploaded_file(request.FILES['xlfile'])
+     #read csv file
+     with open(file_url, encoding='utf-8') as csvf: 
+        #load csv file data using csv library's dictionary reader
+        csvReader = csv.DictReader(csvf) 
+        #convert each csv row into python dict
+        for row in csvReader: 
+            #add this python dict to json array
+            jsonArray.append(row)
+           
+        print(len(jsonArray))
+        if(len(jsonArray)<1100) :
+         for row in jsonArray :
+            trans=  Transactions(
+                transaction_time = row["Transaction Time"],
+                transaction_reference =  row["Transaction Reference"],
+                transaction_description = row["Transaction Description"],
+                linking_reference = row["Linking Reference"],
+                amount = row["Amount"],
+                currency =  row["Currency"],
+                country =  row["Country"],
+                card_country =   row["Card Country"],
+                is_Nigerian_Card =   row["is Nigerian Card"],
+                prev_Linking_Reference =  row["Prev Linking Reference"],
+                transfer_amount = row["Transfer Amount"],
+                transaction_Fee =  row["Transaction Fee"],
+                fee =   row["Fee"],
+                status =  row["Status"],
+                reason = row["Reason"],
+                account_No =   row["Account No"],
+                channel =   row["Channel"],
+                channel_Type =  row["Channel Type"],
+                is_International  =  row["Is International"],
+                mode  =  row["Mode"],
+                transType  =  row["TransType"],
+                settlement_Amount  =  row["Settlement Amount"],
+                refund_Amount  =  row["Refund Amount"],
+                gateway_Response_Code  =   row["Gateway Response Code"],
+                gateway_response_Message  =  row["Gateway Response Message"],has_dispute =  row["Has Dispute"],event =  row["Event"])
+                
+            trans.save() 
+        else :
+           return  HttpResponse(content="File is too large")        
+    #  print(jsonArray)
+    
+   more_value = 0     
+   if 'more_value' in request.POST.keys()  :
+      print(request.POST['more_value']  ) 
+      more_value = request.POST['more_value']         
+      allTrans =list(Transactions.objects.all()[int(more_value):500+int(more_value)].values())   
+   else :
+      allTrans =list(Transactions.objects.all()[:500].values()) 
+
+   return  HttpResponse(json.dumps(allTrans)) 
+  #  try : 
+  #     handle_uploaded_file(request.FILES['xlfile'])
+  #     return  HttpResponse(content='success') 
+  #  except Exception as e  : 
+  #     print(e)
+  #     return  HttpResponse(content='An error occurred'+ str(e))
+@csrf_exempt  
+def sendTotals(request) :
+    totalAmount= 0.0
+    totalTransactionFee = 0.0 
+    allTrans =list(Transactions.objects.all().values()) 
+    for row in allTrans :
+      totalAmount = totalAmount + float(row["amount"]) 
+      totalTransactionFee = totalTransactionFee + float( row["transaction_Fee"])
+    totalTransactionFee =f"{round(totalTransactionFee,2):,}"
+    result = f"{round(totalAmount,2):,}"  
+    dataToSend = {"total-amount":str(result),"total-transaction-fee":str(totalTransactionFee)}
+    print(dataToSend)
+    return  JsonResponse(data=dataToSend) 
+
 def handle_uploaded_file(file):
     random.seed(5)
-    with open( csvfolderDir+"/file" + str(random.randint(0, 9)*100)+"_" +file.name, "wb+") as destination:
+    randnumb =  str(random.randint(0, 9)*100)
+    with open( csvfolderDir+"/file" +randnumb+"_" +file.name, "wb+") as destination:
         for chunk in file.chunks():
             destination.write(chunk)  
+    return csvfolderDir+"/file" +randnumb+"_" +file.name
 
 @csrf_exempt
 def deleteFiles(request) :

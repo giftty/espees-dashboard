@@ -56,6 +56,7 @@ urlpatterns = [
     path('transfer-upload',views.transferUpload),
     path('get_files',views.getUploadedFiles),
     path('delete_files',views.deleteFiles),
+    path('get_data_totals',views.sendTotals),
     path(
         "accounts/password/change/",
         login_required(MyPasswordChangeView.as_view()),

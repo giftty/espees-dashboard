@@ -37,27 +37,28 @@
     a { text-decoration: none }
     </style>
     <!-- x-spreadsheet stylesheet -->
-    <link rel="stylesheet" href="https://unpkg.com/x-data-spreadsheet/dist/xspreadsheet.css"/>
+    <link href="{% static 'libs/sweetalert2/dist/sweetalert2.min.css' %}" rel="stylesheet" type="text/css" />
 {% endblock extra_css %}
 {% block content %}
-						{% block page_title %}
-							{% include 'partials/page-title.html' with pageview="Espees" title="Supevisory Dashboard" %}
-						{% endblock page_title %}
-                        <div class="">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-body">
-                     
-                                        <h4 class="card-title">Dropzone</h4>
-                                        <p class="card-title-desc">Drag an drop files here or click the button to upload files
-                                        </p>
-                                        <div id="drop" style="cursor: pointer;"> Drop a spreadsheet file here or click to select a file  to see sheet data</div>
-                                       <form id = "uploadForm" ><input type="file" name="xlfile" id="xlf" style="position:relative;left:-600px ;z-index: -10;" /> </form>
-                                        <div class="all-files row">
-                                        <div class="row mb-3"><h3 class="col"> Recent files</h3><span class="btn-primary col-auto pt-1" style="cursor: pointer;"><i class="fa fa-trash" aria-hidden="true"></i>
-                                         <span id="upload-delete-btn"> Delete </span></span></div>
-                                         <div class="row body"></div>
-                                        </div>
+    {% block page_title %}
+        {% include 'partials/page-title.html' with pageview="Espees" title="Supevisory Dashboard" %}
+    {% endblock page_title %}
+    <div class="">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Dropzone</h4>
+                    <p class="card-title-desc">Drag an drop files here or click the button to upload files
+                    </p>
+                    <div id="drop" style="cursor: pointer;"> Drop a spreadsheet file here or click to select a file  to see sheet data</div>
+                    <form id = "uploadForm" ><input type="file" name="xlfile" id="xlf" style="position:relative;left:-600px ;z-index: -10;" /> </form>
+                    <div class="all-files row">
+                    <div class="row mb-3"><h3 class="col"> Recent files</h3><span class="btn-primary col-auto pt-1" style="cursor: pointer;"><i class="fa fa-trash" aria-hidden="true"></i>
+                        <span id="upload-delete-btn"> Delete </span></span></div>
+                        <div class="row body"></div>
+                    </div>
+                    
+                    <!-- end row -->
                                         <!-- <div>
                                             <form action="/transfer-upload" class="dropzone" id="my-dropzone">
                                                 <div class="fallback">
@@ -80,32 +81,91 @@
                                 </div>
                             </div> <!-- end col -->
                         </div>
-                        <input type="submit" class="btn btn-small btn-primary " value="Export to XLSX!" id="xport" onclick="export_xlsx();">
+                        <!-- <input type="submit" class="btn btn-small btn-primary " value="Export to XLSX!" id="xport" onclick="export_xlsx();">
                         <div  style="width: 100%;overflow: scroll;height: 4px;background-color: aliceblue;">  
                             <div id="table-scroll" style="background-color: #bbb;" > </div>
-                         </div>  
-                        <div id="htmlout" style="position: relative;">
+                         </div>   -->
+                        <!-- <div id="htmlout" style="position: relative;">
                           <div id="htmloutLoader" style="position: absolute; width:100%;height: 100%;padding-top: 40%;padding-left:40%;">
                             <div>Loading please wait .....</div>
                           </div>
+                        </div> -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex">
+                                            <div class="flex-1 overflow-hidden">
+                                                <p class="text-truncate font-size-14 mb-2">Total Transfer Amounts</p>
+                                                <h4 class="mb-0" id="total_transfer_amount"></h4>
+                                            </div>
+                                            <div class="text-primary ms-auto"> <i class=" ri-money-euro-circle-line font-size-24"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body border-top py-3">
+                                        <div class="text-truncate"> <span class="badge badge-soft-success font-size-11"><i class="mdi mdi-menu-up"> </i> 2.4% </span>
+                                            <span class="text-muted ms-2">Based on the current data</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex">
+                                            <div class="flex-1 overflow-hidden">
+                                                <p class="text-truncate font-size-14 mb-2">Total Transaction Fee </p>
+                                                <h4 class="mb-0" id="total_transaction_fee"></h4>
+                                            </div>
+                                            <div class="text-primary ms-auto"> <i class=" ri-numbers-line  font-size-24"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body border-top py-3">
+                                        <div class="text-truncate"> <span class="badge badge-soft-success font-size-11"><i class="mdi mdi-menu-up"> </i> 2.4% </span>
+                                            <span class="text-muted ms-2">Based on the current data</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex">
+                                            <div class="flex-1 overflow-hidden">
+                                                <p class="text-truncate font-size-14 mb-2">Total Agent</p>
+                                                <h4 class="mb-0">total</h4>
+                                            </div>
+                                            <div class="text-primary ms-auto"> <i class="ri-briefcase-2-fill  font-size-24"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body border-top py-3">
+                                        <div class="text-truncate"> <span class="badge badge-soft-success font-size-11"><i class="mdi mdi-menu-up"> </i> 2.4% </span>
+                                            <span class="text-muted ms-2">Based on the current data</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                           
                       
 
-                           <!-- <div class="card">
+                           <div class="card dataTableCard">
                                     <div class="card-body">
                                                 
                                         <h4 class="card-title mb-4">All Records </h4>
                                    
                                         <div class="table-responsive">
-                                            <table class="table table-centered datatable dt-responsive nowrap" data-bs-page-length="5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                                               <tbody>
+                                            <table class="table table-centered datatable"  style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                     
+                                                <tbody>
                                                    
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
-                                </div> -->
+                                </div>
 
 {% endblock content %}
 {% block extra_javascript %}
@@ -114,144 +174,244 @@
         <script src="https://unpkg.com/canvas-datagrid/dist/canvas-datagrid.js"></script>
         <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/shim.min.js"></script>
         <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
-       
+         <!-- Required datatable js -->
+        <script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+        
+        <!-- Responsive examples -->
+        <script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js' %}"></script>
+        <script src="{% static 'libs/jszip/dist/jszip.min.js' %}"></script>
+            <script src="{% static 'libs/pdfmake/build/pdfmake.min.js' %}"></script>
+            <script src="{% static 'libs/pdfmake/build/vfs_fonts.js' %}"></script>
+            <script src="{% static 'libs/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+            <script src="{% static 'libs/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+            <script src="{% static 'libs/datatables.net-buttons/js/buttons.colVis.min.js' %}"></script>
+         <!-- Sweet Alerts js -->
+         <script src="{% static 'libs/sweetalert2/dist/sweetalert2.min.js' %}"></script>
+
         <script>
       
         
-       document.getElementById('htmloutLoader').style.display = 'none'
-       $(document).ready(function(){
-        var fileArr = []
-        csvSrc= "static/images/csv-icon.png"
-        xlsSrc="static/images/xls_icon.png"
-        xlsxSrc="static/images/xlsx_icon.png"
-        $("#drop").click(function(e){
-        e.preventDefault()
-        $("input[name='xlfile']").trigger('click')
-        })
-        function uploadFiles(file,callback){
-        if(typeof file == Array ) 
-        file = file[0]
-         $.ajax({ url:'/transfer-upload',method:'POST',data:file,contentType:false,
-         processData:false,
-         success:function(data){
-
-         if(data.indexOf('success') != -1) {
-            callback
-         }else
-            console.log(data)
-         }})
-        }
-        var fileDeleteArr = []
-        $("#upload-delete-btn").click(function(e){
-            if($(e.target).text().indexOf('Delete') != -1){
-                $(e.target).text('Remove')
-                $(".form-check-input").css('display','block')
-               
-            } else{
-                $(e.target).text('Delete')
-            
-                $.ajax({ url:'/delete_files',method:'POST',data:{'files-to-delete':JSON.stringify(fileDeleteArr)},
-                success:function(data){
-                console.log(data)
-                if(data.indexOf('File(s) removed') != -1)
-                    fileArr.pop(fileDeleteArr)  
-                    $(".all-files .body").empty()          
-                    fileArr.forEach(
-                    function(itm){
-                    var itmarr = itm.split('.',2)
-                    if(itmarr[1].length == 0)
-                    var itmarr = itm.split('..',2)
-                    console.log(itmarr[1])   
-                    if(itmarr[1].indexOf('csv') != -1){
-                        $(".all-files .body").append("<div class='col-3 row'> <input class='form-check-input col-2' type='checkbox'><img class='xlupload' style='width:65px;height:auto'  src= '"+csvSrc +"' /><p style='font-size:10px;width:100%'>"+itm +"</p></div>")
-                    }
-                    if(itmarr[1].indexOf('xlsx') != -1){
-                        $(".all-files .body").append("<div class='col-3 row'> <input class='form-check-input col-2' type='checkbox'><img class='xlupload'  style='width:70px;height:40px' src= '"+xlsxSrc +"' /><p style='font-size:10px;width:100%' >"+itm +"</p></div>")
-                    }
-                    if(itmarr[1].indexOf('xls') != -1){
-                        $(".all-files .body").append("<div class='col-3 row'> <input class='form-check-input col-2' type='checkbox'><img class='xlupload'  style='width:70px;height:40px' src= '"+xlsSrc +"' /><p style='font-size:10px;width:100%' >"+itm +"</p></div>")
-                    }
-                    }
-                )
-
-          }})
-            }
+     //  document.getElementById('htmloutLoader').style.display = 'none' 
            
-           
+
+         $(document).ready(function(){
+            var fileArr = []
+            var length_of_data_shown = 0
+            csvSrc= "static/images/csv-icon.png"
+            xlsSrc="static/images/xls_icon.png"
+            xlsxSrc="static/images/xlsx_icon.png"
+            $("#drop").click(function(e){
+            e.preventDefault()
+            $("input[name='xlfile']").trigger('click')
+            })
+         $('.page-content').scroll(function(e){
+            console.log(e)
          })
+            uploadFiles()
+            getDataTotals() 
+            function getDataTotals(){
+                $("#total_transfer_amount,#total_transaction_fee").html("<div class='alert text-center'> <span> Loading ..... </span></div>")
+                $.ajax({ url:'/get_data_totals',method:'POST',data:{},contentType:false,
+                success:function(data){
+                    console.log(data)
+                    $("#total_transfer_amount").html(data["total-amount"])
+                    $("#total_transaction_fee").html(data["total-transaction-fee"])
+                }
+               })
+            }
+            function loadmore(more){
+                length_of_data_shown =length_of_data_shown + more
+                var dataToSend
+                if(more != 'undefined' ){
+                dataToSend =new FormData()
+                var tableLength = more + length_of_data_shown
+                dataToSend.append("more_value", length_of_data_shown)
+                
+                $.ajax({ url:'/transfer-upload',method:'POST',data:dataToSend,contentType:false,
+                processData:false,
+                success : function(data){
+                try{
+                data = JSON.parse(data)
+                }catch(e){
+                console.log(e)
+                }
+                console.log(data) 
+                $(".datatable").DataTable().destroy();
+        
+                data.forEach(function(d){
+                $(".datatable tbody")
+                .append(
+                "<tr>"
+                +"<td>"+ tableLength++ +"</td>"        
+                +"<td>"+d[ "transaction_time"] +"</td>"
+                +"<td>"+d["transaction_reference"] +"</td>"
+                +"<td>"+d["transaction_description"] +"</td>"
+                +"<td>"+d["linking_reference"] +"</td>"
+                +"<td>"+d["amount"] +"</td>"
+                +"<td>"+d["currency"] +"</td>"
+                +"<td>"+d["country"] +"</td>"
+                +"<td>"+d["card_country"] +"</td>"
+                +"<td>"+d["is_Nigerian_Card"] +"</td>"
+                +"<td>"+d["prev_Linking_Reference"] +"</td>"
+                +"<td>"+d["transfer_amount"] +"</td>"
+                +"<td>"+d["transaction_Fee"] +"</td>"
+                +"<td>"+d["fee"] +"</td>"
+                +"<td>"+d["status"] +"</td>"
+                +"<td>"+d["reason"] +"</td>"
+                +"<td>"+d["account_No"] +"</td>"
+                +"<td>"+d["channel"] +"</td>"
+                +"<td>"+d["channel_Type"] +"</td>"
+                +"<td>"+d["is_International"] +"</td>"
+                +"<td>"+d["mode"] +"</td>"
+                +"<td>"+d["transType"] +"</td>"
+                +"<td>"+d["settlement_Amount"] +"</td>"
+                +"<td>"+d["refund_Amount"] +"</td>"
+                +"<td>"+d["gateway_Response_Code"] +"</td>"
+                +"<td>"+d["gateway_Response_Code"] +"</td>"
+                +"<td>"+d["has_dispute"] +"</td>"
+                +"<td>"+d["event"] +"</td>"
+                +"</tr>"
+                        )
+                })
+                setTimeout(function(){
+               $(".datatable").
+               DataTable({
+               lengthMenu:[5,10,25,50],pageLength: 50,
+               language:{paginate:{previous:"<i class='mdi mdi-chevron-left'>",
+               next:"<i class='mdi mdi-chevron-right'>"},
+               },
+               dom: 'Bfrtip',
+               buttons: [
+               'copy', 'excel', 'pdf'
+               ],
+               drawCallback:function(){
+               
+               $(".dataTables_paginate > .pagination").addClass("pagination-rounded")}}),
+               $(".dataTables_length select").addClass("form-select form-select-sm")
+               $(".datatable").parent().append("<button class='btn text-primary load_more_btn'> <em> Load More ....</em></button>")
 
-        $("body").on('click','.form-check-input',function(e){
-           if(e.target.checked){
-            fileDeleteArr.push($(e.target).next().next().text())
-           }else{ 
-            fileDeleteArr.pop($(e.target).next().next().text())
-           } 
-           console.log(fileDeleteArr) 
-        })
-        var cDg;
-        var process_wb = (function() {
-        var XPORT = document.getElementById('xport');
-        var HTMLOUT = document.getElementById('htmlout');
-        return function process_wb(wb) {
-        /* get data */
-        var ws = wb.Sheets[wb.SheetNames[0]];
-        var data = XLSX.utils.sheet_to_json(ws, {header:1});
-
-        /* update canvas-datagrid */
-        if(!cDg) cDg = canvasDatagrid({ parentNode:HTMLOUT, data:data });
-        cDg.style.height = '100%';
-        cDg.style.width = '100%';
-        cDg.data = data;
-        XPORT.disabled = false;
-
-        /* create schema (for A,B,C column headings) */
-        var range = XLSX.utils.decode_range(ws['!ref']);
-        for(var i = range.s.c; i <= range.e.c; ++i) cDg.schema[i - range.s.c].title =  XLSX.utils.encode_col(i);
-
-        HTMLOUT.style.height = (window.innerHeight - 100) + "px";
-        HTMLOUT.style.width = (window.innerWidth - 50) + "px";
-
-        if(typeof console !== 'undefined'){
-            console.log("output", new Date());
+               $(".load_more_btn").click(function(){
+               loadmore(500)
+              })
+               },500)
+                }
+             })
+            }
+         }
             
-        } 
-      
-        };
+            async function uploadFiles(file,moreValue) {
+            console.log(typeof file)
+            var dataToSend
+          
+            if(file != 'undefined')
+            dataToSend = file
+            $(".datatable tbody").empty().append("<div class='alert text-center'> <span> Loading ..... </span></div>")
+            $.ajax({ url:'/transfer-upload',method:'POST',data:dataToSend,contentType:false,
+            processData:false,
+            success:function(data){
+            try{
+            data = JSON.parse(data)
+            }catch(e){
+            console.log(e)
+            }
+            console.log(data)    
+            if(typeof data != 'string') {
+            $(".datatable tbody").empty()
+            var column = Object.keys(data[0]).map(function(e){
+                return {"title": e.toLocaleUpperCase().replace("_"," ")}
+            })
+            console.log(column)
+            var nm = 1
+           // $(".datatable").DataTable().clear().destroy();
+            $(".datatable").prepend("<thead class=' table-light'><tr></tr></thead>")
+                column.forEach(function(e){
+                    $(".datatable thead tr") .append("<th>"+e["title"] +"</th>")
+                })
+                var total_transfer_amount = 0
+                data.forEach(function(d){
+                $(".datatable tbody")
+                .append(
+                "<tr>"
+                +"<td>"+ nm++ +"</td>"        
+                +"<td>"+d[ "transaction_time"] +"</td>"
+                +"<td>"+d["transaction_reference"] +"</td>"
+                +"<td>"+d["transaction_description"] +"</td>"
+                +"<td>"+d["linking_reference"] +"</td>"
+                +"<td>"+d["amount"] +"</td>"
+                +"<td>"+d["currency"] +"</td>"
+                +"<td>"+d["country"] +"</td>"
+                +"<td>"+d["card_country"] +"</td>"
+                +"<td>"+d["is_Nigerian_Card"] +"</td>"
+                +"<td>"+d["prev_Linking_Reference"] +"</td>"
+                +"<td>"+d["transfer_amount"] +"</td>"
+                +"<td>"+d["transaction_Fee"] +"</td>"
+                +"<td>"+d["fee"] +"</td>"
+                +"<td>"+d["status"] +"</td>"
+                +"<td>"+d["reason"] +"</td>"
+                +"<td>"+d["account_No"] +"</td>"
+                +"<td>"+d["channel"] +"</td>"
+                +"<td>"+d["channel_Type"] +"</td>"
+                +"<td>"+d["is_International"] +"</td>"
+                +"<td>"+d["mode"] +"</td>"
+                +"<td>"+d["transType"] +"</td>"
+                +"<td>"+d["settlement_Amount"] +"</td>"
+                +"<td>"+d["refund_Amount"] +"</td>"
+                +"<td>"+d["gateway_Response_Code"] +"</td>"
+                +"<td>"+d["gateway_Response_Code"] +"</td>"
+                +"<td>"+d["has_dispute"] +"</td>"
+                +"<td>"+d["event"] +"</td>"
+                +"</tr>"
+                        )
+                })
+               setTimeout(function(){
+                $(".datatable").
+                DataTable({
+                lengthMenu:[5,10,25,50],pageLength: 50,
+                language:{paginate:{previous:"<i class='mdi mdi-chevron-left'>",
+                next:"<i class='mdi mdi-chevron-right'>"},
+                },
+                dom: 'Bfrtip',
+                buttons: [
+                'copy', 'excel', 'pdf'
+                ],
+                drawCallback:function(){
+                
+                $(".dataTables_paginate > .pagination").addClass("pagination-rounded")}}),
+                $(".dataTables_length select").addClass("form-select form-select-sm")
+                $(".datatable").parent().append("<button class='btn text-primary load_more_btn'> <em> Load More ....</em></button>")
+
+                $(".load_more_btn").click(function(){
+                loadmore(500)
+               })
+                },500)
+           
+         }else
+            console.log("error happened")
+           // $(".datatable tbody").empty().append("<div class='alert text-center'> <span> No Data To Display</span></div>")
+            if(data.indexOf('large')!=-1)
+              Swal.fire({title:"Deleted!",text:"File uploaded is too large break file to bits of 1000 and try again.",icon:"error"})
+         }})
+        
+
+        }
+        
+        (function() {
+        var xlf = document.getElementById('xlf');
+        if(!xlf.addEventListener) return;
+        function handleFile(e) { 
+            console.log("file changed")
+            formData= new FormData(document.getElementById('uploadForm'))
+            uploadFiles(formData) 
+        }
+        xlf.addEventListener('change', handleFile, false);
         })();
 
-        var do_file = (function() {
-        return function do_file(files) {
-        var f = files[0];
-        var reader = new FileReader();
-        reader.onload = function(e) {
-        if(typeof console !== 'undefined') console.log("onload", new Date());
-        document.getElementById('htmloutLoader').style.display='block'
-        var data = e.target.result;
-        data = new Uint8Array(data);
-        process_wb(XLSX.read(data, {type: 'array'}));
-        fileArr.push(f.name)
-        $(".all-files .body").empty()
-        fileArr.forEach(
-        function(itm){
-        var itmarr = itm.split('.',2)
-        if(itmarr[1].length == 0)
-        var itmarr = itm.split('..',2)
-        console.log(itmarr[1])   
-        if(itmarr[1].indexOf('csv') != -1){
-            $(".all-files .body").append("<div class='col-3 row'> <input class='form-check-input col-2' type='checkbox'><img class='xlupload' style='width:65px;height:auto'  src= '"+csvSrc +"' /><p style='font-size:10px;width:100%'>"+itm +"</p></div>")
-        }
-        if(itmarr[1].indexOf('xlsx') != -1){
-            $(".all-files .body").append("<div class='col-3 row'> <input class='form-check-input col-2' type='checkbox'><img class='xlupload'  style='width:70px;height:40px' src= '"+xlsxSrc +"' /><p style='font-size:10px;width:100%' >"+itm +"</p></div>")
-        }
-        if(itmarr[1].indexOf('xls') != -1){
-            $(".all-files .body").append("<div class='col-3 row'> <input class='form-check-input col-2' type='checkbox'><img class='xlupload'  style='width:70px;height:40px' src= '"+xlsSrc +"' /><p style='font-size:10px;width:100%' >"+itm +"</p></div>")
-        }
-        }
-        )
-        };
-        reader.readAsArrayBuffer(f);
-        };
-        })();
+
+   
 
         (function() {
         var drop = document.getElementById('drop');
@@ -262,7 +422,8 @@
         e.preventDefault();
         var formData = new FormData()
         formData.append('xlfiles',e.dataTransfer.files[0])
-        uploadFiles(formData,do_file(e.dataTransfer.files))
+        console.log("file dropped")
+        uploadFiles(formData)
         }
 
         function handleDragover(e) {
@@ -276,16 +437,7 @@
         drop.addEventListener('drop', handleDrop, false);
         })();
 
-        (function() {
-        var xlf = document.getElementById('xlf');
-        if(!xlf.addEventListener) return;
-        function handleFile(e) { 
-            formData= new FormData(document.getElementById('uploadForm'))
-            uploadFiles(formData, do_file(e.target.files)) 
-        }
-        xlf.addEventListener('change', handleFile, false);
-        })();
-
+        
         export_xlsx = (function() {
         function prep(arr) {
         var out = [];
@@ -313,54 +465,10 @@
         };
         })();
 
-        (async() => {
-        var ab = await(await fetch(" ")).arrayBuffer();
-        process_wb(XLSX.read(ab));
-        document.getElementById('htmloutLoader').style.display = 'block'
-        setTimeout(function(){
-            $.post('/get_files',{},async function(data){
-             console.log( data)  
-             data = data.replace(/'/g, '"')  
-              console.log( data)
-              if(data.length>0)  
-             
-             data = JSON.parse(data)
-             console.log( data )
-            if(typeof data == 'object' )
-             var slicedData = data.slice(0,20)
-             fileArr=slicedData
-             slicedData.forEach(
-                function(itm){
-                 var itmarr = itm.split('.',2)
-                 if(itmarr[1].length == 0)
-                 var itmarr = itm.split('..',2)
-                 console.log(itmarr[1])   
-                 if(itmarr[1].indexOf('csv') != -1){
-                    $(".all-files .body").append("<div class='col-3 row'> <input class='form-check-input col-2' type='checkbox'><img class='xlupload' style='width:65px;height:auto'  src= '"+csvSrc +"' /><p style='font-size:10px;width:100%'>"+itm +"</p></div>")
-                 }
-                 if(itmarr[1].indexOf('xlsx') != -1){
-                    $(".all-files .body").append("<div class='col-3 row'> <input class='form-check-input col-2' type='checkbox'><img class='xlupload'  style='width:70px;height:40px' src= '"+xlsxSrc +"' /><p style='font-size:10px;width:100%' >"+itm +"</p></div>")
-                 }
-                 if(itmarr[1].indexOf('xls') != -1){
-                    $(".all-files .body").append("<div class='col-3 row'> <input class='form-check-input col-2' type='checkbox'><img class='xlupload'  style='width:70px;height:40px' src= '"+xlsSrc +"' /><p style='font-size:10px;width:100%' >"+itm +"</p></div>")
-                 }
-                }
-              )
-              $(".xlupload").on('click',async function(e){
-                document.getElementById('htmloutLoader').style.display = 'block'
-                ab = await(await fetch("static/csvfiles/"+$(e.target).next('p').text())).arrayBuffer();
-                process_wb(XLSX.read(ab));
-                document.getElementById('htmloutLoader').style.display = 'none'
-              })
-                ab = await(await fetch("static/csvfiles/"+slicedData[0])).arrayBuffer();
-                process_wb(XLSX.read(ab));
-                document.getElementById('htmloutLoader').style.display = 'none'
-            })
-        
-        },500)
-        })();
+   
 
         })
+       
         </script>
 
         <script>
@@ -407,6 +515,34 @@
         })
  
 }
+ // { title : "S/N"} ,   
+                // {title:"Transaction Time"},
+                // {title :"Transaction Reference"},
+                // {title : "Transaction Description"},
+                // { title :"Linking Reference"},
+                // {title:"Amount"},
+                // {title : "Currency"},
+                // {title :"Country"},
+                // {title : "Card Country"},
+                // {title : "is Nigerian Card"},
+                // {title:"Prev Linking Reference"},
+                // {title : "Transfer Amount"},
+                // {title : "Transaction Fee"},
+                // {title : "Fee"},
+                // {title : "Status"},
+                // {title : "Reason"},
+                // {title :"Account No"},
+                // {title :"Channel"},
+                // {title :"Channel Type"},
+                // {title :"Is International"},
+                // {title :"Mode"},
+                // {title :"TransType"},
+                // {title :"Settlement Amount"},
+                // {title :"Refund Amount"},
+                // {title :"Gateway Response Code"},
+                // {title :"Gateway Response Message"},
+                // { title :"Has Dispute"},
+                // {title :"Event"}
 </script>
 
 {% endblock extra_javascript %}
