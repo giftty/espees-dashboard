@@ -37,8 +37,7 @@ def transferUpload(request) :
             #add this python dict to json array
             jsonArray.append(row)
            
-        print(len(jsonArray))
-        if(len(jsonArray)<1100) :
+        if(True) :
          for row in jsonArray :
             trans=  Transactions(
                 transaction_time = row["Transaction Time"],
@@ -104,10 +103,10 @@ def sendTotals(request) :
 def handle_uploaded_file(file):
     random.seed(5)
     randnumb =  str(random.randint(0, 9)*100)
-    with open( csvfolderDir+"/file" +randnumb+"_" +file.name, "wb+") as destination:
+    with open( csvfolderDir+"/file_csvdata_to_database.csv", "wb+") as destination:
         for chunk in file.chunks():
             destination.write(chunk)  
-    return csvfolderDir+"/file" +randnumb+"_" +file.name
+    return csvfolderDir+"/file_csvdata_to_database.csv"
 
 @csrf_exempt
 def deleteFiles(request) :

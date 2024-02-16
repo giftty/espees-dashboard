@@ -307,11 +307,27 @@
             console.log(typeof file)
             var dataToSend
           
-            if(file != 'undefined')
+            if(typeof file != 'undefined'){
+                Swal.fire({title:"Data Processing",
+                text:"File uploaded is too large processing will take a long time if you can't wait cancel this operation and, break file to bits of 1000 and try again.",
+                icon:"info",showCancelButton: true,}).then(function(result){
+                    console.log(result)
+                if (result.isDismissed) {
+                    Swal.fire("Cancelling Operation and refreashing the window", "", "info");
+                    window.location.reload()
+                }else{
+                    Swal.fire("Processing data please wait .....", "", "info");
+                }
+            })
             dataToSend = file
+            }
+            
             $(".datatable tbody").empty().append("<div class='alert text-center'> <span> Loading ..... </span></div>")
             $.ajax({ url:'/transfer-upload',method:'POST',data:dataToSend,contentType:false,
             processData:false,
+            beforeSend: function(){
+           
+            },
             success:function(data){
             try{
             data = JSON.parse(data)
@@ -319,7 +335,7 @@
             console.log(e)
             }
             console.log(data)    
-            if(typeof data != 'string') {
+            if(typeof data != 'string' && data.length>0) {
             $(".datatable tbody").empty()
             var column = Object.keys(data[0]).map(function(e){
                 return {"title": e.toLocaleUpperCase().replace("_"," ")}
@@ -391,7 +407,7 @@
            
          }else
             console.log("error happened")
-           // $(".datatable tbody").empty().append("<div class='alert text-center'> <span> No Data To Display</span></div>")
+            $(".datatable tbody").append("<div class='alert text-center'> <span> No Data To Display</span></div>")
             if(data.indexOf('large')!=-1)
               Swal.fire({title:"Deleted!",text:"File uploaded is too large; break file to bits of 1000 and try again.",icon:"error"})
          }})
@@ -403,7 +419,6 @@
         var xlf = document.getElementById('xlf');
         if(!xlf.addEventListener) return;
         function handleFile(e) { 
-            console.log("file changed")
             formData= new FormData(document.getElementById('uploadForm'))
             uploadFiles(formData) 
         }
@@ -420,8 +435,7 @@
         function handleDrop(e) {
         e.stopPropagation();
         e.preventDefault();
-        var formData = new FormData()
-        formData.append('xlfiles',e.dataTransfer.files[0])
+        formData= new FormData(document.getElementById('uploadForm'))
         console.log("file dropped")
         uploadFiles(formData)
         }
