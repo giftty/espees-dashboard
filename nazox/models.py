@@ -27,7 +27,7 @@ class Transactions(models.Model) :
     settlement_Amount  =  models.CharField(max_length = 100,default = 0)
     refund_Amount  =  models.CharField(max_length = 100,default = 0)
     gateway_Response_Code  =  models.CharField(max_length = 200,default = " ")
-    gateway_response_Message  =  models.CharField(max_length = 100,default = " ")
+    gateway_response_Message  =  models.CharField(max_length = 400,default = " ")
     has_dispute =  models.CharField(max_length = 50)
-    event =  models.CharField(max_length = 100,default = " ")
+    event =  models.CharField(max_length = 200,default = " ")
 
