@@ -36,7 +36,8 @@ def transferUpload(request) :
         for row in csvReader: 
             #add this python dict to json array
             jsonArray.append(row)
-           
+        reversed_jsonArray = jsonArray.reverse()  
+        print(reversed_jsonArray[1:10]) 
         if(True) :
          for row in jsonArray :
             trans=  Transactions(
