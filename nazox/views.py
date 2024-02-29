@@ -68,9 +68,11 @@ def transferUpload(request) :
                 gateway_Response_Code  =   row["Gateway Response Code"],
                 gateway_response_Message  =  row["Gateway Response Message"],has_dispute =  row["Has Dispute"],event =  row["Event"])
            
-            if Transactions.objects.get(transaction_time = trans.transaction_time) : 
-                  print('Duplicate object ') 
-            else: 
+            try :
+                 Transactions.objects.get(transaction_time = trans.transaction_time) 
+                 print('Duplicate object ') 
+            except Exception as er: 
+              print(er)
               trans.save() 
         #  else :
         #    return  HttpResponse(content="File is too large")  
