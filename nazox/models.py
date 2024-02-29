@@ -3,7 +3,7 @@ from django.db import models
 
 class Transactions(models.Model) :
     id = models.AutoField(primary_key=True)
-    transaction_time = models.CharField(max_length=200,default = " ")
+    transaction_time = models.DateTimeField(max_length=200,default = " ",unique = True)
     transaction_reference = models.CharField(max_length = 400,default = " ")
     transaction_description = models.CharField(max_length = 400,default = " ")
     linking_reference = models.CharField(max_length = 200,default = " ")

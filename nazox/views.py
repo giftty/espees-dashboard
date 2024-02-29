@@ -38,8 +38,9 @@ def transferUpload(request) :
             jsonArray.append(row)
         reversed_jsonArray = jsonArray.reverse()  
         print(reversed_jsonArray[1:10]) 
-        if(True) :
-         for row in reversed_jsonArray :
+        try :
+         if(True) :
+          for row in reversed_jsonArray :
             trans=  Transactions(
                 transaction_time = row["Transaction Time"],
                 transaction_reference =  row["Transaction Reference"],
@@ -68,15 +69,17 @@ def transferUpload(request) :
                 gateway_response_Message  =  row["Gateway Response Message"],has_dispute =  row["Has Dispute"],event =  row["Event"])
                 
             trans.save() 
-        else :
-           return  HttpResponse(content="File is too large")        
+         else :
+           return  HttpResponse(content="File is too large")  
+        except Exception as e :
+          print(e)       
     #  print(jsonArray)
     
    more_value = 0     
    if 'more_value' in request.POST.keys()  :
       print(request.POST['more_value']  ) 
       more_value = request.POST['more_value']         
-      allTrans =list(Transactions.objects.all()[int(more_value):500+int(more_value)].values())   
+      allTrans =list(Transactions.objects.all().order_by('-transaction_time')[int(more_value):500+int(more_value)].values())   
    else :
       allTrans =list(Transactions.objects.all()[:500].values()) 
 
