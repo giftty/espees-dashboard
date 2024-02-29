@@ -37,7 +37,7 @@ def transferUpload(request) :
             #add this python dict to json array
             jsonArray.append(row)
         reversed_jsonArray = jsonArray.reverse()  
-        print(reversed_jsonArray[1:10]) 
+        print(reversed_jsonArray) 
         try :
          if(True) :
           for row in reversed_jsonArray :
