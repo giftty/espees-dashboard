@@ -36,11 +36,11 @@ def transferUpload(request) :
         for row in csvReader: 
             #add this python dict to json array
             jsonArray.append(row)
-        reversed_jsonArray = jsonArray.reverse()  
-        print(reversed_jsonArray) 
+        jsonArray.reverse()  
+        print(jsonArray[1:10]) 
         try :
          if(True) :
-          for row in reversed_jsonArray :
+          for row in jsonArray.reverse() :
             trans=  Transactions(
                 transaction_time = row["Transaction Time"],
                 transaction_reference =  row["Transaction Reference"],
