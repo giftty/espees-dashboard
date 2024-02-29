@@ -79,9 +79,9 @@ def transferUpload(request) :
    if 'more_value' in request.POST.keys()  :
       print(request.POST['more_value']  ) 
       more_value = request.POST['more_value']         
-      allTrans =list(Transactions.objects.all().order_by('transaction_time')[int(more_value):500+int(more_value)].values())   
+      allTrans =list(Transactions.objects.all().order_by('-transaction_time')[int(more_value):2000+int(more_value)].values())   
    else :
-      allTrans =list(Transactions.objects.all()[:500].values()) 
+      allTrans =list(Transactions.objects.all().order_by('-transaction_time')[:2000].values()) 
 
    return  HttpResponse(json.dumps(allTrans)) 
   #  try : 
