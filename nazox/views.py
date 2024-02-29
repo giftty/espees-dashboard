@@ -39,9 +39,9 @@ def transferUpload(request) :
         jsonArray.reverse()  
         print(jsonArray[1:10]) 
         try :
-         if(True) :
+        #  if(True) :
           for row in jsonArray :
-            trans=  Transactions(
+            trans=  Transactions( 
                 transaction_time = row["Transaction Time"],
                 transaction_reference =  row["Transaction Reference"],
                 transaction_description = row["Transaction Description"],
@@ -67,10 +67,13 @@ def transferUpload(request) :
                 refund_Amount  =  row["Refund Amount"],
                 gateway_Response_Code  =   row["Gateway Response Code"],
                 gateway_response_Message  =  row["Gateway Response Message"],has_dispute =  row["Has Dispute"],event =  row["Event"])
-                
-            trans.save() 
-         else :
-           return  HttpResponse(content="File is too large")  
+           
+            if Transactions.objects.get(transaction_time = trans.transaction_time) : 
+                  print('Duplicate object ') 
+            else: 
+              trans.save() 
+        #  else :
+        #    return  HttpResponse(content="File is too large")  
         except Exception as e :
           print(e)       
     #  print(jsonArray)
