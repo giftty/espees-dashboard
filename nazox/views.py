@@ -39,7 +39,7 @@ def transferUpload(request) :
         reversed_jsonArray = jsonArray.reverse()  
         print(reversed_jsonArray[1:10]) 
         if(True) :
-         for row in jsonArray :
+         for row in reversed_jsonArray :
             trans=  Transactions(
                 transaction_time = row["Transaction Time"],
                 transaction_reference =  row["Transaction Reference"],
