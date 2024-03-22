@@ -150,7 +150,8 @@
                             </div>
                         </div>
                       
-
+                             <div style=" position: sticky; width: 200px; height: 100px;background-color: aqua;">
+                             </div>
                            <div class="card dataTableCard">
                                     <div class="card-body">
                                                 
@@ -204,13 +205,15 @@
             csvSrc= "static/images/csv-icon.png"
             xlsSrc="static/images/xls_icon.png"
             xlsxSrc="static/images/xlsx_icon.png"
+
+            window.onscroll = function(e){
+              console.log(e)
+            }
             $("#drop").click(function(e){
             e.preventDefault()
             $("input[name='xlfile']").trigger('click')
             })
-         $('.page-content').scroll(function(e){
-            console.log(e)
-         })
+         
             uploadFiles()
             getDataTotals() 
             function getDataTotals(){
@@ -295,7 +298,7 @@
                $(".datatable").parent().append("<button class='btn text-primary load_more_btn'> <em> Load More ....</em></button>")
 
                $(".load_more_btn").click(function(){
-               loadmore(500)
+               loadmore(2000)
               })
                },500)
                 }
@@ -401,7 +404,7 @@
                 $(".datatable").parent().append("<button class='btn text-primary load_more_btn'> <em> Load More ....</em></button>")
 
                 $(".load_more_btn").click(function(){
-                loadmore(500)
+                loadmore(2000)
                })
                 },500)
            

@@ -36,7 +36,8 @@ def transferUpload(request) :
         for row in csvReader: 
             #add this python dict to json array
             jsonArray.append(row)
-           
+        jsonArray.reverse()    
+        print(jsonArray[1:10])   
         if(True) :
          for row in jsonArray :
             trans=  Transactions(
@@ -75,10 +76,10 @@ def transferUpload(request) :
    if 'more_value' in request.POST.keys()  :
       print(request.POST['more_value']  ) 
       more_value = request.POST['more_value']         
-      allTrans =list(Transactions.objects.all()[int(more_value):500+int(more_value)].values())   
+      allTrans =list(Transactions.objects.all()[int(more_value):2000+int(more_value)].values())   
    else :
-      allTrans =list(Transactions.objects.all()[:500].values()) 
-
+      allTrans =list(Transactions.objects.all()[:2000].values()) 
+  #  allTrans.reverse()
    return  HttpResponse(json.dumps(allTrans)) 
   #  try : 
   #     handle_uploaded_file(request.FILES['xlfile'])

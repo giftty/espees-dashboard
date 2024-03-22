@@ -86,6 +86,7 @@
 
         <script src="{% static 'libs/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
         <script src="{% static 'libs/datatables.net-select/js/dataTables.select.min.js' %}"></script>
+        <script src="https://cdn.datatables.net/fixedheader/4.0.0/js/fixedHeader.dataTables.js"></script>
      <!-- Sweet Alerts js -->
         <script src="{% static 'libs/sweetalert2/dist/sweetalert2.min.js' %}"></script>
 
@@ -99,7 +100,7 @@
          setTimeout(function(){
          $(".datatable").
         DataTable({
-       lengthMenu:[5,10,25,50],pageLength: 50,
+       lengthMenu:[5,10,25,50],pageLength: 50,fixedHeader: true,
        language:{paginate:{previous:"<i class='mdi mdi-chevron-left'>",
        next:"<i class='mdi mdi-chevron-right'>"},
        },
