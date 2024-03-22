@@ -36,11 +36,12 @@ def transferUpload(request) :
         for row in csvReader: 
             #add this python dict to json array
             jsonArray.append(row)
-        jsonArray.reverse()    
-        print(jsonArray[1:10])   
-        if(True) :
-         for row in jsonArray :
-            trans=  Transactions(
+        jsonArray.reverse()  
+        print(jsonArray[1:10]) 
+        try :
+        #  if(True) :
+          for row in jsonArray :
+            trans=  Transactions( 
                 transaction_time = row["Transaction Time"],
                 transaction_reference =  row["Transaction Reference"],
                 transaction_description = row["Transaction Description"],
@@ -66,20 +67,27 @@ def transferUpload(request) :
                 refund_Amount  =  row["Refund Amount"],
                 gateway_Response_Code  =   row["Gateway Response Code"],
                 gateway_response_Message  =  row["Gateway Response Message"],has_dispute =  row["Has Dispute"],event =  row["Event"])
-                
-            trans.save() 
-        else :
-           return  HttpResponse(content="File is too large")        
+           
+            try :
+                 Transactions.objects.get(transaction_time = trans.transaction_time) 
+                 print('Duplicate object ') 
+            except Exception as er: 
+              print(er)
+              trans.save() 
+        #  else :
+        #    return  HttpResponse(content="File is too large")  
+        except Exception as e :
+          print(e)       
     #  print(jsonArray)
     
    more_value = 0     
    if 'more_value' in request.POST.keys()  :
       print(request.POST['more_value']  ) 
       more_value = request.POST['more_value']         
-      allTrans =list(Transactions.objects.all()[int(more_value):2000+int(more_value)].values())   
+
+      allTrans =list(Transactions.objects.all().order_by('-transaction_time')[int(more_value):2000+int(more_value)].values())   
    else :
-      allTrans =list(Transactions.objects.all()[:2000].values()) 
-  #  allTrans.reverse()
+      allTrans =list(Transactions.objects.all().order_by('-transaction_time')[:2000].values()) 
    return  HttpResponse(json.dumps(allTrans)) 
   #  try : 
   #     handle_uploaded_file(request.FILES['xlfile'])
