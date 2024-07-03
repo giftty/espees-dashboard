@@ -348,11 +348,13 @@ class DashboardView(LoginRequiredMixin,View):
         else:     
          if(user.admin_type == "Sub Admin"):
             dashboard_data['userprofile']={}
-            return  render(request, 'menu/sub_dashboard.html',dashboard_data) 
+            dashboard_data['token'] = "=$5p8n@77mg(&^r7a99"
+            return  render(request, 'menu/sub_dashboard.html',dashboard_data,) 
          else :
           if(user.admin_type == "Main Admin"): 
              totalobjects=  requests.get('https://api.espees.org/backoffice/dashboard/')  
              dashboard_data['totals']= totalobjects.json()
+             print(totalobjects.json())
              return render(request, 'menu/main_dashboard.html',dashboard_data)
           else :
             banks = { "none": "Select Bank",

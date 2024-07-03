@@ -114,16 +114,44 @@
 
     <script src="{% static 'js/pages/dashboard.init.js' %}"></script>
    
-   <script type="text/javascript">
+<script type="text/javascript">
+  function setCookie(cname, cvalue, exdays) {
+  const d = new Date();
+  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  let expires = "expires="+d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+  function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+          }
+      }
+  }
+  return cookieValue;
+}
+// $('.bs-example-modal-center3').modal('show')
  tabs('#u_p')
  function tabs(eleid){
   $(".tabs").hide()
   $(eleid).show()
 }
+var token 
+$(document).ready(function(){
+ $('.bs-example-modal-center3').modal('show')
+})
 
 $(".changepasswordform").on('submit',function(e){
  e.preventDefault()
-var formdt=new FormData(e.target)
+ token = getCookie('token')
+ if(token =="=$5p8n@77mg(&^r7a99"){
+  var formdt=new FormData(e.target)
   $.ajax({
      url:'/changeemailpassword',
      type:'POST',
@@ -139,33 +167,45 @@ var formdt=new FormData(e.target)
      $("button[type='submit']").html(data["message"])
      }
    })
+ }else{
+   $('.modal .modal-body').html("<div class='alert alert-danger'>Alert : Unauthorised access </div>")
+   $('.bs-example-modal-center3').modal('show')
+ }
+
 })
 
 $('.changepin_advance').on('submit',function(e){
  e.preventDefault()
-
+ token = getCookie('token')
+if(token == "=$5p8n@77mg(&^r7a99"){
 var formdt=new FormData(e.target)
-  $.ajax({
-     url:'changepin-advance',
-     type:'POST',
-      data:formdt,
-      beforeSend:function(){
-        $("button[type='submit']").html("Processing")
-      },
-      processData:false,
-      contentType: false,
-     success:function(data){
-       console.log(data)
-       data=JSON.parse(data)
-       if(data['statusCode']==200)
-     $("button[type='submit']").html("Pin changed sucessfully")
-     }
-   })
+  // $.ajax({
+  //    url:'changepin-advance',
+  //    type:'POST',
+  //     data:formdt,
+  //     beforeSend:function(){
+  //       $("button[type='submit']").html("Processing")
+  //     },
+  //     processData:false,
+  //     contentType: false,
+  //    success:function(data){
+  //      console.log(data)
+  //      data=JSON.parse(data)
+  //      if(data['statusCode']==200)
+  //    $("button[type='submit']").html("Pin changed sucessfully")
+  //    }
+  //  })
+}else{
+   $('.modal .modal-body').html("<div class='alert alert-danger'>Alert : Unauthorised access </div>")
+   $('.bs-example-modal-center3').modal('show')
+ }
 })
 
 $(".changepinform").on('submit',function(e){
 e.preventDefault()
-
+console.log()
+token = getCookie('token')
+if(token == "=$5p8n@77mg(&^r7a99"){
 var formdt=new FormData(e.target)
   $.ajax({
      url:'changepin',
@@ -183,11 +223,22 @@ var formdt=new FormData(e.target)
      $("button[type='submit']").html(data['message'])
      }
    })
+}else{
+   $('.modal .modal-body').html("<div class='alert alert-danger'>Alert : Unauthorised access </div>")
+   $('.bs-example-modal-center3').modal('show')
+ }
 })
 
 $('.adv_pinresetbtn').click(function(e){
- $('.bs-example-modal-center2').modal('show')
+ token = getCookie('token')
+ if(token == "{{token}}"){
+   $('.bs-example-modal-center2').modal('show')
  tabs('#adpin')
+ }else{
+    $('.modal .modal-body').html("<div class='alert alert-danger'>Alert : Unauthorised access </div>")
+   $('.bs-example-modal-center3').modal('show')
+ }
+ 
  
 })
 $('#balchk').click(function(){
@@ -198,6 +249,7 @@ $('#balchk').click(function(){
   $.post('/check-bal',{value:$('#search-input').val()},function(data){console.log(data)
   data=JSON.parse(data)
    $('.modal .modal-body').html("<div class='p-3 text-center h3'>Balance : "+data['balance']+" </div>")
+   $('.bs-example-modal-center3').modal('show')
   })
 })
 
