@@ -115,27 +115,7 @@
     <script src="{% static 'js/pages/dashboard.init.js' %}"></script>
    
 <script type="text/javascript">
-  function setCookie(cname, cvalue, exdays) {
-  const d = new Date();
-  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-  let expires = "expires="+d.toUTCString();
-  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-  function getCookie(name) {
-  let cookieValue = null;
-  if (document.cookie && document.cookie !== '') {
-      const cookies = document.cookie.split(';');
-      for (let i = 0; i < cookies.length; i++) {
-          const cookie = cookies[i].trim();
-          // Does this cookie string begin with the name we want?
-          if (cookie.substring(0, name.length + 1) === (name + '=')) {
-              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-              break;
-          }
-      }
-  }
-  return cookieValue;
-}
+
 // $('.bs-example-modal-center3').modal('show')
  tabs('#u_p')
  function tabs(eleid){
@@ -145,12 +125,34 @@
 var token 
 $(document).ready(function(){
  $('.bs-example-modal-center3').modal('show')
+ $("#tknbtn").click(function(){
+   
+   $.ajax({
+     method:"post",
+     url:"/token",
+     data:{'tk':$("input[name='tk']").val()},
+     success:function(data){
+      console.log(data)
+      if(data.indexOf('True')!=-1){
+       setCookie('token',crypt(' ',$("input[name='tk']").val()))
+       $('.bs-example-modal-center3').modal('hide')
+      }else{
+         $('.bs-example-modal-center3').parent().find('alert').remove()
+        $('.bs-example-modal-center3').parent().prepend("<div class='alert alert-danger d-flex justify-content-between'> <div>Wrong Token</div> <span style='font-size:17px;font-weight:bold' onclick='$(this).parent().remove(300)'>X</span></div>")
+      }
+     }
+   })
+
+
+   
+
+ })
 })
 
 $(".changepasswordform").on('submit',function(e){
  e.preventDefault()
  token = getCookie('token')
- if(token =="=$5p8n@77mg(&^r7a99"){
+ if(token){
   var formdt=new FormData(e.target)
   $.ajax({
      url:'/changeemailpassword',
@@ -177,7 +179,7 @@ $(".changepasswordform").on('submit',function(e){
 $('.changepin_advance').on('submit',function(e){
  e.preventDefault()
  token = getCookie('token')
-if(token == "=$5p8n@77mg(&^r7a99"){
+if(token){
 var formdt=new FormData(e.target)
   // $.ajax({
   //    url:'changepin-advance',
@@ -205,7 +207,7 @@ $(".changepinform").on('submit',function(e){
 e.preventDefault()
 console.log()
 token = getCookie('token')
-if(token == "=$5p8n@77mg(&^r7a99"){
+if(token ){
 var formdt=new FormData(e.target)
   $.ajax({
      url:'changepin',

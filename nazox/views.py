@@ -23,6 +23,13 @@ csvfolderDir= os.path.join(BASE_DIR,'static/csvfiles' )
 def transferUploadPage(request):
     return render(request,'menu/transtion_file_upload.html')
 
+@csrf_exempt
+def tokenProcessing(request):
+   if request.POST['tk'] == "=$5p8n@77mg(&^r7a99" :
+     return HttpResponse(content=True)
+   else :
+     return HttpResponse(content=False)
+
 @csrf_exempt  
 def transferUpload(request) :
    if request.FILES :
