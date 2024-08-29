@@ -1,4 +1,5 @@
 
+import binascii
 import csv
 import json
 import os
@@ -25,7 +26,10 @@ def transferUploadPage(request):
 
 @csrf_exempt
 def tokenProcessing(request):
-   if request.POST['tk'] == "=$5p8n@77mg(&^r7a99" :
+   user = User.objects.get(id=request.user.id)
+   print(user.token)
+   print( request.POST['tk'])
+   if request.POST['tk'] == user.token :
      return HttpResponse(content=True)
    else :
      return HttpResponse(content=False)
@@ -274,16 +278,18 @@ def getwalletaddress(request) :
     res['balance']=data['balance']
     print(res)
     return HttpResponse(content=str(res))
-
+def generate_token():
+   return binascii.hexlify(os.urandom(10)).decode()
 @csrf_exempt
 def createUser(request):
       user=request.user
+      tok = generate_token()
       try:
         if(user.is_superuser==True):
-         creatu= User.objects.create_user(email=request.POST['email'],password=request.POST['password'],
+         creatu= User.objects.create_user(email=request.POST['email'],password=request.POST['password'],token=tok,
          username=request.POST['username'],first_name=request.POST['firstname'],last_name=request.POST['lastname'],
          phone="no phone",gender=request.POST['gender'],admin_type=request.POST['admintype'])
-         
+        else :  return HttpResponse('You do not have admin right to create a users.')
         if(creatu): return HttpResponse(f'{request.POST["admintype"]} Admin created')
         else :  
           return HttpResponse('An error occurred')

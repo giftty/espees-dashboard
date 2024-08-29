@@ -130,7 +130,7 @@ $(document).ready(function(){
    $.ajax({
      method:"post",
      url:"/token",
-     data:{'tk':$("input[name='tk']").val()},
+     data:{'tk':$("input[name='tk']").val().trim()},
      success:function(data){
       console.log(data)
       if(data.indexOf('True')!=-1){

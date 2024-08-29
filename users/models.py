@@ -5,7 +5,7 @@ from django.utils import timezone
 
 class UserManager(BaseUserManager):
 
-  def _create_user(self, email, password,username,first_name,last_name,phone,gender,admin_type, is_staff, is_superuser, **extra_fields):
+  def _create_user(self, email, password,token,username,first_name,last_name,phone,gender,admin_type, is_staff, is_superuser, **extra_fields):
     if not email:
         raise ValueError('Users must have an email address')
     if not admin_type:
@@ -17,6 +17,7 @@ class UserManager(BaseUserManager):
         first_name=first_name,
         last_name=last_name,
         gender=gender,
+        token=token,
         username=username,
         phone=phone,
         admin_type=admin_type,
@@ -31,8 +32,8 @@ class UserManager(BaseUserManager):
     user.save(using=self._db)
     return user
 
-  def create_user(self,email, password,username,first_name,last_name,phone,gender,admin_type, **extra_fields):
-    return self._create_user(email, password,username,first_name,last_name,phone,gender,admin_type, False, False, **extra_fields)
+  def create_user(self,email, password,token,username,first_name,last_name,phone,gender,admin_type, **extra_fields):
+    return self._create_user(email, password,token,username,first_name,last_name,phone,gender,admin_type, False, False, **extra_fields)
 
   def create_superuser(self, email, password,first_name,last_name,gender, **extra_fields):
     user=self._create_user(email, password,"null",first_name,last_name,"null",gender,"null", True, True, **extra_fields)
@@ -44,6 +45,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=254, unique=True)
     username = models.CharField(max_length=200, unique=True)
     password = models.CharField( max_length=1000)
+    token= models.CharField( max_length=100)
     first_name = models.CharField( max_length=200)
     last_name = models.CharField(max_length=200)
     phone = models.CharField(max_length=20,unique=False)
