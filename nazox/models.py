@@ -1,6 +1,8 @@
 
 from django.db import models
 
+from users.models import User
+
 class Transactions(models.Model) :
     id = models.AutoField(primary_key=True)
     transaction_time = models.CharField(max_length=200,default = " ")
@@ -31,3 +33,10 @@ class Transactions(models.Model) :
     has_dispute =  models.CharField(max_length = 50)
     event =  models.CharField(max_length = 200,default = " ")
 
+
+class Log :
+    id = models.AutoField(primary_key=True)
+    logString = models.CharField(max_length=1000,default = "No activity")
+    userID = models.CharField(max_length=200)
+    username = models.CharField(max_length=250)
+    createdAt = models.DateTimeField(auto_now_add=True)

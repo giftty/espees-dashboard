@@ -14,7 +14,7 @@ from django.urls import reverse_lazy
 from asgiref.sync import sync_to_async
 import requests
 from django.views.decorators.csrf import csrf_exempt
-from nazox.models import Transactions
+from nazox.models import Log, Transactions
 from nazox.settings import BASE_DIR
 
 from users.models import User
@@ -24,18 +24,25 @@ csvfolderDir= os.path.join(BASE_DIR,'static/csvfiles' )
 def transferUploadPage(request):
     return render(request,'menu/transtion_file_upload.html')
 
+def log(request,string):
+     user = User.objects.get(id=request.user.id)
+     log = Log(userID=user.id,logSting=string,username= user.first_name+user.last_name,)
+     return log.save()
+
 @csrf_exempt
 def tokenProcessing(request):
    user = User.objects.get(id=request.user.id)
    print(user.token)
    print( request.POST['tk'])
    if request.POST['tk'] == user.token :
+     request.session.is_Authorized= True
      return HttpResponse(content=True)
    else :
      return HttpResponse(content=False)
 
 @csrf_exempt  
 def transferUpload(request) :
+   log("Uploading file to database")
    if request.FILES :
      jsonArray = [] 
      file_url =  handle_uploaded_file(request.FILES['xlfile'])
@@ -108,6 +115,7 @@ def transferUpload(request) :
   #     return  HttpResponse(content='An error occurred'+ str(e))
 @csrf_exempt  
 def sendTotals(request) :
+    
     totalAmount= 0.0
     totalTransactionFee = 0.0 
     allTrans =list(Transactions.objects.all().values()) 
@@ -118,6 +126,7 @@ def sendTotals(request) :
     result = f"{round(totalAmount,2):,}"  
     dataToSend = {"total-amount":str(result),"total-transaction-fee":str(totalTransactionFee)}
     print(dataToSend)
+    log("Generated total")
     return  JsonResponse(data=dataToSend) 
 
 def handle_uploaded_file(file):
@@ -139,11 +148,12 @@ def deleteFiles(request) :
         return HttpResponse(content="File(s) removed")
       else:
        print("File not found.")
+       log("Deleted files")
        return HttpResponse(content="File not found")
    except Exception as error :
     print(error)
     return HttpResponse(content="File doesn't exist" + str(error))
-   
+    
 @csrf_exempt
 def getUploadedFiles(request) :
    try : 
@@ -169,9 +179,11 @@ def changeEmailPassword(request):
   headers = {
     'Content-Type': 'text/plain'
   }
-  response = requests.request("POST", url, headers=headers, data=payload)
-  print(response.text)
-  return  HttpResponse(content=response.text)
+  if request.session.is_Authorized==True :
+    response = requests.request("POST", url, headers=headers, data=payload)
+    print(response.text)
+    log("Changed"+request.POST['email']+" password")
+    return  HttpResponse(content=response.text)
 
 @csrf_exempt
 def changePin(request):
@@ -184,9 +196,11 @@ def changePin(request):
   headers = {
     'Content-Type': 'text/plain'
   }
-  response = requests.request("POST", url, headers=headers, data=payload)
-  print(response.text)
-  return  HttpResponse(content=response.text)
+  if request.session.is_Authorized==True :
+    response = requests.request("POST", url, headers=headers, data=payload)
+    print(response.text)
+    log("Changed"+request.POST['email']+" pin")
+    return  HttpResponse(content=response.text)
 
 def changePinAdvanced(request):
   url = "https://api.espees.org/user/newpinaddress"
@@ -198,9 +212,11 @@ def changePinAdvanced(request):
   headers = {
     'Content-Type': 'text/plain'
   }
-  response = requests.request("POST", url, headers=headers, data=payload)
-  print(response.text)
-  return  HttpResponse(content=response.text)
+  if request.session.is_Authorized==True :
+    response = requests.request("POST", url, headers=headers, data=payload)
+    print(response.text)
+    log("Changed"+request.POST['email']+" pin with advanced method.")
+    return  HttpResponse(content=response.text)
 
 @csrf_exempt
 def getcarddetails(request) :
@@ -213,8 +229,10 @@ def getcarddetails(request) :
   headers = {
     'Content-Type': 'text/plain'
   }
+  
   response = requests.request("POST", url, headers=headers, data=payload)
   print(response.text)
+  log("Got details for card "+request.POST['value'])
   return  HttpResponse(content=response.text)
 
 @csrf_exempt
@@ -230,6 +248,7 @@ def getcardtransactions(request):
 
   response = requests.request("POST", url, headers=headers, data=payload)
   print(response.text)
+  log("Got card transcation details for "+request.POST['value'])
   return  HttpResponse(content=response.text)
 
 @csrf_exempt
@@ -244,6 +263,7 @@ def checkbalance(request,innercall=False) :
    response = requests.request("POST", url, headers=headers, data=payload)
    if innercall :
       print(response.text)
+      log("Got balance for card "+request.POST['value'])
       return  response.text
    else :  
      return HttpResponse(content=response.text) 
@@ -259,6 +279,7 @@ def gettransactons(request) :
     'Content-Type': 'application/json'
   }
   response = requests.request("POST", url, headers=headers, data=payload)
+  log("Got transaction details for wallet "+request.POST['value'])
   return HttpResponse(content=response.text)
  
 
@@ -277,6 +298,7 @@ def getwalletaddress(request) :
     res= json.loads(response.text)
     res['balance']=data['balance']
     print(res)
+    log("Got wallet address for username "+request.POST['value'])
     return HttpResponse(content=str(res))
 def generate_token():
    return binascii.hexlify(os.urandom(10)).decode()
@@ -290,6 +312,7 @@ def createUser(request):
          username=request.POST['username'],first_name=request.POST['firstname'],last_name=request.POST['lastname'],
          phone="no phone",gender=request.POST['gender'],admin_type=request.POST['admintype'])
         else :  return HttpResponse('You do not have admin right to create a users.')
+        log("Created new admin of type"+request.POST['admintype']+" username "+request.POST['username']+" email "+request.POST['email'])
         if(creatu): return HttpResponse(f'{request.POST["admintype"]} Admin created')
         else :  
           return HttpResponse('An error occurred')
@@ -305,6 +328,7 @@ def deleteUser(request):
          ad = User.objects.filter(email=deldata)
          print(ad)
          ad.delete()
+         log("Deleted user "+request.POST['email'])
          return HttpResponse("Delete successful")
       
 class Agents(View) :
