@@ -226,7 +226,7 @@ def changePinAdvanced(request):
   if request.session['is_Authorized']==True :
     response = requests.request("POST", url, headers=headers, data=payload)
     print(response.text)
-    log("Changed"+request.POST['email']+" pin with advanced method.")
+    log(request,"Changed"+request.POST['email']+" pin with advanced method.")
     return  HttpResponse(response.text)
   else :
     log(request,"Failed to change pin for "+str(request.POST['username'])+" operation initiated by admin "+request.user.email+" because of wrong token.")
@@ -246,7 +246,7 @@ def getcarddetails(request) :
   
   response = requests.request("POST", url, headers=headers, data=payload)
   print(response.text)
-  log("Got details for card "+request.POST['value'])
+  log(request,"Got details for card "+request.POST['value'])
   return  HttpResponse(content=response.text)
 
 @csrf_exempt
@@ -262,7 +262,7 @@ def getcardtransactions(request):
 
   response = requests.request("POST", url, headers=headers, data=payload)
   print(response.text)
-  log("Got card transcation details for "+request.POST['value'])
+  log(request,"Got card transcation details for "+request.POST['value'])
   return  HttpResponse(content=response.text)
 
 @csrf_exempt
@@ -277,7 +277,7 @@ def checkbalance(request,innercall=False) :
    response = requests.request("POST", url, headers=headers, data=payload)
    if innercall :
       print(response.text)
-      log("Got balance for card "+request.POST['value'])
+      log(request,"Got balance for card "+request.POST['value'])
       return  response.text
    else :  
      return HttpResponse(content=response.text) 
@@ -293,7 +293,7 @@ def gettransactons(request) :
     'Content-Type': 'application/json'
   }
   response = requests.request("POST", url, headers=headers, data=payload)
-  log("Got transaction details for wallet "+request.POST['value'])
+  log(request,"Got transaction details for wallet "+request.POST['value'])
   return HttpResponse(content=response.text)
  
 
@@ -312,7 +312,7 @@ def getwalletaddress(request) :
     res= json.loads(response.text)
     res['balance']=data['balance']
     print(res)
-    log("Got wallet address for username "+request.POST['value'])
+    log(request,"Got wallet address for username "+request.POST['value'])
     return HttpResponse(content=str(res))
 def generate_token():
    return binascii.hexlify(os.urandom(10)).decode()
