@@ -124,6 +124,7 @@
 }
 var token 
 $(document).ready(function(){
+ if(!getCookie('token'))
  $('.bs-example-modal-center3').modal('show')
  $("#tknbtn").click(function(){
    
@@ -134,7 +135,7 @@ $(document).ready(function(){
      success:function(data){
       console.log(data)
       if(data.indexOf('True')!=-1){
-       setCookie('token',crypt(' ',$("input[name='tk']").val()))
+       setCookie('token',crypt(' ',$("input[name='tk']").val()),0.3)
        $('.bs-example-modal-center3').modal('hide')
       }else{
          $('.bs-example-modal-center3').parent().find('alert').remove()
@@ -221,10 +222,13 @@ var formdt=new FormData(e.target)
      success:function(data){
        console.log(data)
        
-       if(data=JSON.parse(data))
+       if(data.indexOf('message')!=-1)
        {
-         data=data['body']
+          data=JSON.parse(data)
           $("button[type='submit']").html(data['message'])
+       }else if(data.indexOf('body')!=-1){
+           data=JSON.parse(data)
+          $("button[type='submit']").html(data['body'])
        }else{
           $("button[type='submit']").html(data)
        }
