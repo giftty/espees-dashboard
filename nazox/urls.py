@@ -58,6 +58,7 @@ urlpatterns = [
     path('delete_files',views.deleteFiles),
     path('get_data_totals',views.sendTotals),
     path('token',views.tokenProcessing),
+    path('logout',views.logoutsession,name='logout'),
     path(
         "accounts/password/change/",
         login_required(MyPasswordChangeView.as_view()),

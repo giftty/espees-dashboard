@@ -155,17 +155,19 @@
 							<div class="card">
                             <div class="card-body">
                             <div class="row">
+                             {% if user.is_staff %}
                             <button onclick="tabs('#u_p')" class="btn bg-primary col-5 text-white mx-2 mb-1" type="button" >
                             Check Transactions
                         </button> 
+                         {% endif %}
                             <button class="btn bg-info col-5 text-white  mx-1 mb-1" type="button"   >
                             Credit account
                         </button> 
-                            <% if(user.is_staff){%>
+                           
                             <button onclick="tabs('#c_p')" class="btn bg-success mx-2 col-5 text-white mb-1" type="button" >
                             Change Account Pin
                             </button> 
-                          <%}%>
+                          
                             <button class="btn bg-secondary col-5 text-white mx-1 mb-1" type="button"  >
                             <a href="/cardprocess"> <span class="text-white">Card Processing</span></a>
                           </button>

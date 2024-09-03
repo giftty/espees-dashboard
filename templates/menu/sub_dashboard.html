@@ -220,9 +220,17 @@ var formdt=new FormData(e.target)
       contentType: false,
      success:function(data){
        console.log(data)
-       data=JSON.parse(data)
-       data=data['body']
-     $("button[type='submit']").html(data['message'])
+       
+       if(data=JSON.parse(data))
+       {
+         data=data['body']
+          $("button[type='submit']").html(data['message'])
+       }else{
+          $("button[type='submit']").html(data)
+       }
+        
+       
+     
      }
    })
 }else{

@@ -34,7 +34,7 @@ class Transactions(models.Model) :
     event =  models.CharField(max_length = 200,default = " ")
 
 
-class Log :
+class Log(models.Model) :
     id = models.AutoField(primary_key=True)
     logString = models.CharField(max_length=1000,default = "No activity")
     userID = models.CharField(max_length=200)
