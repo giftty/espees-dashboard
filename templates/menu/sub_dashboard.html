@@ -222,15 +222,15 @@ var formdt=new FormData(e.target)
      success:function(data){
        console.log(data)
        
-       if(data.indexOf('message')!=-1)
+       if(data.indexOf('message')!= -1)
        {
           data=JSON.parse(data)
-          $("button[type='submit']").html(data['message'])
-       }else if(data.indexOf('body')!=-1){
+          $("button[type='submit']").html(data['body']['message'])
+       }else if(data.indexOf('body')!= -1){
            data=JSON.parse(data)
           $("button[type='submit']").html(data['body'])
        }else{
-          $("button[type='submit']").html(data)
+          $("button[type='submit']").html("Done")
        }
         
        
