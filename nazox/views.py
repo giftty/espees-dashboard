@@ -373,6 +373,7 @@ class Superpageview(View):
         greeting['title'] = "Dashboard"
         greeting['pageview'] = "Espees"
         user = request.user 
+       
         if(user.is_superuser==True):
           return render(request,'menu/superpage.html',greeting)
         else:
@@ -451,12 +452,14 @@ class DashboardView(LoginRequiredMixin,View):
                   'API-TOKEN': 'BCKOFFICE-IFHFIH973GHE35'
                 }
               objects=  requests.post('http://web.espees.org/api/backoffice/outbound/parallex',headers=headers,params={})
-              trn=objects.json()
-              # print(trn['data'])
-              dashboard_data['transactions']= trn['data']
-              
-                 
-              return render(request, 'menu/supervisory_dashboard.html',dashboard_data)  
+              print(objects)
+              if(objects.status_code ==200) :
+               trn=objects.json()
+               print(trn['data'])
+               dashboard_data['transactions'] = trn['data']
+               return render(request, 'menu/supervisory_dashboard.html',dashboard_data) 
+              else :
+                return render(request, 'menu/supervisory_dashboard.html',dashboard_data)  
 
 # Calender
 class CalendarView(LoginRequiredMixin,View):

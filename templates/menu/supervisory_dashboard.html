@@ -10,20 +10,21 @@
 	<!-- Responsive datatable examples -->
 	<link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
 
-            <!-- Sweet Alert-->
-        <link href="{% static 'libs/sweetalert2/dist/sweetalert2.min.css' %}" rel="stylesheet" type="text/css" />
+    <!-- Sweet Alert-->
+    <link href="{% static 'libs/sweetalert2/dist/sweetalert2.min.css' %}" rel="stylesheet" type="text/css" />
+
 {% endblock extra_css %}
 {% block content %}
-						{% block page_title %}
-							{% include 'partials/page-title.html' with pageview="Espees" title="Supevisory Dashboard" %}
-						{% endblock page_title %}
+{% block page_title %}
+    {% include 'partials/page-title.html' with pageview="Espees" title="Supevisory Dashboard" %}
+{% endblock page_title %}
                         
                             
                            <div class="card">
                                     <div class="card-body">
                                                 
                                         <h4 class="card-title mb-4">All Transactions </h4>
-                                     
+                                     {% if transactions %}
                                         <div class="table-responsive">
                                             <table class="table table-centered datatable dt-responsive nowrap" data-bs-page-length="5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                                 <thead class="table-light">
@@ -40,6 +41,7 @@
                                                         <th style="width: 120px;">Action</th>
                                                     </tr>
                                                 </thead>
+                                                
                                                 <tbody>
                                                 {% for transaction in transactions %}
                                                      <tr>
@@ -60,8 +62,14 @@
                                                  {% endfor %}
                                                    
                                                 </tbody>
+
                                             </table>
                                         </div>
+                                       {% else %}
+                                       <div class="w-100 text-center bg-white" style="height: 300px;" >
+                                          <h4>NO DATA TO DISPLAY</h4>
+                                       </div> 
+                                       {% endif %}
                                     </div>
                                 </div>
 
