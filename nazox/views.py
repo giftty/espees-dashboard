@@ -451,7 +451,7 @@ class DashboardView(LoginRequiredMixin,View):
               headers = {
                   'API-TOKEN': 'BCKOFFICE-IFHFIH973GHE35'
                 }
-              objects=  requests.post('http://web.espees.org/api/backoffice/outbound/parallex',headers=headers,params={})
+              objects=  requests.post('https://web.espees.org/api/backoffice/outbound/parallex',headers=headers,params={})
               print(objects)
               if(objects.status_code ==200) :
                trn=objects.json()
