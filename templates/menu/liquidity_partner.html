@@ -34,15 +34,15 @@
   animation: l11 2s infinite;
 }
 @keyframes l11 {
-  0%   {background: conic-gradient(#f03355 0     ,#0000 0)}
-  12.5%{background: conic-gradient(#f03355 45deg ,#0000 46deg)}
-  25%  {background: conic-gradient(#f03355 90deg ,#0000 91deg)}
-  37.5%{background: conic-gradient(#f03355 135deg,#0000 136deg)}
-  50%  {background: conic-gradient(#f03355 180deg,#0000 181deg)}
-  62.5%{background: conic-gradient(#f03355 225deg,#0000 226deg)}
-  75%  {background: conic-gradient(#f03355 270deg,#0000 271deg)}
-  87.5%{background: conic-gradient(#f03355 315deg,#0000 316deg)}
-  100% {background: conic-gradient(#f03355 360deg,#0000 360deg)}
+  0%   {background: conic-gradient(#eea300 0     ,#0000 0)}
+  12.5%{background: conic-gradient(#eea300 45deg ,#0000 46deg)}
+  25%  {background: conic-gradient(#eea300 90deg ,#0000 91deg)}
+  37.5%{background: conic-gradient(#eea300 135deg,#0000 136deg)}
+  50%  {background: conic-gradient(#eea300 180deg,#0000 181deg)}
+  62.5%{background: conic-gradient(#eea300 225deg,#0000 226deg)}
+  75%  {background: conic-gradient(#eea300 270deg,#0000 271deg)}
+  87.5%{background: conic-gradient(#eea300 315deg,#0000 316deg)}
+  100% {background: conic-gradient(#eea300 360deg,#0000 360deg)}
 }
   </style>
 {% endblock extra_css %}
@@ -173,6 +173,7 @@
              data = JSON.parse(data)
               document.getElementById(code).innerHTML="<b>"+ data['total_volume'] +"</b>"
               top5[code] = data['total_volume']
+               console.log(Object.entries(top5).length)
                if(Object.entries(top5).length == partners.length){
                   const entries = Object.entries(top5);
                   const sortedEntries = entries.sort((a, b) => b[1] - a[1]);
@@ -190,12 +191,7 @@
 
             }
           })
-          const requestOptions = {
-          method: "POST",
-          headers: myHeaders,
-          body: formData,
-          redirect: "follow"
-          };
+         
        }
         
        for( p of partners){

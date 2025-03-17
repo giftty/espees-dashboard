@@ -14,7 +14,6 @@ from django.urls import reverse_lazy
 from asgiref.sync import sync_to_async
 import requests
 from django.views.decorators.csrf import csrf_exempt
-from nazox import liquidity
 from nazox.models import Log, Transactions
 from nazox.settings import BASE_DIR
 
@@ -549,11 +548,9 @@ class DashboardView(LoginRequiredMixin,View):
               headers = {
                   'API-TOKEN': 'BCKOFFICE-IFHFIH973GHE35'
                 }
-              objects=  requests.post('httpss://web.espees.org/api/backoffice/outbound/parallex',headers=headers,params={})
-              print(objects)
+              objects=  requests.post('https://web.espees.org/api/backoffice/outbound/parallex',headers=headers,params={})
               if(objects.status_code ==200) :
                trn=objects.json()
-               print(trn['data'])
                dashboard_data['transactions'] = trn['data']
                return render(request, 'menu/supervisory_dashboard.html',dashboard_data) 
               else :
