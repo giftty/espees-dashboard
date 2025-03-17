@@ -25,18 +25,20 @@
 							<!-- end row -->
                              <div class="card d-block d-md-none">
                             <div class="card-body">
-                            <div class="row">
-                            <button onclick="tabs('#u_p')" class="btn bg-primary col-5 text-white mx-2 mb-1" type="button" >
+                            <div class="row justify-content-center">
+                             {% if user.is_staff %}
+                            <button onclick="tabs('#u_p')" class="btn bg-primary col-5 text-white mx-1 mb-1" type="button" >
                             Check Transactions
-                        </button> 
+                        </button>
+                        {% endif %} 
                             <button class="btn bg-info col-5 text-white  mx-1 mb-1" type="button"   >
                             Credit account
                         </button> 
                             
-                            <button onclick="tabs('#c_p')" class="btn bg-success mx-2 col-5 text-white mb-1" type="button" >
+                            <button onclick="tabs('#c_p')" class="btn bg-success mx-1 col-5 text-white mb-1" type="button" >
                             Change Account Pin
                         </button> 
-                           <button class="btn bg-secondary col-5 text-white mx-1 mb-1" type="button"  >
+                           <button class="btn bg-secondary col-11 text-white mx-2 mb-1" type="button"  >
                              <a href="/cardprocess"> <span class="text-white">Card Processing</span></a>
                         </button> 
                         <button onclick="tabs('#c_pass')" class="btn bg-primary col-11 text-white mx-2 mb-1" type="button"  >
@@ -154,18 +156,21 @@
 						<div class="col-xl-4">
 							<div class="card">
                             <div class="card-body">
-                            <div class="row">
+                            <div class="row justify-content-center">
+                             {% if user.is_staff %}
                             <button onclick="tabs('#u_p')" class="btn bg-primary col-5 text-white mx-2 mb-1" type="button" >
                             Check Transactions
                         </button> 
+                         {% endif %}
                             <button class="btn bg-info col-5 text-white  mx-1 mb-1" type="button"   >
                             Credit account
                         </button> 
-                            
+                           
                             <button onclick="tabs('#c_p')" class="btn bg-success mx-2 col-5 text-white mb-1" type="button" >
                             Change Account Pin
-                        </button> 
-                            <button class="btn bg-secondary col-5 text-white mx-1 mb-1" type="button"  >
+                            </button> 
+                          
+                            <button class="btn bg-secondary col-11 text-white mx-2 mb-1" type="button"  >
                             <a href="/cardprocess"> <span class="text-white">Card Processing</span></a>
                           </button>
                         <button onclick="tabs('#c_pass')" class="btn bg-primary col-11 text-white mx-2 mb-1" type="button"  >
@@ -225,7 +230,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title">Acount balance</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                             </div>
                             <div class="modal-body">
                                 <div class="h3 text-center" id="bal-text">
@@ -238,7 +243,7 @@
             </div>
 
             
-<div class="modal fade bs-example-modal-center2" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+<div class="modal fade bs-example-modal-center2" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" >
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -256,7 +261,29 @@
                             </div>
                         </div><!-- /.modal-content -->
                     </div><!-- /.modal-dialog -->
-                </div><!-- /.modal -->
+                </div>
+                <!-- /.modal -->
+
+                <div class="modal fade bs-example-modal-center3" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" >
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                              
+                                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+                            </div>
+                            <div class="modal-body">
+                                <div class="alert" >
+                                 <p class="h3"> Admin token</p>
+                                 <p class="mb-2"> Please enter admin token </p>
+                                   <input class="form-control mb-2" name="tk" placeholder="Enter token"/>
+                                    <button onclick="" class="btn bg-info col text-white mx-auto mb-1" type="button" id="tknbtn" >
+                                    Continue
+                                 </button> 
+                                </div>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div>
             </div>
     
 {% endblock content %}

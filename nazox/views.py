@@ -1,4 +1,5 @@
 
+import binascii
 import csv
 import json
 import os
@@ -13,18 +14,134 @@ from django.urls import reverse_lazy
 from asgiref.sync import sync_to_async
 import requests
 from django.views.decorators.csrf import csrf_exempt
-from nazox.models import Transactions
+from nazox import liquidity
+from nazox.models import Log, Transactions
 from nazox.settings import BASE_DIR
 
 from users.models import User
+
+
+liquidity = [
+                {
+                  "partnerCode": "MCBN",
+                  "description": "Ministry Center Benin"
+                },
+                {
+                  "partnerCode": "SSRN",
+                  "description": "South South Region Nigeria"
+                },
+                {
+                  "partnerCode": "Litse360",
+                  "description": "Port Harcourt Zone 2"
+                },
+                {
+                  "partnerCode": "Celz5",
+                  "description": "Lagos Zone 5"
+                },
+                {
+                  "partnerCode": "MEASIA",
+                  "description": "Middle East Asia"
+                },
+                {
+                  "partnerCode": "THNI",
+                  "description": "The Haven International"
+                },
+                {
+                  "partnerCode": "USAR1Z2",
+                  "description": "USA Region 1 Zone 2"
+                },
+                {
+                  "partnerCode": "CEABJZ1",
+                  "description": "Christ Embassy Abuja Zone 1"
+                },
+                {
+                  "partnerCode": "SAR",
+                  "description": "South Africa Region"
+                },
+                {
+                  "partnerCode": "EWCAREG",
+                  "description": "East West Central Africa Region"
+                },
+                {
+                  "partnerCode": "CESAZ1",
+                  "description": "Christ Embassy South Africa Zone 1"
+                },
+                {
+                  "partnerCode": "USAR3LPO",
+                  "description": "USA Region 3"
+                },
+                {
+                  "partnerCode": "HSCH",
+                  "description": "Healing School"
+                },
+                {
+                  "partnerCode": "CEISM2",
+                  "description": "International School of Ministry"
+                },
+                {
+                  "partnerCode": "Z5PAY2",
+                  "description": "Zone 5"
+                },
+                {
+                  "partnerCode": "CELZ2",
+                  "description": "Christ Embassy Lagos Zone 2"
+                },
+                {
+                  "partnerCode": "CEMCC",
+                  "description": "Christ Embassy Ministry Center Calabar"
+                },
+                {
+                  "partnerCode": "Accra",
+                  "description": "Pastor Biodun Lawal (Accra)"
+                },
+                {
+                  "partnerCode": "US Region 1",
+                  "description": "Wallet address of the Pastor (US Region 1)"
+                },
+                {
+                  "partnerCode": "Kingspay",
+                  "description": "Kingspay Wallet Address"
+                },
+                {
+                  "partnerCode": "CE Kenya",
+                  "description": "CE Kenya Wallet Address"
+                },
+                {
+                  "partnerCode": "CeBeninZ1",
+                  "description": "Christ Embassy Benin Zone 1"
+                },
+                {
+                  "partnerCode": "REGPROGS",
+                  "description": "Lagos Zone 1"
+                }
+              ] 
+
 
 csvfolderDir= os.path.join(BASE_DIR,'static/csvfiles' )
 
 def transferUploadPage(request):
     return render(request,'menu/transtion_file_upload.html')
 
+def log(request,string):
+     user = User.objects.get(id=request.user.id)
+     log = Log(userID=user.id,logString=string,username= user.first_name+user.last_name,)
+     return log.save()
+
+@csrf_exempt
+def tokenProcessing(request):
+   user = User.objects.get(id=request.user.id)
+   print(user.token)
+   print( request.POST['tk'])
+   if request.POST['tk'] == user.token :
+     request.session.__setitem__('is_Authorized',True)
+     return HttpResponse(content=True)
+   else :
+     request.session.__setitem__('is_Authorized',False)
+     return HttpResponse(content=False)
+
 @csrf_exempt  
 def transferUpload(request) :
+   log(request,"Uploading file to database")
    if request.FILES :
      jsonArray = [] 
      file_url =  handle_uploaded_file(request.FILES['xlfile'])
@@ -73,11 +190,13 @@ def transferUpload(request) :
                  print('Duplicate object ') 
             except Exception as er: 
               print(er)
+              log(request,"File transfer ended with error "+str(er))
               trans.save() 
         #  else :
         #    return  HttpResponse(content="File is too large")  
         except Exception as e :
-          print(e)       
+          print(e) 
+          log(request,"File transfer ended with error "+str(er))      
     #  print(jsonArray)
     
    more_value = 0     
@@ -97,6 +216,7 @@ def transferUpload(request) :
   #     return  HttpResponse(content='An error occurred'+ str(e))
 @csrf_exempt  
 def sendTotals(request) :
+    
     totalAmount= 0.0
     totalTransactionFee = 0.0 
     allTrans =list(Transactions.objects.all().values()) 
@@ -107,6 +227,7 @@ def sendTotals(request) :
     result = f"{round(totalAmount,2):,}"  
     dataToSend = {"total-amount":str(result),"total-transaction-fee":str(totalTransactionFee)}
     print(dataToSend)
+    log(request,"Generated total")
     return  JsonResponse(data=dataToSend) 
 
 def handle_uploaded_file(file):
@@ -128,11 +249,13 @@ def deleteFiles(request) :
         return HttpResponse(content="File(s) removed")
       else:
        print("File not found.")
+       log(request,"Deleted files")
        return HttpResponse(content="File not found")
    except Exception as error :
     print(error)
+    log(request,"File delete ended with error "+ str(error))
     return HttpResponse(content="File doesn't exist" + str(error))
-   
+    
 @csrf_exempt
 def getUploadedFiles(request) :
    try : 
@@ -158,9 +281,15 @@ def changeEmailPassword(request):
   headers = {
     'Content-Type': 'text/plain'
   }
-  response = requests.request("POST", url, headers=headers, data=payload)
-  print(response.text)
-  return  HttpResponse(content=response.text)
+  if request.session['is_Authorized']==True :
+    response = requests.request("POST", url, headers=headers, data=payload)
+    print(response.text)
+    log(request,"Changed"+str(request.POST['email'])+" password")
+    return  HttpResponse(response.text)
+  else :
+    log(request,"Failed to change password for "+str(request.POST['username'])+" operation initiated by admin "+request.user.email+" because of wrong token.")
+    return  HttpResponse(json.dumps({"statusCode": 200, "body": {"result": "false", "message": "Unauthorized operation"}})) 
+  
 
 @csrf_exempt
 def changePin(request):
@@ -173,10 +302,15 @@ def changePin(request):
   headers = {
     'Content-Type': 'text/plain'
   }
-  response = requests.request("POST", url, headers=headers, data=payload)
-  print(response.text)
-  return  HttpResponse(content=response.text)
-
+  if request.session['is_Authorized']==True :
+    response = requests.request("POST", url, headers=headers, data=payload)
+    print(response.text)
+    log(request,"Changed"+str(request.POST['username'])+" pin")
+    return  HttpResponse(response.text)
+  else : 
+    log(request,"Failed to change pin for "+str(request.POST['username'])+" operation initiated by admin "+request.user.email+" because of wrong token.")
+    return   HttpResponse(json.dumps({"statusCode": 200, "body": {"result": "false", "message": "Unauthorized operation"}})) 
+  
 def changePinAdvanced(request):
   url = "https://api.espees.org/user/newpinaddress"
   #payload = "{\"username\":\"firstflightboss\",\"newpin\":\"1234\"}"
@@ -187,10 +321,15 @@ def changePinAdvanced(request):
   headers = {
     'Content-Type': 'text/plain'
   }
-  response = requests.request("POST", url, headers=headers, data=payload)
-  print(response.text)
-  return  HttpResponse(content=response.text)
-
+  if request.session['is_Authorized']==True :
+    response = requests.request("POST", url, headers=headers, data=payload)
+    print(response.text)
+    log(request,"Changed"+request.POST['email']+" pin with advanced method.")
+    return  HttpResponse(response.text)
+  else :
+    log(request,"Failed to change pin for "+str(request.POST['username'])+" operation initiated by admin "+request.user.email+" because of wrong token.")
+    return   HttpResponse(json.dumps({"statusCode": 200, "body": {"result": "false", "message": "Unauthorized operation"}}))  
+  
 @csrf_exempt
 def getcarddetails(request) :
   
@@ -202,8 +341,10 @@ def getcarddetails(request) :
   headers = {
     'Content-Type': 'text/plain'
   }
+  
   response = requests.request("POST", url, headers=headers, data=payload)
   print(response.text)
+  log(request,"Got details for card "+request.POST['value'])
   return  HttpResponse(content=response.text)
 
 @csrf_exempt
@@ -219,6 +360,7 @@ def getcardtransactions(request):
 
   response = requests.request("POST", url, headers=headers, data=payload)
   print(response.text)
+  log(request,"Got card transcation details for "+request.POST['value'])
   return  HttpResponse(content=response.text)
 
 @csrf_exempt
@@ -233,6 +375,7 @@ def checkbalance(request,innercall=False) :
    response = requests.request("POST", url, headers=headers, data=payload)
    if innercall :
       print(response.text)
+      log(request,"Got balance for card "+request.POST['value'])
       return  response.text
    else :  
      return HttpResponse(content=response.text) 
@@ -248,6 +391,7 @@ def gettransactons(request) :
     'Content-Type': 'application/json'
   }
   response = requests.request("POST", url, headers=headers, data=payload)
+  log(request,"Got transaction details for wallet "+request.POST['value'])
   return HttpResponse(content=response.text)
  
 
@@ -266,21 +410,26 @@ def getwalletaddress(request) :
     res= json.loads(response.text)
     res['balance']=data['balance']
     print(res)
+    log(request,"Got wallet address for username "+request.POST['value'])
     return HttpResponse(content=str(res))
-
+def generate_token():
+   return binascii.hexlify(os.urandom(10)).decode()
 @csrf_exempt
 def createUser(request):
       user=request.user
+      tok = generate_token()
       try:
         if(user.is_superuser==True):
-         creatu= User.objects.create_user(email=request.POST['email'],password=request.POST['password'],
+         creatu= User.objects.create_user(email=request.POST['email'],password=request.POST['password'],token=tok,
          username=request.POST['username'],first_name=request.POST['firstname'],last_name=request.POST['lastname'],
          phone="no phone",gender=request.POST['gender'],admin_type=request.POST['admintype'])
-         
+        else :  return HttpResponse('You do not have admin right to create a users.')
+        log(request,f" Created new admin of type {request.POST['admintype']} username {request.POST['username']} email {request.POST['email']}")
         if(creatu): return HttpResponse(f'{request.POST["admintype"]} Admin created')
         else :  
           return HttpResponse('An error occurred')
-      except: return HttpResponse('An error occurred')
+      except :
+         return HttpResponse('An error occurred')
 def viewUsers(request):
       user=request.user
      # print(User.objects.all)  
@@ -292,8 +441,13 @@ def deleteUser(request):
          ad = User.objects.filter(email=deldata)
          print(ad)
          ad.delete()
+         log(request,"Deleted user "+request.POST['email'])
          return HttpResponse("Delete successful")
       
+def logoutsession(request) :
+       request.session.flush()
+       return redirect('/')
+
 class Agents(View) :
       def get(self, request):
         user = request.user 
@@ -317,6 +471,7 @@ class Superpageview(View):
         greeting['title'] = "Dashboard"
         greeting['pageview'] = "Espees"
         user = request.user 
+       
         if(user.is_superuser==True):
           return render(request,'menu/superpage.html',greeting)
         else:
@@ -348,11 +503,13 @@ class DashboardView(LoginRequiredMixin,View):
         else:     
          if(user.admin_type == "Sub Admin"):
             dashboard_data['userprofile']={}
-            return  render(request, 'menu/sub_dashboard.html',dashboard_data) 
+            dashboard_data['token'] = "=$5p8n@77mg(&^r7a99"
+            return  render(request, 'menu/sub_dashboard.html',dashboard_data,) 
          else :
           if(user.admin_type == "Main Admin"): 
              totalobjects=  requests.get('https://api.espees.org/backoffice/dashboard/')  
              dashboard_data['totals']= totalobjects.json()
+             print(totalobjects.json())
              return render(request, 'menu/main_dashboard.html',dashboard_data)
           else :
             banks = { "none": "Select Bank",
@@ -392,14 +549,36 @@ class DashboardView(LoginRequiredMixin,View):
               headers = {
                   'API-TOKEN': 'BCKOFFICE-IFHFIH973GHE35'
                 }
-              objects=  requests.post('http://web.espees.org/api/backoffice/outbound/parallex',headers=headers,params={})
-              trn=objects.json()
-              # print(trn['data'])
-              dashboard_data['transactions']= trn['data']
-              
-                 
-              return render(request, 'menu/supervisory_dashboard.html',dashboard_data)  
+              objects=  requests.post('httpss://web.espees.org/api/backoffice/outbound/parallex',headers=headers,params={})
+              print(objects)
+              if(objects.status_code ==200) :
+               trn=objects.json()
+               print(trn['data'])
+               dashboard_data['transactions'] = trn['data']
+               return render(request, 'menu/supervisory_dashboard.html',dashboard_data) 
+              else :
+                return render(request, 'menu/supervisory_dashboard.html',dashboard_data) 
 
+def liquidity_partners(request):             
+   context = {
+      'partners':liquidity,
+      'title' : 'Liquidity partners'
+        }
+   return render(request, 'menu/liquidity_partner.html',context) 
+
+@csrf_exempt
+def get_partner_volumn(request) : 
+    url = "https://api.espees.org/backoffice/liquidity_partner_vol"
+    payload = json.dumps({
+      "merchant_code": request.POST['code']
+    })
+    headers = {
+      'Content-Type': 'application/json'
+    }
+    response = requests.request("POST", url, headers=headers, data=payload)
+    return  HttpResponse(response.text) 
+  
+ 
 # Calender
 class CalendarView(LoginRequiredMixin,View):
     def get(self, request):
@@ -438,3 +617,6 @@ class SettingsView(LoginRequiredMixin,View):
         k = TOTPDevice.objects.filter(user=request.user)
         context_data = {"k": k}
         return render(request, 'menu/settings.html',context_data)
+    
+
+    

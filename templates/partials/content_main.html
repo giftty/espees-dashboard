@@ -68,9 +68,9 @@
 											<div class="d-flex">
 												<div class="flex-1 overflow-hidden">
 													<p class="text-truncate font-size-14 mb-2">Liquidity partners</p>
-													<h4 class="mb-0">0</h4>
+													<h4 class="mb-0">{{totals.total_liquidity_partners}}</h4>
 												</div>
-												<div class="text-primary ms-auto"> <i class="ri-user-3-line font-size-24"></i>
+												<div class="text-primary ms-auto"> <i class="ri-safe-fill font-size-24"></i>
 												</div>
 											</div>
 										</div>
@@ -85,9 +85,9 @@
 											<div class="d-flex">
 												<div class="flex-1 overflow-hidden">
 													<p class="text-truncate font-size-14 mb-2">Total Active platforms</p>
-													<h4 class="mb-0">0</h4>
+													<h4 class="mb-0">{{totals.total_platforms}}</h4>
 												</div>
-												<div class="text-primary ms-auto"> <i class="ri-user-3-line font-size-24"></i>
+												<div class="text-primary ms-auto"> <i class="ri-database-2-line font-size-24"></i>
 												</div>
 											</div>
 										</div>
@@ -102,9 +102,9 @@
 											<div class="d-flex">
 												<div class="flex-1 overflow-hidden">
 													<p class="text-truncate font-size-14 mb-2">Total SBO</p>
-													<h4 class="mb-0">0</h4>
+													<h4 class="mb-0">{{totals.totalSBO}}</h4>
 												</div>
-												<div class="text-primary ms-auto"> <i class="ri-user-3-line font-size-24"></i>
+												<div class="text-primary ms-auto"> <i class="ri-bank-line font-size-24"></i>
 												</div>
 											</div>
 										</div>
@@ -113,6 +113,58 @@
 										</div>
 									</div>
 								</div>
+								<div class="col-md-4">
+									<div class="card">
+										<div class="card-body">
+											<div class="d-flex">
+												<div class="flex-1 overflow-hidden">
+													<p class="text-truncate font-size-14 mb-2">Regions</p>
+													<h4 class="mb-0">{{totals.total_churches}}</h4>
+												</div>
+												<div class="text-primary ms-auto"> <i class="ri-registered-line font-size-24"></i>
+												</div>
+											</div>
+										</div>
+										<div class="card-body border-top py-3">
+											
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="card">
+										<div class="card-body">
+											<div class="d-flex">
+												<div class="flex-1 overflow-hidden">
+													<p class="text-truncate font-size-14 mb-2">Zones</p>
+													<h4 class="mb-0">{{totals.total_churches}}</h4>
+												</div>
+												<div class="text-primary ms-auto"> <i class="ri-building-2-line font-size-24"></i>
+												</div>
+											</div>
+										</div>
+										<div class="card-body border-top py-3">
+											
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="card">
+										<div class="card-body">
+											<div class="d-flex">
+												<div class="flex-1 overflow-hidden">
+													<p class="text-truncate font-size-14 mb-2">Total Churches</p>
+													<h4 class="mb-0">{{totals.total_churches}}</h4>
+												</div>
+												<div class="text-primary ms-auto"> <i class="ri-ancient-pavilion-fill font-size-24"></i>
+												</div>
+											</div>
+										</div>
+										<div class="card-body border-top py-3">
+											
+										</div>
+									</div>
+								</div>
+
 							</div>
 							<!-- end row -->
 							
@@ -124,10 +176,18 @@
 								<div class="card-body">
 									<div class="float-end">
 										<select class="form-select form-select-sm">
-											<option selected>Apr</option>
-											<option value="1">Mar</option>
-											<option value="2">Feb</option>
-											<option value="3">Jan</option>
+												<option value="01">January</option>
+												<option value="02">February</option>
+												<option value="03">March</option>
+												<option value="04">April</option>
+												<option value="05">May</option>
+												<option value="06">June</option>
+												<option value="07">July</option>
+												<option value="08">August</option>
+												<option value="09">September</option>
+												<option value="10">October</option>
+												<option value="11">November</option>
+												<option value="12">December</option>
 										</select>
 									</div>
 									<h4 class="card-title mb-4">Merchant Transaction Volumns</h4>
@@ -135,25 +195,25 @@
 									<!-- <div class="row">
 										<div class="col-4">
 											<div class="text-center mt-4">
-												<p class="mb-2 text-truncate"><i class="mdi mdi-circle text-primary font-size-10 me-1"></i>kbos</p>
+												<p class="mb-2 text-truncate"><i class="mdi mdi-circle text-primary font-size-10 me-1"></i>KOBIS</p>
 												<h5> 56%</h5>
 											</div>
 										</div>
 										<div class="col-4">
 											<div class="text-center mt-4">
-												<p class="mb-2 text-truncate"><i class="mdi mdi-circle text-success font-size-10 me-1"></i>mika</p>
+												<p class="mb-2 text-truncate"><i class="mdi mdi-circle text-success font-size-10 me-1"></i>CEFL</p>
 												<h5>26 %</h5>
 											</div>
 										</div>
 										<div class="col-4">
 											<div class="text-center mt-4">
-												<p class="mb-2 text-truncate"><i class="mdi mdi-circle text-info font-size-10 me-1"></i>Zone</p>
-												<h5>8 %</h5>
+												<p class="mb-2 text-truncate"><i class="mdi mdi-circle text-info font-size-10 me-1"></i>CELVZ</p>
+												<h5>35 %</h5>
 											</div>
 										</div>
                                         <div class="col-4">
 											<div class="text-center mt-4">
-												<p class="mb-2 text-truncate"><i class="mdi mdi-circle text-warning font-size-10 me-1"></i>Others...</p>
+												<p class="mb-2 text-truncate"><i class="mdi mdi-circle text-warning font-size-10 me-1"></i>OTHERS...</p>
 												<h5>2 %</h5>
 											</div>
 										</div>

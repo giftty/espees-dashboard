@@ -1,0 +1,209 @@
+{% extends 'partials/base2.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %}Dashboard{% endblock title %}
+{% block extra_css %}
+
+  <!-- DataTables -->
+  <link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+  <!-- Responsive datatable examples -->
+  <link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+  <!-- Sweet Alert-->
+  <link href="{% static 'libs/sweetalert2/dist/sweetalert2.min.css' %}" rel="stylesheet" type="text/css" />
+   
+  <style>
+
+ .loader {
+  height: 4px;
+  width: 130px;
+  --c:no-repeat linear-gradient(#eea300 0 0);
+  background: var(--c),var(--c),#fce6b8;
+  background-size: 60% 100%;
+  animation: l16 3s infinite;
+}
+@keyframes l16 {
+  0%   {background-position:-150% 0,-150% 0}
+  66%  {background-position: 250% 0,-150% 0}
+  100% {background-position: 250% 0, 250% 0}
+}
+  
+.donut-loader {
+  width: 60px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  animation: l11 2s infinite;
+}
+@keyframes l11 {
+  0%   {background: conic-gradient(#f03355 0     ,#0000 0)}
+  12.5%{background: conic-gradient(#f03355 45deg ,#0000 46deg)}
+  25%  {background: conic-gradient(#f03355 90deg ,#0000 91deg)}
+  37.5%{background: conic-gradient(#f03355 135deg,#0000 136deg)}
+  50%  {background: conic-gradient(#f03355 180deg,#0000 181deg)}
+  62.5%{background: conic-gradient(#f03355 225deg,#0000 226deg)}
+  75%  {background: conic-gradient(#f03355 270deg,#0000 271deg)}
+  87.5%{background: conic-gradient(#f03355 315deg,#0000 316deg)}
+  100% {background: conic-gradient(#f03355 360deg,#0000 360deg)}
+}
+  </style>
+{% endblock extra_css %}
+{% block content %}
+{% block page_title %}
+  {% include 'partials/page-title.html' with pageview="Espees" title="Liquidity Partners" %}
+{% endblock page_title %}
+                                                   
+        <div class="main">
+          <div class="row">
+           <div class="col-md-8 col-12">
+             <div class="card" style="width: 100%;height: 500px;overflow-y: auto;">
+               <div class="card-body">
+                  <p class="card-title-desc mb-5 mt-2"><b>Table data display all liquidity partners and thier trade volumns.</b></p>
+        
+                <div class="table-rep-plugin">
+                    <div class="table-responsive mb-0 " data-pattern="priority-columns">
+                        <table id="tech-companies-1 " class="table datatable">
+                            <thead>
+                            <tr>
+                                <th>S/n</th>
+                                <th data-priority="1">Liquidity Partner</th>
+                                <th data-priority="3">Code</th>
+                                <th data-priority="1">Trade Volumn</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                              {% for partner in partners %}
+                              <tr>
+                                
+                              <td>{{ forloop.counter }} </td>
+                              <td>{{partner.partnerCode}}</td>
+                              <td>{{partner.description}}</td>
+                              <td> <div id="{{partner.partnerCode}}"><div class="loader"></div></div> </td>
+                              
+                              </tr>
+                          {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+               </div>
+             </div>
+           </div>
+           <!-- End -->
+            <div class="col-4">
+              <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Donut Chart</h4>
+                     <div class="text-center"><div class="donut-loader mx-auto my-3"></div></div>
+                    <div id="donut_chart" class="apex-charts"  dir="ltr"></div>
+                </div>
+            </div>
+            </div>
+          </div>
+        </div>
+
+{% endblock content %}
+{% block extra_javascript %}
+  
+    <!-- jquery.vectormap map -->
+    <script src="{% static 'libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js' %}"></script>
+    <script src="{% static 'libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-us-merc-en.js' %}"></script>
+     <script src="{% static 'libs/parsleyjs/dist/parsley.min.js' %}"></script>
+      <!-- Required datatable js -->
+    <script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'libs/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'libs/jszip/dist/jszip.min.js' %}"></script>
+        <script src="{% static 'libs/pdfmake/build/pdfmake.min.js' %}"></script>
+        <script src="{% static 'libs/pdfmake/build/vfs_fonts.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-buttons/js/buttons.colVis.min.js' %}"></script>
+
+        <script src="{% static 'libs/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
+        <script src="{% static 'libs/datatables.net-select/js/dataTables.select.min.js' %}"></script>
+        <script src="https://cdn.datatables.net/fixedheader/4.0.0/js/fixedHeader.dataTables.js"></script>
+     <!-- Sweet Alerts js -->
+        <script src="{% static 'libs/sweetalert2/dist/sweetalert2.min.js' %}"></script>
+
+     <!-- apexcharts -->
+        <script src="{% static 'libs/apexcharts/dist/apexcharts.min.js' %}"></script>
+
+        <!-- apexcharts init -->
+       
+   
+     
+       <script>
+       $(document).ready(function(){
+         setTimeout(function(){
+       if (!($.fn.dataTable.isDataTable('.datatable'))) 
+       $(".datatable").
+        DataTable({
+       lengthMenu:[5,10,25,50],pageLength: 50,fixedHeader: true,
+       language:{paginate:{previous:"<i class='mdi mdi-chevron-left'>",
+       next:"<i class='mdi mdi-chevron-right'>"},
+       },
+       dom: 'Bfrtip',
+       buttons: [
+        'copy', 'excel', 'pdf'
+        ],
+      
+       drawCallback:function(){$(".dataTables_paginate > .pagination").addClass("pagination-rounded")}}),
+       $(".dataTables_length select").addClass("form-select form-select-sm")
+        },500)
+       })
+       $('.dataTables_filter').hide();
+      var top5 = {}
+      var partners = "{{partners|escapejs}}"
+       partners = JSON.parse(partners.replaceAll("'",'"'))
+
+        function getVolumn(code){
+          const myHeaders = new Headers();
+          myHeaders.append("Content-Type", "application/json");
+          formData = new FormData()
+          formData.append('code',code)
+
+          $.ajax({
+            url:'/get-volumn',
+            type:'POST',
+            data:formData,      
+            processData:false,
+            contentType: false,
+            success:function(data){
+             data = JSON.parse(data)
+              document.getElementById(code).innerHTML="<b>"+ data['total_volume'] +"</b>"
+              top5[code] = data['total_volume']
+               if(Object.entries(top5).length == partners.length){
+                  const entries = Object.entries(top5);
+                  const sortedEntries = entries.sort((a, b) => b[1] - a[1]);
+                  const topFive = sortedEntries.slice(0, 5);
+                  const topKeys = topFive.map(entry => entry[0]);
+                  const topValues = topFive.map(entry => parseInt(entry[1]));
+                  $(".donut-loader").remove() 
+                  setTimeout(function(){
+                   
+                   options={chart:{height:320,type:"donut"},series:topValues,labels:topKeys,colors:["#1cbb8c","#5664d2","#fcb92c","#4aa3ff","#ff3d60"],legend:{show:!0,position:"bottom",horizontalAlign:"center",verticalAlign:"middle",floating:!1,fontSize:"14px",offsetX:0,offsetY:5},responsive:[{breakpoint:600,options:{chart:{height:240},legend:{show:!1}}}]};(chart=new ApexCharts(document.querySelector("#donut_chart"),options)).render();
+                  },1000)
+
+               }
+
+
+            }
+          })
+          const requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: formData,
+          redirect: "follow"
+          };
+       }
+        
+       for( p of partners){
+        getVolumn(p.partnerCode)
+        
+       }
+
+     
+    </script>
+       
+{% endblock extra_javascript %}

@@ -35,6 +35,8 @@ urlpatterns = [
     path('menu/settings',views.SettingsView.as_view(),name='settings'),# Settings
     path('createadmin/',views.createUser,name='createadmin'),
     path('delete/',views.deleteUser,name='delete-admin'),
+    path('liguidity_partners',views.liquidity_partners,name='liquidity partners'),
+    path('get-volumn',views.get_partner_volumn),
     # path('supervisory',view.supervisory)
     # Apps 
     path('ecommerce/',include('ecommerce.urls')),# Ecommerce
@@ -57,6 +59,8 @@ urlpatterns = [
     path('get_files',views.getUploadedFiles),
     path('delete_files',views.deleteFiles),
     path('get_data_totals',views.sendTotals),
+    path('token',views.tokenProcessing),
+    path('logout',views.logoutsession,name='logout'),
     path(
         "accounts/password/change/",
         login_required(MyPasswordChangeView.as_view()),
@@ -67,7 +71,7 @@ urlpatterns = [
         login_required(MyPasswordSetView.as_view()),
         name="account_set_password",
     ),
-   
+    
     
     # Include the allauth and 2FA urls from their respective packages.
     path('account/', include('allauth_2fa.urls')),
