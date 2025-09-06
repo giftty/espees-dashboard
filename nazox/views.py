@@ -278,7 +278,8 @@ def changeEmailPassword(request):
      "password":request.POST['password']
     })
   headers = {
-    'Content-Type': 'text/plain'
+    'Content-Type': 'text/plain',
+    'x-api-key':'AmjZu80OIH3bH6YXNeB5w9EccHJ74l1B5eDbmOpw'
   }
   if request.session['is_Authorized']==True :
     response = requests.request("POST", url, headers=headers, data=payload)
@@ -299,7 +300,8 @@ def changePin(request):
     "newpin":request.POST['newpin']
   })
   headers = {
-    'Content-Type': 'text/plain'
+    'Content-Type': 'text/plain',
+    'x-api-key':'AmjZu80OIH3bH6YXNeB5w9EccHJ74l1B5eDbmOpw'
   }
   if request.session['is_Authorized']==True :
     response = requests.request("POST", url, headers=headers, data=payload)
@@ -318,7 +320,8 @@ def changePinAdvanced(request):
     "new_pin":request.POST['new_pin']
   })
   headers = {
-    'Content-Type': 'text/plain'
+    'Content-Type': 'text/plain',
+    'x-api-key':'AmjZu80OIH3bH6YXNeB5w9EccHJ74l1B5eDbmOpw'
   }
   if request.session['is_Authorized']==True :
     response = requests.request("POST", url, headers=headers, data=payload)
@@ -338,7 +341,8 @@ def getcarddetails(request) :
      "card_id":request.POST['value']
     })
   headers = {
-    'Content-Type': 'text/plain'
+    'Content-Type': 'text/plain',
+    'x-api-key':'AmjZu80OIH3bH6YXNeB5w9EccHJ74l1B5eDbmOpw'
   }
   
   response = requests.request("POST", url, headers=headers, data=payload)
@@ -354,7 +358,8 @@ def getcardtransactions(request):
      "card_id":request.POST['value']
     })
   headers = {
-    'Content-Type': 'text/plain'
+    'Content-Type': 'text/plain',
+    'x-api-key':'AmjZu80OIH3bH6YXNeB5w9EccHJ74l1B5eDbmOpw'
   }
 
   response = requests.request("POST", url, headers=headers, data=payload)
@@ -369,7 +374,8 @@ def checkbalance(request,innercall=False) :
       "username":request.POST['value']
     })
    headers = {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'x-api-key':'AmjZu80OIH3bH6YXNeB5w9EccHJ74l1B5eDbmOpw'
     }
    response = requests.request("POST", url, headers=headers, data=payload)
    if innercall :
@@ -387,7 +393,8 @@ def gettransactons(request) :
     "wallet_address": request.POST['value']
   })
   headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'x-api-key':'AmjZu80OIH3bH6YXNeB5w9EccHJ74l1B5eDbmOpw'
   }
   response = requests.request("POST", url, headers=headers, data=payload)
   log(request,"Got transaction details for wallet "+request.POST['value'])
@@ -401,7 +408,8 @@ def getwalletaddress(request) :
       "username": request.POST['value']
     })
     headers = {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'x-api-key':'AmjZu80OIH3bH6YXNeB5w9EccHJ74l1B5eDbmOpw'
     }
     response = requests.request("POST", url, headers=headers, data=payload)
     
@@ -411,8 +419,10 @@ def getwalletaddress(request) :
     print(res)
     log(request,"Got wallet address for username "+request.POST['value'])
     return HttpResponse(content=str(res))
+
 def generate_token():
    return binascii.hexlify(os.urandom(10)).decode()
+
 @csrf_exempt
 def createUser(request):
       user=request.user
@@ -429,6 +439,7 @@ def createUser(request):
           return HttpResponse('An error occurred')
       except :
          return HttpResponse('An error occurred')
+      
 def viewUsers(request):
       user=request.user
      # print(User.objects.all)  
@@ -454,6 +465,7 @@ class Agents(View) :
           return render(request,'menu/agents.html')
         else:
           redirect('/')
+
 class Merchants(View) : 
         def get(self, request): 
           greeting = {}
@@ -464,6 +476,7 @@ class Merchants(View) :
             return render(request,'menu/merchants.html',greeting)
           else:
             redirect('/')
+
 class Superpageview(View):
  def get(self, request):
         greeting = {}
@@ -487,6 +500,7 @@ class Mainpageview(View):
         greeting['title'] = "Dashboard"
         greeting['pageview'] = "Espees" 
         return render(request,'menu/index.html',greeting)
+ 
 # Dashboard
 class DashboardView(LoginRequiredMixin,View):
        def get(self, request):
@@ -570,7 +584,9 @@ def get_partner_volumn(request) :
       "merchant_code": request.POST['code']
     })
     headers = {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'x-api-key':'AmjZu80OIH3bH6YXNeB5w9EccHJ74l1B5eDbmOpw'
+      
     }
     response = requests.request("POST", url, headers=headers, data=payload)
     return  HttpResponse(response.text) 
