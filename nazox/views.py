@@ -279,7 +279,7 @@ def changeEmailPassword(request):
     })
   headers = {
     'Content-Type': 'text/plain',
-    'x-api-key':'AmjZu80OIH3bH6YXNeB5w9EccHJ74l1B5eDbmOpw'
+    'x-api-key':'ynE78nw7bD8zq4ecJLZmg1HFTtBZDSvF9PWHeRZn'
   }
   if request.session['is_Authorized']==True :
     response = requests.request("POST", url, headers=headers, data=payload)
@@ -301,7 +301,7 @@ def changePin(request):
   })
   headers = {
     'Content-Type': 'text/plain',
-    'x-api-key':'AmjZu80OIH3bH6YXNeB5w9EccHJ74l1B5eDbmOpw'
+    'x-api-key':'ynE78nw7bD8zq4ecJLZmg1HFTtBZDSvF9PWHeRZn'
   }
   if request.session['is_Authorized']==True :
     response = requests.request("POST", url, headers=headers, data=payload)
@@ -321,7 +321,7 @@ def changePinAdvanced(request):
   })
   headers = {
     'Content-Type': 'text/plain',
-    'x-api-key':'AmjZu80OIH3bH6YXNeB5w9EccHJ74l1B5eDbmOpw'
+    'x-api-key':'ynE78nw7bD8zq4ecJLZmg1HFTtBZDSvF9PWHeRZn'
   }
   if request.session['is_Authorized']==True :
     response = requests.request("POST", url, headers=headers, data=payload)
@@ -342,7 +342,7 @@ def getcarddetails(request) :
     })
   headers = {
     'Content-Type': 'text/plain',
-    'x-api-key':'AmjZu80OIH3bH6YXNeB5w9EccHJ74l1B5eDbmOpw'
+    'x-api-key':'ynE78nw7bD8zq4ecJLZmg1HFTtBZDSvF9PWHeRZn'
   }
   
   response = requests.request("POST", url, headers=headers, data=payload)
@@ -359,7 +359,7 @@ def getcardtransactions(request):
     })
   headers = {
     'Content-Type': 'text/plain',
-    'x-api-key':'AmjZu80OIH3bH6YXNeB5w9EccHJ74l1B5eDbmOpw'
+    'x-api-key':'ynE78nw7bD8zq4ecJLZmg1HFTtBZDSvF9PWHeRZn'
   }
 
   response = requests.request("POST", url, headers=headers, data=payload)
@@ -375,7 +375,7 @@ def checkbalance(request,innercall=False) :
     })
    headers = {
       'Content-Type': 'application/json',
-      'x-api-key':'AmjZu80OIH3bH6YXNeB5w9EccHJ74l1B5eDbmOpw'
+      'x-api-key':'ynE78nw7bD8zq4ecJLZmg1HFTtBZDSvF9PWHeRZn'
     }
    response = requests.request("POST", url, headers=headers, data=payload)
    if innercall :
@@ -394,7 +394,7 @@ def gettransactons(request) :
   })
   headers = {
     'Content-Type': 'application/json',
-    'x-api-key':'AmjZu80OIH3bH6YXNeB5w9EccHJ74l1B5eDbmOpw'
+    'x-api-key':'ynE78nw7bD8zq4ecJLZmg1HFTtBZDSvF9PWHeRZn'
   }
   response = requests.request("POST", url, headers=headers, data=payload)
   log(request,"Got transaction details for wallet "+request.POST['value'])
@@ -585,7 +585,7 @@ def get_partner_volumn(request) :
     })
     headers = {
       'Content-Type': 'application/json',
-      'x-api-key':'AmjZu80OIH3bH6YXNeB5w9EccHJ74l1B5eDbmOpw'
+      'x-api-key':'ynE78nw7bD8zq4ecJLZmg1HFTtBZDSvF9PWHeRZn'
       
     }
     response = requests.request("POST", url, headers=headers, data=payload)
