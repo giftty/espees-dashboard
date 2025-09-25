@@ -72,7 +72,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     # AuthenticationMiddleware.
     'django_otp.middleware.OTPMiddleware',
-
+    ' allauth.account.middleware.AccountMiddleware',
     # Reset login flow middleware. If this middleware is included, the login
     # flow is reset if another page is loaded between login and successfully
     # entering two-factor credentials.

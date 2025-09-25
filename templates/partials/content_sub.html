@@ -35,19 +35,19 @@
                             Credit account
                         </button> 
                             
-                            <button onclick="tabs('#c_p')" class="btn bg-success mx-1 col-5 text-white mb-1" type="button" >
+                            <button onclick="tabs('#c_p')" disabled="disabled" class="btn bg-success mx-1 col-5 text-white mb-1" type="button" >
                             Change Account Pin
                         </button> 
                            <button class="btn bg-secondary col-11 text-white mx-2 mb-1" type="button"  >
                              <a href="/cardprocess"> <span class="text-white">Card Processing</span></a>
                         </button> 
-                        <button onclick="tabs('#c_pass')" class="btn bg-primary col-11 text-white mx-2 mb-1" type="button"  >
+                        <button onclick="tabs('#c_pass')" disabled="disabled" class="btn bg-primary col-11 text-white mx-2 mb-1" type="button"  >
                             Change Account Password
                         </button> 
                          <button class="btn bg-info col-11 text-white mx-2 mb-1" type="button" id="balchk" >
                             Check balance
                         </button> 
-                          <button class="btn bg-danger col-11 text-white mx-2 mb-1 adv_pinresetbtn" type="button"  >
+                          <button disabled="disabled" class="btn bg-danger col-11 text-white mx-2 mb-1 adv_pinresetbtn" type="button"  >
                             <b>Advance pin reset</b>
                          </button> 
                       </div>
@@ -109,11 +109,11 @@
                                     {% csrf_token %}
                                     <input type="text" placeholder="Enter username" name="username" class="form-control " >
                                     <br/>
-                                    <input type="text" placeholder="Enter New Pin" name="newpin" class="form-control " >
+                                    <input disabled type="text" placeholder="Enter New Pin" name="newpin" class="form-control " >
                                     <br/>
-                                    <input type="text" placeholder="Repeat Pin" name="oldpin" class="form-control " >
+                                    <input disabled type="text" placeholder="Repeat Pin" name="oldpin" class="form-control " >
                                     <br/>
-                                    <button type="submit" class="btn btn-primary w-100"> Send</button>
+                                    <button disabled="disabled" type="submit" class="btn btn-primary w-100"> Send</button>
                                     </form>
                                     </div>
                             </div>
@@ -130,7 +130,7 @@
                                     <br/>
                                     <input type="text" placeholder="Repeat Password" name="confirm_password" class="form-control " >
                                     <br/>
-                                    <button type="submit" class="btn btn-primary w-100"> Send</button>
+                                    <button disabled="disabled" class="btn btn-primary w-100"> Send</button>
                                     </form>
                                     </div>
                             </div>
@@ -143,11 +143,11 @@
                                     {% csrf_token %}
                                     <input type="text" placeholder="Enter username" name="username" class="form-control " >
                                     <br/>
-                                    <input type="text" placeholder="Enter new pin" name="new_pin" class="form-control " >
+                                    <input disabled type="text" placeholder="Enter new pin" name="new_pin" class="form-control " >
                                     <br/>
-                                    <input type="text" placeholder="Repeat pin" name="confirm_pin" class="form-control " >
+                                    <input disabled type="text" placeholder="Repeat pin" name="confirm_pin" class="form-control " >
                                     <br/>
-                                    <button type="submit" class="btn btn-danger w-100"> Send</button>
+                                    <button disabled="disabled" class="btn btn-danger w-100"> Send</button>
                                     </form>
                                     </div>
                             </div>
@@ -166,20 +166,20 @@
                             Credit account
                         </button> 
                            
-                            <button onclick="tabs('#c_p')" class="btn bg-success mx-2 col-5 text-white mb-1" type="button" >
+                            <button disabled="disabled" onclick="tabs('#c_p')" class="btn bg-success mx-2 col-5 text-white mb-1" type="button" >
                             Change Account Pin
                             </button> 
                           
                             <button class="btn bg-secondary col-11 text-white mx-2 mb-1" type="button"  >
                             <a href="/cardprocess"> <span class="text-white">Card Processing</span></a>
                           </button>
-                        <button onclick="tabs('#c_pass')" class="btn bg-primary col-11 text-white mx-2 mb-1" type="button"  >
+                        <button disabled="disabled" onclick="tabs('#c_pass')" class="btn bg-primary col-11 text-white mx-2 mb-1" type="button"  >
                            Change Account Password
                         </button>
                          <button class="btn bg-info col-11 text-white mx-2 mb-1" type="button" id="balchk" >
                             Check balance
                         </button> 
-                         <button class="btn bg-danger col-11 text-white mx-2 mb-1 adv_pinresetbtn" type="button"  >
+                         <button disabled="disabled" class="btn bg-danger col-11 text-white mx-2 mb-1 adv_pinresetbtn" type="button"  >
                            <b>Advance pin reset</b>
                          </button> 
                       </div>
